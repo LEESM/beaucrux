@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+	<hr/>
+
+	<div class="row">
+		<div class="col-xs-4 col-sm-2">
+			<img class="img-responsive" src="{{item.image0.url}}"/>
+		</div>
+		<div class="col-xs-8 col-sm-10">
+			<h3>{{ item.item_name }}</h3>
+			<p class="gray">{{ item.item_desc }}</p>
+		</div>
+	</div>
+	<div class="clear-fix"></div>
+	<hr/>
+	<form method="POST" action="{% url 'review_update' %}">
+		{% csrf_token %}
+		<input id="item_id" name="item_id" value="{{item.item_id}}" style="display:none;"/>
+		<span>평가점수 : </span>
+		<input type="radio" name="score" value="1"> 1점
+		<input type="radio" name="score" value="2"> 2점
+		<input type="radio" name="score" value="3"> 3점
+		<input type="radio" name="score" value="4"> 4점
+		<input type="radio" name="score" value="5" checked> 5점
+		<hr/>
+		{{ itemreviewform.comment }}
+		<button type="submit" class="btn btn-lg btn-primary center">제출</button>
+	</form>
+</div>
+
+{% endblock %}

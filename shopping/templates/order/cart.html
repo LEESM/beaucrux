@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="container">
+	{% if not cart_items %}
+	<div class="jumbotron text-center">
+	  <p>장바구니가 비었습니다.</p>
+		<a class="btn btn-lg btn-primary" href="{% url 'index' %}">빨리 장바구니 채우기</a>
+	</div>	
+	{% else %}
+		<div class="row">
+		<form method="post" action="{% url 'cart_number_update' %}">
+			{% csrf_token %}
+			<div class="table-responsive">
+				<table class="table">
+					<thead id="cart_thead">
+						<tr>
+							<th>사진</th>
+							<th>아이템-옵션</th>
+							<th>가격</th>
+							<th>개수</th>
+							<th>합계</th>
+							<th>삭제</th>
+						</tr>
+					</thead>
+					<tbody id="cart_tbody">
+						{% for cart_item in cart_items %}
+						<tr>
+							<input type="text" name="id" value="{{cart_item.id}}" style="display:none;"/>
+							<td><img style="max-width:80px;" src="{{cart_item.item.image0.url}}"/></td>
+							<td>{{ cart_item.item }} : {{ cart_item.item_option }}( +{{cart_item.item_option.option_price|intcomma}} 원 ) </td>
+							<td>{{cart_item.item_plus_option_price|intcomma}} 원</td>
+							<td style="max-width:110px;">
+								<div class="input-group" id="quantity_div">
+								  <div class="input-group-btn">
+								    <a class="btn btn-default option_plus">+</a>
+								  </div>
+								  <input type="text" class="form-control" id="quantity" name="quantity" value = "{{cart_item.quantity}}">
+								  <div class="input-group-btn">
+								    <a class="btn btn-default option_minus">-</a>
+								  </div>
+								</div>
+							</td>
+							<td>{{cart_item.sub_total_price|intcomma}} 원</td>
+							<td><a class="btn btn-default" href="/order/pop_item/?id={{cart_item.id}}">삭제</a></td>
+						</tr>
+						{% endfor %}
+						<tr>
+							<td colspan="5"><span class="pull-right">합계</span></td>
+							<td>{{ total_price|intcomma }} 원</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div>
+				<a href="{% url 'order_info' %}" class="btn btn-lg btn-primary">구매하기</a>
+				<button class="btn btn-lg btn-primary pull-right" type="submit">수정</button>
+			</div>
+		</form>
+		</div>
+
+		<script>
+		$(function() {
+			    $('.option_plus').click(function(e){
+		        stockInput = $(this).parent().next();
+		        var currentVal = parseInt(stockInput.val());
+		        var next = currentVal+1;
+		        stockInput.val(next);
+		    });
+			    $('.option_minus').click(function(e){
+		        stockInput = $(this).parent().prev();
+		        var currentVal = parseInt(stockInput.val());
+		        var next = currentVal-1;
+		        if(currentVal==1){
+		        	next = 1;
+		        }
+		        stockInput.val(next);
+		    });
+		});
+		</script>
+	{% endif %}
+
+</div>
+{% endblock %}
