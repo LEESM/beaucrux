@@ -3,7 +3,7 @@ from .models import Profile, Texts
 from django_summernote.admin import SummernoteModelAdmin
 
 class ProfileAdmin(admin.ModelAdmin):
-	list_display = ['user','point','city','address','phone',]
+	list_display = ['user','point','postcode','address','address_detail','phone','ads_agree']
 
 class TextsAdmin(SummernoteModelAdmin):
 	list_display = ['name','contents']

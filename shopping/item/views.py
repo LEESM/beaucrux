@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from item.models import Category, Brand, Item, ItemOption, ItemQna, ItemReview
 from item.forms import ItemReviewForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.sessions.models import Session
 
 def index(request):
-	items = Item.objects.all()
-	context={'items':items}
+	items1 = Item.objects.filter(brand=Brand.objects.get(pk=1)).order_by('-item_id')
+	items2 = Item.objects.filter(brand=Brand.objects.get(pk=2)).order_by('-item_id')
+	context={'items1':items1,'items2':items2,}
 	return render(request,"item/index.html", context)
 
 def detail(request):
@@ -31,9 +33,9 @@ def detail(request):
 		images.append(item.image8)
 	if(item.image9!=''):
 		images.append(item.image9)
-	item_qnas = ItemQna.objects.filter(item=item)
+	item_qnas = ItemQna.objects.filter(item=item).order_by('-qna_time')
 	review_write = ItemReviewForm()
-	item_reviews = ItemReview.objects.filter(item=item)
+	item_reviews = ItemReview.objects.filter(item=item).order_by('-review_time')
 	context={
 		'item':item, 
 		'images':images, 

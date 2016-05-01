@@ -62,3 +62,10 @@ width:100%;
 	vertical-align: middle;
 	text-align:left;	
 }
+.message{
+	position:absolute;
+	top:50px;
+}
+#logo{
+	font-family: 'Poiret One', cursive;
+}

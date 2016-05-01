@@ -60,11 +60,11 @@
 						<td>
 							<div class="input-group" id="quantity_div">
 							  <div class="input-group-btn">
-							    <a class="btn btn-default option_plus">+</a>
+							    <a class="btn btn-default option_minus">-</a>
 							  </div>
 							  <input type="text" class="form-control" id="quantity" name="quantity" value = "0">
 							  <div class="input-group-btn">
-							    <a class="btn btn-default option_minus">-</a>
+							    <a class="btn btn-default option_plus">+</a>
 							  </div>
 							</div>
 						</td>
@@ -84,13 +84,13 @@
 <script>
 $(function() {
 	    $('.option_plus').click(function(e){
-        stockInput = $(this).parent().next();
+        stockInput = $(this).parent().prev();
         var currentVal = parseInt(stockInput.val());
         var next = currentVal+1;
         stockInput.val(next);
     });
 	    $('.option_minus').click(function(e){
-        stockInput = $(this).parent().prev();
+        stockInput = $(this).parent().next();
         var currentVal = parseInt(stockInput.val());
         var next = currentVal-1;
         if(currentVal==0){

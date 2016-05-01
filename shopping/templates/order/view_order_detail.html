@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="container">
+<h2>주문 상품 정보</h2>
+	<div class="table-responsive">
+		<table class="table">
+			<thead id="cart_thead">
+				<tr>
+					<th>사진</th>
+					<th>아이템-옵션</th>
+					<th>가격</th>
+					<th>개수</th>
+					<th>합계</th>
+				</tr>
+			</thead>
+			<tbody id="cart_tbody">
+				{% for cart_item in cart_items %}
+				<tr>
+					<input type="text" name="id" value="{{cart_item.id}}" style="display:none;"/>
+					<td><img style="max-width:80px;" src="{{cart_item.item.image0.url}}"/></td>
+					<td>{{ cart_item.item }} : {{ cart_item.item_option }}( +{{cart_item.item_option.option_price|intcomma}} 원 ) </td>
+					<td>{{cart_item.item_plus_option_price|intcomma}} 원</td>
+					<td>{{cart_item.quantity}}개	</td>
+					<td>{{cart_item.sub_total_price|intcomma}} 원</td>
+				</tr>
+				{% endfor %}
+				<tr>
+					<td colspan="4"><span class="pull-right">상품가격</span></td>
+					<td>{{ order.item_price|intcomma }} 원</td>
+				</tr>
+				<tr>
+					<td colspan="4"><span class="pull-right">배송비</span></td>
+					<td>{{ order.delivery_price|intcomma }} 원</td>
+				</tr>
+				<tr>
+					<td colspan="4"><span class="pull-right">전체금액</span></td>
+					<td>{{ order.total_price|intcomma }} 원</td>
+				</tr>
+				<tr>
+					<td colspan="4"><span class="pull-right">사용하신 포인트</span></td>
+					<td>{{ order.point_price|intcomma }} 원</td>
+				</tr>
+				<tr>
+					<td colspan="4"><span class="pull-right">결제하신 금액</span></td>
+					<td>{{ order.pay_price|intcomma }} 원</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+<h2>결제 정보</h2>
+	<div class="table-responsive">
+		<table class="table">
+			<thead id="cart_thead">
+				<tr>
+					<th>주문서 번호</th>
+					<th>주문 일시</th>
+					<th>합계</th>
+					<th>사용하신 포인트</th>
+					<th>결제 금액</th>
+				</tr>
+			</thead>
+			<tbody id="cart_tbody">
+				<tr>
+					<td>{{ order.order_id }}</td>
+					<td>{{ order.order_date|date:"Y-m-d h:i:s" }}</td>
+					<td>{{ order.total_price|intcomma }} 원</td>
+					<td>{{ order.point_price|intcomma }} 원</td>
+					<td>{{ order.pay_price|intcomma }} 원</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+<h2>배송 정보</h2>
+	<div class="table-responsive">
+		<table class="table">
+			<thead id="cart_thead">
+				<tr>
+					<th>항목</th>
+					<th>내용</th>
+				</tr>
+			</thead>
+			<tbody id="cart_tbody">
+				<tr>
+					<td>배송 회사</td>
+					<td>{% if order.delivery_company %} {{ order.delivery_company }} {% else %} 입력전 {% endif %}</td>
+				</tr>
+				<tr>
+					<td>송장 번호</td>
+					<td>{% if order.delivery_tracking_number %} {{ order.delivery_tracking_number }} {% else %} 입력전 {% endif %}</td>
+				</tr>
+				<tr>
+					<td>성함</td>
+					<td>{{ order.name }}</td>
+				</tr>
+				<tr>
+					<td>우편번호</td>
+					<td>{{ order.postcode }}</td>
+				</tr>
+				<tr>
+					<td>주소</td>
+					<td>{{ order.address }} {{order.address_detail}}</td>
+				</tr>
+				<tr>
+					<td>연락처</td>
+					<td>{{ order.phone }}</td>
+				</tr>
+				<tr>
+					<td>남기는 말</td>
+					<td>{{ order.postscript }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}

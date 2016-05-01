@@ -4,7 +4,6 @@
 <div class="container">
 
 <h1 class="text-center">회원가입</h1>
-<p class="text-center">{{ message }}</p>
 <div class="col-xs-12 col-sm-offset-4 col-sm-4">
     <form id="signup" method="post" action="{% url 'signup' %}">
     	{% csrf_token %}
@@ -13,6 +12,11 @@
 			{{ userform.username }} 
 	        <span class="field-error">{{ userform.username.errors|striptags }}</span>
        	</div>
+            <div class="form-group">
+              <label for="id_email">이메일</label>
+                    {{ userform.email }} 
+              <span class="field-error">{{ userform.email.errors|striptags }}</span>
+            </div>
        	<div class="form-group">
        		<label for="id_username">비밀번호</label>
 			{{ userform.password1 }} 

@@ -2,8 +2,14 @@
 {% load humanize %}
 
 {% block content %}
-<div class="container">
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.1.js"></script>
+<script>
+	$(function() {
 
+	});
+</script>
+<div class="container">
+	<h2>상품정보</h2>
 	<div class="table-responsive">
 		<table class="table">
 			<thead id="cart_thead">
@@ -45,8 +51,10 @@
 		</table>
 	</div>
 
+	<h2>배송정보</h2>
 	<div class="table-responsive">
-		<form method="post" action="">
+		<form id="aksgdltktpdy" method="post" action="{% url 'order_update' %}">
+		{% csrf_token %}
 			<table class="table">
 				<tr class="hidden">
 					<th><label for="id_order_id">Order id:</label></th>
@@ -72,10 +80,6 @@
 					<th><label for="id_pay_price">Pay price:</label></th>
 					<td><input id="id_pay_price" name="pay_price" type="number" /></td>
 				</tr>
-				<tr>
-					<th><label for="id_point_price">포인트 사용(사용가능 : {{request.user.profile.point|intcomma}})</label></th>
-					<td><input id="id_point_price" class="form-control" name="point_price" type="number" value=0 /></td>
-				</tr>
 				<tr class="hidden">
 					<th><label for="id_point_made">Point made:</label></th>
 					<td><input value="{{point_made}}" id="id_point_made" name="point_made" type="number" /></td>
@@ -85,12 +89,32 @@
 					<td><input value = "{{ request.user.first_name }}" class="form-control" id="id_name" name="name" type="text" /></td>
 				</tr>
 				<tr>
-					<th><label for="id_city">도시</label></th>
-					<td><input value = "{{request.user.profile.city}}" class="form-control" id="id_city" name="city" type="text" /></td>
+					<th><label for="id_email">Email</label></th>
+					<td><input value = "{{ request.user.email }}" class="form-control" id="id_email" name="email" type="text" /></td>
+				</tr>
+				<tr>
+					<th><label for="id_postcode">우편번호</label></th>
+					<td style="text-align:left;">
+						<div class="form-inline">
+							<input type="text" id="postcode" name="postcode" class="form-control" style="max-width:100px; display:inline; vertical-align: top;" placeholder="우편번호" value="{{ user.profile.postcode }}">
+							<input type="button" class="btn btn-default"onclick="sample3_execDaumPostcode()" value="우편번호 찾기"><br>
+						</div>
+					</td>
 				</tr>
 				<tr>
 					<th><label for="id_address">주소</label></th>
-					<td><input value = "{{request.user.profile.address}}" class="form-control" id="id_address" name="address" type="text" /></td>
+					<td>
+						<div id="wrap" style="display:none;border:1px solid;min-width:100%;height:400px;margin:5px 0;position:relative">
+						<img src="//i1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+						</div>
+						<input type="text" id="address" name="address" class="d_form large form-control" placeholder="주소" value="{{ user.profile.address }}">						
+					</td>
+				</tr>
+				<tr>
+					<th><label for="id_address_detail">상세주소</label></th>
+					<td>
+						<input type="text" id="address_detail" name="address_detail" class="d_form large form-control" placeholder="상세주소" value="{{ user.profile.address_detail }}">
+					</td>
 				</tr>
 				<tr>
 					<th><label for="id_phone">폰번호</label></th>
@@ -100,16 +124,39 @@
 					<th><label for="id_postscript">남기는 말</label></th>
 					<td><input class="form-control" id="id_postscript" name="postscript" type="text" /></td>
 				</tr>
+				<tr {% if anonymous %} class="hidden" {% endif %} >
+					<th><label for="id_point_price">포인트 사용 (사용가능 : {{request.user.profile.point|intcomma}})</label></th>
+					<td><input id="id_point_price" class="form-control" name="point_price" type="number" value=0 /></td>
+				</tr>
+				<tr>
+					<th>결제방법선택</th>
+					<td>
+						<label class="radio-inline">
+						  <input type="radio" name="pay_method" id="pay_method" value="card"checked="checked"> 신용카드
+						</label>
+						<label class="radio-inline">
+						  <input type="radio" name="pay_method" id="pay_method" value="trans"> 실시간계좌이체
+						</label>
+						<label class="radio-inline">
+						  <input type="radio" name="pay_method" id="pay_method" value="vbank"> 가상계좌
+						</label>
+					</td>
+				</tr>
 			</table>
+			<div class="checkbox {% if anonymous %} hidden {% endif %}"  >
+				<label>
+					<input name="mypage_check" id="mypage_check" type="checkbox">마이페이지에 정보를 반영합니다.
+				</label>
+			</div>
 		</form>
 		<div>
-			<a href="{% url 'order_info' %}" class="btn btn-lg btn-primary">구매하기</a>
+			<button id="buy_btn" href="{% url 'order_info' %}" class="btn btn-lg btn-primary">구매하기</button>
 		</div>
 		<script>
 		$(function() {
 			var raw  = new Date();
-			var cart_id = $('#id_cart_id').val()
-			var order_id = raw.getFullYear().toString() + ("0"+raw.getMonth()).slice(-2).toString() + ("0"+raw.getDate()).slice(-2).toString()+("0"+raw.getHours()).slice(-2).toString() + ("0"+raw.getMinutes()).slice(-2).toString() + ("0"+raw.getSeconds()).slice(-2).toString() + "_" + cart_id;
+			var cart_id = $('#id_cart_id').val();
+			var order_id = raw.getFullYear().toString() + ("0"+(raw.getMonth()+1)).slice(-2).toString() + ("0"+raw.getDate()).slice(-2).toString()+("0"+raw.getHours()).slice(-2).toString() + ("0"+raw.getMinutes()).slice(-2).toString() + ("0"+raw.getSeconds()).slice(-2).toString() + "_" + cart_id;
 			var test = raw.getMinutes();
 			$("#id_order_id").val(order_id);
 			var tot = $('#id_total_price').val();
@@ -118,14 +165,115 @@
 				var point = $('#id_point_price').val();
 				if(point<0){
 					point=0;
-				}else if(point>{{request.user.profile.point}}){
-					point={{request.user.profile.point}};
+				}else if(point>{% if anonymous %}0{% else %}{{ request.user.profile.point }}{%endif %}){
+					point= {% if anonymous %}0{% else %}{{ request.user.profile.point }}{%endif %} ;
 				}
 				$("#id_point_price").val(point);
 				var pay = tot-point;
 				$('#id_pay_price').val(pay);
 			});
+			$('#buy_btn').click(function(e){
+				//var mypage_check = $('input:checkbox[id="mypage_check"]').is(":checked");
+				var IMP = window.IMP;
+				IMP.init('imp89113577');
+				IMP.request_pay({
+				    pg : 'kakao', // version 1.1.0부터 지원.
+				    pay_method : $('#pay_method:checked').val(), // 'card' : 신용카드 | 'trans' : 실시간계좌이체 | 'vbank' : 가상계좌 | 'phone' : 휴대폰소액결제
+				    merchant_uid : 'merchant_' + new Date().getTime(),
+				    name : '{{ pg_product_name }} 외',
+				    amount : $('#id_pay_price').val(),
+				    buyer_email : $('#id_email').val(),
+				    buyer_name : $('#id_name').val(),
+				    buyer_tel : $('#id_phone').val(),
+				    buyer_addr : $('#id_address').val(),
+				}, function(rsp) {
+					  if ( rsp.success === true ) {//성공이면 true, 실패면 false
+					    console.log( rsp.imp_uid );
+					    console.log( rsp.pay_method );
+					    console.log( rsp.merchant_uid );
+					    console.log( rsp.name );
+					    console.log( rsp.paid_amount );
+					    console.log( rsp.pg_provider );
+					    console.log( rsp.pg_tid );
+					    console.log( rsp.apply_num );
+					    console.log( rsp.vbank_num );
+					    console.log( rsp.vbank_date );
+					    console.log( rsp.vbank_holder );
+					    console.log( rsp.vbank_name );
+					    console.log( rsp.buyer_name );
+					    console.log( rsp.buyer_email );
+					    console.log( rsp.buyer_tel );
+					    console.log( rsp.buyer_addr );
+					    console.log( rsp.buyer_postcode );
+					    console.log( rsp.custom_data );
+					    console.log( rsp.status );
+					    console.log( rsp.paid_at );
+					    console.log( rsp.receipt_url );
+						$("#aksgdltktpdy").submit();					    
+					  }
+					}
+				);
+			});
 		});
+		</script>
+		<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+		<script>
+		    // 우편번호 찾기 찾기 화면을 넣을 element
+		    var element_wrap = document.getElementById('wrap');
+
+		    function foldDaumPostcode() {
+		        // iframe을 넣은 element를 안보이게 한다.
+		        element_wrap.style.display = 'none';
+		    }
+
+		    function sample3_execDaumPostcode() {
+		        // 현재 scroll 위치를 저장해놓는다.
+		        var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+		        new daum.Postcode({
+		            oncomplete: function(data) {
+		                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+		                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+		                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+		                var fullAddr = data.address; // 최종 주소 변수
+		                var extraAddr = ''; // 조합형 주소 변수
+
+		                // 기본 주소가 도로명 타입일때 조합한다.
+		                if(data.addressType === 'R'){
+		                    //법정동명이 있을 경우 추가한다.
+		                    //if(data.bname !== ''){
+		                    //    extraAddr += data.bname;
+		                    //}
+		                    // 건물명이 있을 경우 추가한다.
+		                    if(data.buildingName !== ''){
+		                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+		                    }
+		                    // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+		                    fullAddr += (extraAddr !== '' ? ' '+ extraAddr +' ' : '');
+		                }
+
+		                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+		                document.getElementById('postcode').value = data.zonecode; //5자리 새우편번호 사용
+		                document.getElementById('address').value = fullAddr;
+
+		                // iframe을 넣은 element를 안보이게 한다.
+		                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+		                element_wrap.style.display = 'none';
+
+		                // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
+		                document.body.scrollTop = currentScroll;
+		            },
+		            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
+		            onresize : function(size) {
+		                element_wrap.style.height = size.height+'px';
+		            },
+		            width : '100%',
+		            height : '100%'
+		        }).embed(element_wrap);
+
+		        // iframe을 넣은 element를 보이게 한다.
+		        element_wrap.style.display = 'block';
+		    }
 		</script>
 	</div>
 </div>

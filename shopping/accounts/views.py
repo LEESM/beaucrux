@@ -19,20 +19,20 @@ def logout(request):
 
 @login_required
 def mypage(request):
-	message='get method'
+	message=None
 	if request.method == "POST":
-		test='post'
 		mypageform=MypageForm(request.POST)
 		if mypageform.is_valid():
 			profile = Profile.objects.get(user=request.user)
-			profile.city = mypageform.cleaned_data['city']
-			profile.address = mypageform.cleaned_data['address']
 			profile.phone = mypageform.cleaned_data['phone']
+			profile.postcode=request.POST.get('postcode')
+			profile.address=request.POST.get('address')
+			profile.address_detail=request.POST.get('address_detail')
 			profile.save()
 			user=request.user
 			user.first_name = mypageform.cleaned_data['first_name']
 			user.save()
-			message = 'updated'
+			message = '정보가 업데이트 되었습니다.'
 		else:
 			message = mypageform.errors
 	user=User.objects.get(id=request.user.id)
@@ -42,8 +42,8 @@ def mypage(request):
 	except:
 		new_profile=Profile(user=request.user)
 		new_profile.save()
-	mypageform = MypageForm({'first_name':request.user.first_name ,'city':user.profile.city,'address':user.profile.address, 'phone':user.profile.phone})
-	context={'message':message,'point':user.profile.point, 'mypageform':mypageform}
+	mypageform = MypageForm({'first_name':request.user.first_name, 'phone':user.profile.phone})
+	context={'message':message,'mypageform':mypageform, 'user':user}
 	return render(request,"accounts/mypage.html", context)
 
 def signup(request):
@@ -54,6 +54,7 @@ def signup(request):
 		if userform.is_valid():
 			user = userform.save(commit=False)
 			user.username = userform.cleaned_data['username']
+			user.email = userform.cleaned_data['email']
 			user.save()
 			profile = Profile(user=user)
 			profile.save()

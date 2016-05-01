@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container">
+	<div class="jumbotron">
+	  <p class="text-center">주문서 번호를 누르면 자세한 내용을 확인하실 수 있습니다.</p>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>주문서번호</th>
+				<th>주문일시</th>
+				<th>주문금액</th>
+				<th>사용포인트</th>
+				<th>결제금액</th>
+				<th>받은포인트</th>
+				<th>상태</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for order in orders %}
+			<tr>
+				<td><a href="{% url 'view_order_detail' %}?order_id={{order.order_id}}">{{ order.order_id }}</a></td>
+				<td>{{ order.order_date|date:"Y-m-d h:i:s" }}</td>
+				<td>{{ order.total_price|intcomma }}</td>
+				<td>{{ order.point_price|intcomma }}</td>
+				<td>{{ order.pay_price|intcomma }}</td>
+				<td>{{ order.point_made|intcomma }}</td>
+				<td>{{ order.status }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}

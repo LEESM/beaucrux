@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="jumbotron text-center">
+	<h2>주문 완료!</h2>
+	<p>주문서 번호 {{ order_id }} 의 주문이 완료되었습니다.</p>
+	<a class="btn btn-lg btn-primary" href="{% url 'view_orders' %}">주문/배송 조회</a>
+</div>	
+{% endblock %}

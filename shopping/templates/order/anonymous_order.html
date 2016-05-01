@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="container">
+	<div class="jumbotron">
+	   <p class="text-center">{{main_post}}</p>
+		<form method="post" action="" class="form-inline text-center">
+		{% csrf_token %}
+			<div class="form-group">
+				<input type="text" id="order_id" class="form-control" name="order_id" placeholder="주문서 번호">
+			</div>
+			<div class="form-group">
+				<input type="submit" class="form-control">
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}
