@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+	<h2>{{board_title}}</h2>
+	<div class="table-responsive">
+		<table class="table table-hover" id="board_list_table">
+		 	<thead>
+		 		<tr>
+		 			<th>제목</th>
+		 			<th>글쓴이</th>
+		 			<th class="board_list_date">글쓴시간</th>
+		 			<th class="board_list_hits">조회수</th>
+		 		</tr>
+		 	</thead>
+		 	<tbody>
+				{% for item in board_list %}
+					<tr>
+						<td>
+							{% if item.secret %}
+								{% if not item.user = request.user %}
+								<a>{{item.title}} <span class="glyphicon glyphicon-lock"></span></a>
+								{% else %}
+								<a href="{% url 'board_view' %}?board_name={{board_name}}&item_id={{item.id}}">{{item.title}} <span class="glyphicon glyphicon-lock"></span></a> 
+								{% endif %}
+							{% else %}
+								<a href="{% url 'board_view' %}?board_name={{board_name}}&item_id={{item.id}}">{{item.title}}</a> 
+							{% endif %}
+						</td>
+						<td>{{item.user}}</td>
+						<td>{{item.pub_time|date:"Y-m-d"}}</td>
+						<td>{{item.hits}}</td>
+					</tr>
+
+				{% endfor %}
+		 	</tbody>
+		</table>
+	</div>
+
+
+	<nav class="text-center">
+	  <ul class="pagination">
+	  {% if board_list.has_previous %}
+	    <li>
+	      <a class="btn btn-default" href="?board_name={{board_name}}&page={{ board_list.previous_page_number }}">
+	        <span aria-hidden="true">&laquo;</span>
+	      </a>
+	    </li>
+	  {% endif %}
+	    <li><a href="#">{{ board_list.number }} 페이지</a></li>
+	   {% if board_list.has_next %}
+	    <li>
+			<a class="btn btn-default" href="?board_name={{board_name}}&page={{ board_list.next_page_number }}">
+				<span aria-hidden="true">&raquo;</span>
+	      </a>
+	    </li>
+	    {% endif %}
+	  </ul>
+	</nav>
+	<div class="clearfix"></div>
+
+
+	{% if write_btn = True %}
+	<a href="{% url 'board_write' %}?board_name={{ board_name }}" class="btn btn-lg btn-info">글쓰기</a>
+	{% endif %}
+</div>
+{% endblock %}

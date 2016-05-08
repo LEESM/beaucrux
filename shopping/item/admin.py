@@ -5,8 +5,8 @@ from django_summernote.admin import SummernoteModelAdmin
 class CategoryAdmin(admin.ModelAdmin):
 	list_display = ['category_id','category_name',]
 
-class BrandAdmin(admin.ModelAdmin):
-	list_display = ['brand_id','brand_name',]
+class BrandAdmin(SummernoteModelAdmin):
+	list_display = ['brand_id','brand_name','brand_desc','brand_active',]
 
 class ItemOptionAdmin(admin.ModelAdmin):
 	list_display = ['option_id','option_name','option_price','option_custom_price','option_stock',]

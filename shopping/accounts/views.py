@@ -28,6 +28,11 @@ def mypage(request):
 			profile.postcode=request.POST.get('postcode')
 			profile.address=request.POST.get('address')
 			profile.address_detail=request.POST.get('address_detail')
+			check = request.POST.get('ads_agree')
+			if check == None :
+				profile.ads_agree=False
+			else:
+				profile.ads_agree=True
 			profile.save()
 			user=request.user
 			user.first_name = mypageform.cleaned_data['first_name']
@@ -57,6 +62,11 @@ def signup(request):
 			user.email = userform.cleaned_data['email']
 			user.save()
 			profile = Profile(user=user)
+			profile.ads_agree = request.POST.get('ads_agree')
+			if profile.ads_agree==None:
+				profile.ads_agree=False
+			else:
+				profile.ads_agree=True
 			profile.save()
 			return HttpResponseRedirect(reverse("signup_ok"))	
 		return render(request, "accounts/signup.html", {

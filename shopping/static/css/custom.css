@@ -69,3 +69,15 @@ width:100%;
 #logo{
 	font-family: 'Poiret One', cursive;
 }
+#orders_table thead tr th{
+text-align:center;
+}
+#board_list_table thead tr th{
+	text-align:center;
+}
+.board_list_date{
+	width:100px;
+}
+.board_list_hits{
+	width:80px;
+}

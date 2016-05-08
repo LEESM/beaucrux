@@ -11,6 +11,8 @@ class Category(models.Model):
 class Brand(models.Model):
 	brand_id = models.CharField(unique=True, max_length=30)
 	brand_name = models.CharField(max_length=100)
+	brand_desc = models.TextField()
+	brand_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.brand_name
 
@@ -64,7 +66,7 @@ class ItemOption(models.Model):
 class ItemQna(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL)
 	item = models.ForeignKey(Item)
-	secret = models.BooleanField()
+	secret = models.BooleanField(default=True)
 	question = models.TextField(blank=True)
 	answer = models.TextField(blank=True, default="<p>답변 전 입니다.</p>")
 	qna_time = models.DateTimeField(auto_now_add=True)

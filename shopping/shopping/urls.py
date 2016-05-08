@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^accounts/', include('accounts.urls')),
     url(r'^item/', include('item.urls')),
     url(r'^order/', include('order.urls')),
+    url(r'^board/', include('board.urls')),
     url(r'^summernote/', include('django_summernote.urls')),
 ]
 

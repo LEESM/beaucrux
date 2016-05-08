@@ -10,6 +10,18 @@ def index(request):
 	context={'items1':items1,'items2':items2,}
 	return render(request,"item/index.html", context)
 
+def brand(request):
+	try:
+		brand_name = request.GET.get('brand_name')
+	except:
+		redirect('index')
+	brand = Brand.objects.get(brand_id=brand_name)
+	items = Item.objects.filter(brand=brand).order_by('-item_id')
+	return render(request,"item/brand.html",{
+		'brand':brand,
+		'items':items,
+		})
+
 def detail(request):
 	item_id=request.GET.get('item_id')
 	item=Item.objects.get(item_id=item_id)

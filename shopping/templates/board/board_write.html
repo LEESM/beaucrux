@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+	<br/>
+	<form method="POST" action="{% url 'board_write' %}">
+	{% csrf_token %}
+		<input id="board_name" name="board_name" type="text" class="hidden" value="{{ board_name }}">
+		{{boardwriteform.title}}
+		<br/>
+		<label>비밀글입니다.</label>
+		<input type="checkbox" name="secret" checked="checked">
+		<br/>
+		{{boardwriteform.content}}
+		<button type="submit" class="btn btn-lg btn-primary">글쓰기</button>
+	</form>
+</div>
+{% endblock %}

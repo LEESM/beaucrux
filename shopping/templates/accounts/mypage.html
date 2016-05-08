@@ -95,6 +95,10 @@
 	    <label for="phone">phone</label>
 		{{mypageform.phone}}
 	  </div>
+	  <div class="form-group">
+	    <label for="name">문의, 안내, 이벤트 등을 수신합니다.</label>
+	    <input type="checkbox" name="ads_agree"{% if user.profile.ads_agree = True %} checked {% endif %}>
+	  </div>
 	  <button type="submit" class="btn btn-default">submit</button>
 	</form>
 </div>
