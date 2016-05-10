@@ -8,13 +8,15 @@ from ingredient.models import Ingredient
 
 #46732 시작
 #57103 끝
+
+#46842 까지 함
 def old_crawler():
     print('크롤링 시작')
     driver=webdriver.PhantomJS()
     print('webdriver ok')
     driver.get("https://www.kcia.or.kr/cid/Document/020.Ingredient_shis/INGREDIENT_SHIS_10L.asp")
     print('url ok')
-    for no in range(46732,57103):
+    for no in range(46732,57107):
         while True:
             try:
                 check=Ingredient.objects.get(kcia_no=no)
@@ -26,6 +28,8 @@ def old_crawler():
                 ko_name = driver.find_element_by_css_selector('table:nth-child(3) tr:nth-child(1) td:nth-child(2)')
                 if ko_name.text=='':
                     print('빈 번호')
+                    print(no)
+                    driver.get("https://www.kcia.or.kr/cid/Document/020.Ingredient_shis/INGREDIENT_SHIS_10L.asp")
                     break
                 en_name = driver.find_element_by_css_selector('table:nth-child(3) tr:nth-child(2) td:nth-child(2)')
                 purpose = driver.find_element_by_css_selector('table:nth-child(3) tr:nth-child(8) td:nth-child(2)')
