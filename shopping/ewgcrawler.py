@@ -24,8 +24,9 @@ for item in items:
             string = element_grade_img.get_attribute('src')
             low = string[58]
             high = string[60]
-            item.ewg_high = int(high)
-            item.ewg_low = int(low)
+            print(item.en_name)
+            item.ewg_high_grade = int(high)
+            item.ewg_low_grade = int(low)
             item.save()
             break
         except:
@@ -33,7 +34,8 @@ for item in items:
             flag=flag+1
             if(flag==3):
                 flag=0
-                item.ewg_low=11
+                item.ewg_low_grade=0
+                item.ewg_high_grade=11
                 item.save()
                 break
             else:
