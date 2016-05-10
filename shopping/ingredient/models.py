@@ -1,7 +1,7 @@
 from django.db import models
 
 class Ingredient(models.Model):
-	kcia_no = IntegerField(unique=True)
+	kcia_no = models.IntegerField(unique=True)
 	ko_name = models.CharField(max_length=2000, null=True, blank=True)
 	en_name = models.CharField(max_length=2000, null=True, blank=True)
 	purpose = models.TextField(null=True, blank=True)
