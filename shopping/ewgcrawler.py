@@ -4,14 +4,13 @@ import django
 django.setup()
 from selenium import webdriver
 import time
-from Ingredient.models import Ingredient
+from ingredient.models import Ingredient
 
 print('ewg 크롤링 시작')
-driver = webdriver.Firefox()
-driver.get("http://www.ewg.org/skindeep/")
+driver = webdriver.PhantomJS()
 flag = 0
 
-items=Ingredient.objects.filter(ewg_high=-1, ewg_low=-1)
+items=Ingredient.objects.filter(ewg_high_grade=-1, ewg_low_grade=-1)
 for item in items:
     while True:
         try:
@@ -23,8 +22,8 @@ for item in items:
             element_query.submit()
             element_grade_img = driver.find_element_by_css_selector('#table-browse tbody tr:nth-child(2) td:nth-child(3) img')
             string = element_grade_img.get_attribute('src')
-            low = string[57]
-            high = string[59]
+            low = string[58]
+            high = string[60]
             item.ewg_high = int(high)
             item.ewg_low = int(low)
             item.save()
