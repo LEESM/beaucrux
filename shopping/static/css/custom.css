@@ -72,12 +72,20 @@ width:100%;
 #orders_table thead tr th{
 text-align:center;
 }
-#board_list_table thead tr th{
-	text-align:center;
-}
 .board_list_date{
 	width:100px;
 }
 .board_list_hits{
 	width:80px;
+}
+#ingredient_div{
+	max-width:800px;
+	margin:0 auto;
+}
+#ingredient_div table thead tr th{
+	text-align:center;
+}
+.board_list_th{
+	text-align: center;
+
 }

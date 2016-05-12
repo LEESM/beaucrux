@@ -1,4 +1,5 @@
 from django.db import models
+from ingredient.models import Ingredient
 from django.conf import settings
 import os
 
@@ -39,6 +40,7 @@ class Item(models.Model):
 	image9 = models.ImageField(blank=True, upload_to=get_image_path)
 	delivery = models.TextField(blank=True)
 	detail = models.TextField(blank=True)
+	ingredients = models.ManyToManyField(Ingredient)
 	def __str__(self):
 		return self.item_name
 

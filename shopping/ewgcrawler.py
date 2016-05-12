@@ -7,7 +7,7 @@ import time
 from ingredient.models import Ingredient
 
 print('ewg 크롤링 시작')
-driver = webdriver.PhantomJS()
+driver = webdriver.Firefox()
 flag = 0
 
 items=Ingredient.objects.filter(ewg_high_grade=-1, ewg_low_grade=-1)

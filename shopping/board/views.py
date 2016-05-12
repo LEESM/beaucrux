@@ -33,11 +33,11 @@ def board_list(request):
 	elif board_name == 'Event' :
 		board_title = '이벤트'
 		write_btn = True
-		board_list=Event.objects.all()
+		board_list=Event.objects.all().order_by('-pub_time')
 	elif board_name == 'Sample' :
 		board_title = '샘플신청'
 		write_btn = True
-		board_list=Sample.objects.all()
+		board_list=Sample.objects.all().order_by('-pub_time')
 	else:
 		return redirect('index')
 	paginator = Paginator(board_list, 20) 

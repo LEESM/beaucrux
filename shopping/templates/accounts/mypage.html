@@ -12,6 +12,9 @@
 		<p>아이디 :  {{ user.username }}</p>
 		<p>이메일 : {{ user.email}}</p>
 		<p>포인트 : {{ user.profile.point}} 점</p>
+		<p>멤버쉽 : {%if user.profile.level = 3%}VVIP{%endif%}
+		{%if user.profile.level = 2%}VIP{%endif%}
+		{%if user.profile.level = 1%}일반{%endif%}</p>
 	</div>
 
 	<form action="{% url 'mypage' %}" method="post" accept-charset="utf-8">

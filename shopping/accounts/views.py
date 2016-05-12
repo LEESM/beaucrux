@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from accounts.forms import SignupForm, MypageForm
-from accounts.models import Profile, Texts
+from accounts.models import Profile, Texts, PointHistory
+from datetime import datetime, timedelta
 
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -12,6 +13,28 @@ from django.contrib.auth.decorators import login_required
 
 def login(request):
 	return default_login_view(request, template_name="accounts/login.html")
+
+def login_after(request):
+	before_sixmonth = datetime.today() - timedelta(days=180)
+	pointhistory = PointHistory.objects.filter(user=request.user, time__gte=before_sixmonth)
+	total_amount = 0
+	for item in pointhistory:
+		total_amount += item.record
+	new_profile=request.user.profile
+	if total_amount>=300000:
+		new_profile.level = 3
+	elif total_amount>=50000:
+		new_profile.level = 2
+	else:
+		new_profile.level = 1
+	new_profile.save()
+	return redirect("index")
+'''return render(request,"accounts/login_after.html",{
+		'pointhistory':pointhistory,
+		'total_amount':total_amount,
+		'before_sixmonth':before_sixmonth,
+		})
+'''
 
 def logout(request):
 	logout_user(request)

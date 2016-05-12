@@ -12,7 +12,7 @@ from ingredient.models import Ingredient
 #46842 까지 함
 def old_crawler():
     print('크롤링 시작')
-    driver=webdriver.PhantomJS()
+    driver=webdriver.Firefox()
     print('webdriver ok')
     driver.get("https://www.kcia.or.kr/cid/Document/020.Ingredient_shis/INGREDIENT_SHIS_10L.asp")
     print('url ok')

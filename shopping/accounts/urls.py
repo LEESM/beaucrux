@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^login/', views.login, name='login'),
+    url(r'^login_after/', views.login_after, name='login_after'),
     url(r'^logout/', views.logout, name='logout'),
     url(r'^signup/', views.signup, name='signup'),
     url(r'^signup_ok/', TemplateView.as_view(template_name='accounts/signup_ok.html'), name='signup_ok'),

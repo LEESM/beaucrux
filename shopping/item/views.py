@@ -51,6 +51,7 @@ def detail(request):
 	context={
 		'item':item, 
 		'images':images, 
+		'ingredients':item.ingredients.all(),
 		'item_qnas':item_qnas, 
 		'review_write':review_write, 
 		'item_reviews':item_reviews,

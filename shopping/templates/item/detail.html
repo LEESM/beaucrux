@@ -165,10 +165,43 @@ function pnav4_click() {
 </script>
 
 <div id="product_info">
-{{item.detail|safe}}
+	<div id="ingredient_div">
+	<h3 class="text-center">전성분 표시 정보</h3>
+		<table class="table table-condensed table-hover">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>성분명</th>
+					<th>배합목적</th>
+					<th>EWG등급</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for ingredient in ingredients %}
+				<tr>
+					<td>{{forloop.counter}}</td>
+					<td>{{ingredient.ko_name}}</td>
+					<td>{{ingredient.purpose}}</td>
+					{% if ingredient.ewg_low_grade = 0 %}
+						<td>-</td>
+					{% else %}
+						{% if ingredient.ewg_low_grade = ingredient.ewg_high_grade %}
+							<td>{{ingredient.ewg_low_grade}}</td>
+						{% else %}
+							<td>{{ingredient.ewg_low_grade}}-{{ingredient.ewg_high_grade}}</td>						
+						{% endif %}
+					{% endif %}
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<p class="gray">* 순서대로 높은 비율, 단 1%이하부터 순서 없음</p>
+		<p class="gray">* EWG 등급 1-2 안전, 3-6 무난, 7-10 위험</p>
+	</div>
+	{{item.detail|safe}}
 </div>
 <div id="product_drv" style="display:none;">
-{{item.delivery|safe}}
+	{{item.delivery|safe}}
 </div>
 <div id="product_qna" style="display:none;">
 {% if request.user.is_authenticated %}
