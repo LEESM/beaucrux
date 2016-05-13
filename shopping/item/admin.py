@@ -12,7 +12,8 @@ class ItemOptionAdmin(admin.ModelAdmin):
 	list_display = ['option_id','option_name','option_price','option_custom_price','option_stock',]
 
 class ItemAdmin(SummernoteModelAdmin):
-	list_display = ['item_id','item_name','item_desc','price','custom_price','get_categories','brand','get_options_name','image0','delivery','detail',]
+	list_display = ['item_id','item_name','item_desc','price','custom_price','get_categories','brand','get_options_name','image0','delivery','detail']
+	search_fields = ['ingredients__ko_name']
 
 class ItemQnaAdmin(SummernoteModelAdmin):
 	list_display = ['user','item','secret','question','answer','qna_time',]
