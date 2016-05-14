@@ -4,9 +4,9 @@ from item.models import Item, ItemOption
 
 class Cart(models.Model):
 	cart_id = models.CharField(max_length=50)
-	user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
-	item = models.ForeignKey(Item)
-	item_option = models.ForeignKey(ItemOption)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,on_delete=models.SET_NULL)
+	item = models.ForeignKey(Item,null=True, blank=True,on_delete=models.SET_NULL)
+	item_option = models.ForeignKey(ItemOption,null=True, blank=True,on_delete=models.SET_NULL)
 	quantity = models.IntegerField(default=0)
 	order_flag = models.BooleanField(default=False)
 	cart_date = models.DateTimeField(auto_now_add=True)
@@ -22,7 +22,7 @@ class Cart(models.Model):
 class Order(models.Model):
 	order_id = models.CharField(max_length=50, unique=True)
 	cart_id = models.CharField(max_length=50)
-	user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,on_delete=models.SET_NULL)
 	item_price = models.IntegerField(default=0)
 	delivery_price = models.IntegerField(default=0)
 	total_price = models.IntegerField(default=0)

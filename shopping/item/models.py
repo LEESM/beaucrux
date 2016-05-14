@@ -27,7 +27,8 @@ class Item(models.Model):
 	price = models.IntegerField(default=0)
 	custom_price = models.IntegerField(default=0)
 	categories = models.ManyToManyField(Category,blank=True)
-	brand = models.ForeignKey(Brand,blank=True, null=True)
+	brand = models.ForeignKey(Brand,blank=True, null=True,on_delete=models.SET_NULL)
+	item_active = models.BooleanField(default=True)
 	image0 = models.ImageField(blank=True, upload_to=get_image_path)
 	image1 = models.ImageField(blank=True, upload_to=get_image_path)
 	image2 = models.ImageField(blank=True, upload_to=get_image_path)
@@ -40,7 +41,7 @@ class Item(models.Model):
 	image9 = models.ImageField(blank=True, upload_to=get_image_path)
 	delivery = models.TextField(blank=True)
 	detail = models.TextField(blank=True)
-	ingredients = models.ManyToManyField(Ingredient)
+	ingredients = models.ManyToManyField(Ingredient,blank=True)
 	def __str__(self):
 		return self.item_name
 
