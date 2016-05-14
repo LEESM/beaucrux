@@ -89,14 +89,21 @@
   {% if message != None %}
   <div class="message">
     <div class="alert alert-info" role="alert">
-      <p>{{ message }}</p>
+      <a>{{ message }}</a>
+      <a id="message_remove" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
     </div>
   </div>
   {% endif %}
   <div id="main_div">
     {% block content %}{% endblock %}
   </div>
-
+  <script>
+    $(function() {
+      $("#message_remove").click(function() {
+        $(this).parent().parent().hide();
+      });
+    });
+  </script>
   <div id="footer_div">
     <div class="container">
       <div class="col-xs-12 col-sm-6">

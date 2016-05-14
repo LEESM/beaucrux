@@ -5,9 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
 
 def index(request):
-	items1 = Item.objects.filter(brand=Brand.objects.get(pk=1)).order_by('-item_id')
-	items2 = Item.objects.filter(brand=Brand.objects.get(pk=2)).order_by('-item_id')
-	context={'items1':items1,'items2':items2,}
+	items1 = Item.objects.filter(brand=Brand.objects.get(pk=1)).exclude(item_active=False).order_by('-item_id')
+	context={'items1':items1,}
 	return render(request,"item/index.html", context)
 
 def brand(request):
@@ -16,7 +15,7 @@ def brand(request):
 	except:
 		redirect('index')
 	brand = Brand.objects.get(brand_id=brand_name)
-	items = Item.objects.filter(brand=brand).order_by('-item_id')
+	items = Item.objects.filter(brand=brand).exclude(item_active=False).order_by('-item_id')
 	return render(request,"item/brand.html",{
 		'brand':brand,
 		'items':items,
@@ -45,13 +44,14 @@ def detail(request):
 		images.append(item.image8)
 	if(item.image9!=''):
 		images.append(item.image9)
+	ingredients=item.ingredients.all().order_by('itemingredientcombination__order')
 	item_qnas = ItemQna.objects.filter(item=item).order_by('-qna_time')
 	review_write = ItemReviewForm()
 	item_reviews = ItemReview.objects.filter(item=item).order_by('-review_time')
 	context={
 		'item':item, 
 		'images':images, 
-		'ingredients':item.ingredients.all(),
+		'ingredients':ingredients,
 		'item_qnas':item_qnas, 
 		'review_write':review_write, 
 		'item_reviews':item_reviews,

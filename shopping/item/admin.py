@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Brand, Category, ItemOption, Item, ItemQna, ItemReview
+from .models import Brand, Category, ItemOption, Item, ItemIngredientCombination, ItemQna, ItemReview
 from django_summernote.admin import SummernoteModelAdmin
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -8,18 +8,24 @@ class CategoryAdmin(admin.ModelAdmin):
 class BrandAdmin(SummernoteModelAdmin):
 	list_display = ['brand_id','brand_name','brand_desc','brand_active',]
 
+class ItemIngredientCombinationInline(admin.TabularInline):
+	model = ItemIngredientCombination
+	extra = 3
+
 class ItemOptionAdmin(admin.ModelAdmin):
 	list_display = ['option_id','option_name','option_price','option_custom_price','option_stock',]
 
 class ItemAdmin(SummernoteModelAdmin):
-	list_display = ['item_id','item_name','item_desc','price','custom_price','get_categories','brand','get_options_name','image0','delivery','detail']
+	list_display = ['item_id','item_active','item_name','item_desc','price','custom_price','get_categories','brand','get_options_name','image0','delivery','detail']
 	search_fields = ['ingredients__ko_name']
+	inlines = (ItemIngredientCombinationInline,)
 
 class ItemQnaAdmin(SummernoteModelAdmin):
 	list_display = ['user','item','secret','question','answer','qna_time',]
 
 class ItemReviewAdmin(SummernoteModelAdmin):
 	list_display = ['user','item','score','comment','review_time',]
+
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Brand, BrandAdmin)

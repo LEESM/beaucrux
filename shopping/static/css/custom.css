@@ -65,6 +65,8 @@ width:100%;
 .message{
 	position:absolute;
 	top:50px;
+	width:100%;
+	text-align:center;
 }
 #logo{
 	font-family: 'Poiret One', cursive;

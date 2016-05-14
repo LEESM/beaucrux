@@ -41,7 +41,7 @@ class Item(models.Model):
 	image9 = models.ImageField(blank=True, upload_to=get_image_path)
 	delivery = models.TextField(blank=True)
 	detail = models.TextField(blank=True)
-	ingredients = models.ManyToManyField(Ingredient,blank=True)
+	ingredients = models.ManyToManyField(Ingredient,blank=True, through='ItemIngredientCombination')
 	def __str__(self):
 		return self.item_name
 
@@ -55,6 +55,11 @@ class Item(models.Model):
 	def get_options_name(self):
 		options=ItemOption.objects.filter(original_item=self)
 		return "\n".join([option.option_name for option in options ])
+
+class ItemIngredientCombination(models.Model):
+	ingredient = models.ForeignKey(Ingredient, blank=True,null=True,on_delete=models.SET_NULL)
+	item = models.ForeignKey(Item, blank=True,null=True,on_delete=models.SET_NULL)
+	order = models.IntegerField(default=0)
 
 class ItemOption(models.Model):
 	option_id = models.CharField(unique=True, max_length=30)

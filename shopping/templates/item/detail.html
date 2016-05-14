@@ -42,7 +42,7 @@
 			<p><strike>{{item.custom_price|intcomma}}원</strike><span id="item_price"> {{item.price|intcomma}}원</span></p>
 		</div>
 		<div class="">
-			<form method="POST" action="{% url 'cart_update' %}">
+			<form method="POST" id="info_form" action="{% url 'cart_update' %}">
 			<table id="option_table" class="table table-striped">
 				<thead>
 					<tr>
@@ -74,6 +74,7 @@
 			</table>
 		</div>
 		<div class="">
+			<a class="btn btn-lg btn-primary" id="go_cart">A 버튼</a>
 			<button class="btn btn-lg btn-primary" type="submit">바로구매</button>
 			<button class="btn btn-lg btn-primary" type="submit">장바구니</button>
 		</div>
@@ -98,9 +99,19 @@ $(function() {
         }
         stockInput.val(next);
     });
-	$('.summernote').summernote({
-  airMode: true
-  });
+	    $('#go_cart').click(function(e){
+	    		var total = 0;
+	    		$('input[name=quantity]').each(function(){
+	    			total += parseInt($(this).val());
+	    		});
+	    		console.log(total);
+	    		if(total>0){
+	    			$('#info_form').submit()
+	    		}
+	    		else{
+	    			alert('주문 수량이 최소 0입니다. 확인 부탁드려요^^');
+	    		}
+    });
 });
 </script>
 
