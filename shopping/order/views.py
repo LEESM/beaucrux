@@ -28,6 +28,7 @@ def cart_update(request):
 		item_id_list = request.POST.getlist('item_id')
 		option_id_list = request.POST.getlist('option_id')
 		quantity_list = request.POST.getlist('quantity')
+		buy_now_text = request.POST.get('buy_now')
 		#있는거 번호 체크
 		num_list = []
 		for i, item in enumerate(quantity_list):
@@ -71,6 +72,8 @@ def cart_update(request):
 					quantity=quantity_list[i],
 					)
 				new_cart.save()
+		if buy_now_text == 'buy_now':
+			return redirect('order_info')
 	return HttpResponseRedirect(reverse("cart"))	
 
 def cart_number_update(request):
@@ -232,25 +235,4 @@ def view_order_detail(request):
 		'order':order,
 		'cart_items':cart_items,
 	})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

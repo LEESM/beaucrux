@@ -73,10 +73,10 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="">
-			<a class="btn btn-lg btn-primary" id="go_cart">A 버튼</a>
-			<button class="btn btn-lg btn-primary" type="submit">바로구매</button>
-			<button class="btn btn-lg btn-primary" type="submit">장바구니</button>
+		<input type="text" class="hidden" id="buy_now" name="buy_now" value="go_cart">
+		<div class="buy_btn_group">
+			<a class="btn btn-lg btn-primary" id="go_cart_btn">장바구니</a>
+			<a class="btn btn-lg btn-primary" id="buy_now_btn">바로구매</a>
 		</div>
 		</form>
 	</div>
@@ -84,12 +84,13 @@
 
 <script>
 $(function() {
+
 	    $('.option_plus').click(function(e){
         stockInput = $(this).parent().prev();
         var currentVal = parseInt(stockInput.val());
         var next = currentVal+1;
         stockInput.val(next);
-    });
+    		});
 	    $('.option_minus').click(function(e){
         stockInput = $(this).parent().next();
         var currentVal = parseInt(stockInput.val());
@@ -98,20 +99,41 @@ $(function() {
         	next = 0;
         }
         stockInput.val(next);
-    });
-	    $('#go_cart').click(function(e){
+    		});
+
+	    var counter = 0;
+	    $('input[name=quantity]').each(function(){counter+=1;});
+	    if(counter==1){$('input[name=quantity]').val(1);}
+
+	    $('#go_cart_btn').click(function(e){
 	    		var total = 0;
 	    		$('input[name=quantity]').each(function(){
 	    			total += parseInt($(this).val());
 	    		});
 	    		console.log(total);
 	    		if(total>0){
-	    			$('#info_form').submit()
+	    			$('#info_form').submit();
 	    		}
 	    		else{
 	    			alert('주문 수량이 최소 0입니다. 확인 부탁드려요^^');
 	    		}
-    });
+	    	});
+
+	    $('#buy_now_btn').click(function(e){
+	    		var total = 0;
+	    		$('input[name=quantity]').each(function(){
+	    			total += parseInt($(this).val());
+	    		});
+	    		console.log(total);
+	    		if(total>0){
+	    			$('#buy_now').val('buy_now');
+	    			$('#info_form').submit();
+	    		}
+	    		else{
+	    			alert('주문 수량이 최소 0입니다. 확인 부탁드려요^^');
+	    		}
+	    	});
+
 });
 </script>
 
