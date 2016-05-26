@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from order.models import Cart, Order
 from item.models import Item, ItemOption
+from accounts.models import PointHistory
 from order.forms import OrderInfoForm
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -177,6 +178,14 @@ def order_update(request):
 		user=request.user
 		changed_point = int(user.profile.point)-int(point_price)+int(point_made)
 		user.profile.point = str(changed_point)
+		point_history = PointHistory(
+			user = user,
+			kindof = '구매',
+			record = int(total_price),
+			amount = int(point_made),
+			content = '주문번호 ' + order_id + ' 구매로 발생',
+			)
+		point_history.save()
 		if(mypage_check):
 			user.first_name=name
 			user.save()

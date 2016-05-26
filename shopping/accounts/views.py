@@ -29,12 +29,6 @@ def login_after(request):
 		new_profile.level = 1
 	new_profile.save()
 	return redirect("index")
-'''return render(request,"accounts/login_after.html",{
-		'pointhistory':pointhistory,
-		'total_amount':total_amount,
-		'before_sixmonth':before_sixmonth,
-		})
-'''
 
 def logout(request):
 	logout_user(request)
@@ -102,7 +96,6 @@ def signup(request):
 		userform = SignupForm()
 		return render(request, "accounts/signup.html", {
 			'userform':userform,
-			'message':'첫 화면',
 			'regist_terms':regist_terms.contents,
 			'privacy_info_terms':privacy_info_terms.contents,
 		})

@@ -135,17 +135,17 @@
 						  <input type="radio" name="pay_method" id="pay_method" value="card"checked="checked"> 신용카드
 						</label>
 						<label class="radio-inline">
-						  <input type="radio" name="pay_method" id="pay_method" value="trans"> 실시간계좌이체
+						  <input type="radio" name="pay_method" id="pay_method" value="trans"> 계좌이체
 						</label>
 						<label class="radio-inline">
-						  <input type="radio" name="pay_method" id="pay_method" value="vbank"> 가상계좌
+						  <input type="radio" name="pay_method" id="pay_method" value="vbank"> 무통장입금
 						</label>
 					</td>
 				</tr>
 			</table>
 			<div class="checkbox {% if anonymous %} hidden {% endif %}"  >
 				<label>
-					<input name="mypage_check" id="mypage_check" type="checkbox">마이페이지에 정보를 반영합니다.
+					<input name="mypage_check" id="mypage_check" type="checkbox" checked="checked">마이페이지에 정보를 반영합니다.
 				</label>
 			</div>
 		</form>
@@ -209,10 +209,10 @@
 					    console.log( rsp.status );
 					    console.log( rsp.paid_at );
 					    console.log( rsp.receipt_url );
-						$("#aksgdltktpdy").submit();					    
+						$("#aksgdltktpdy").submit();
 					  }
-					}
-				);
+					});
+						//$("#aksgdltktpdy").submit();
 			});
 		});
 		</script>

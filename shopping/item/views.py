@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from item.models import Category, Brand, Item, ItemOption, ItemQna, ItemReview
+from accounts.models import PointHistory
 from item.forms import ItemReviewForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
@@ -80,7 +81,10 @@ def qna_update(request):
 @login_required
 def review_write(request):
 	item_id=request.GET.get('item_id')
-	item = Item.objects.get(item_id=item_id)
+	try:
+		item = Item.objects.get(item_id=item_id)
+	except:
+		return redirect('index')
 	itemreviewform = ItemReviewForm()
 	context={'item':item,'itemreviewform':itemreviewform}
 	return render(request,"item/review_write.html", context)
@@ -95,4 +99,34 @@ def review_update(request):
 		comment=request.POST.get('comment')
 		)
 	newreview.save()
+	user=request.user
+	user.profile.point += 1000
+	user.profile.save()
+	point_history = PointHistory(
+		user = user,
+		kindof = '후기',
+		amount = 1000,
+		content = '후기 작성으로 발생',
+		)
+	point_history.save()
 	return redirect('/item/detail/?item_id='+newreview.item.item_id)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
