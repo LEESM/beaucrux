@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^view_order_detail/', views.view_order_detail, name='view_order_detail'),
     url(r'^pop_item/', views.pop_item),
     url(r'^cart_number_update/', views.cart_number_update, name='cart_number_update'),    
+    url(r'^complete/', views.order_complete, name='complete'),
+    url(r'^mobile_redirect/', views.order_mobile_redirect, name='mobile_redirect'),
 ]

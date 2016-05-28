@@ -3,7 +3,7 @@ from order.models import Cart, Order
 from item.models import Item, ItemOption
 from accounts.models import PointHistory
 from order.forms import OrderInfoForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 import datetime
 from django.contrib.auth.models import AnonymousUser
@@ -245,3 +245,11 @@ def view_order_detail(request):
 		'cart_items':cart_items,
 	})
 
+def order_mobile_redirect(request):
+	return HttpResponse('test')
+
+def order_complete(request):
+	if request.method == 'POST':
+		return HttpResponse('test')
+	else:
+		return redirect('index')		
