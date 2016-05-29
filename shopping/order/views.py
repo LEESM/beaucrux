@@ -285,9 +285,9 @@ def order_mobile_redirect(request):
 
 	#imp_uid로 요청
 	url = 'https://api.iamport.kr/payments/'+imp_uid
-	request = urllib.request.Request(url)
-	request.add_header("X-ImpTokenHeader",access_token)
-	response = urllib.request.urlopen(request)
+	request2 = urllib.request.Request(url)
+	request2.add_header("X-ImpTokenHeader",access_token)
+	response = urllib.request.urlopen(request2)
 	result2 = response.read().decode('UTF-8')
 	result2_json=json.loads(result2)
 	#결과 받기
