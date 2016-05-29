@@ -12,6 +12,7 @@ import urllib.request
 import urllib.parse
 from shopping.settings import IMP_KEY, IMP_SECRET
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 def cart(request):
 	if request.user.is_authenticated():
@@ -252,6 +253,7 @@ def view_order_detail(request):
 def order_mobile_redirect(request):
 	return HttpResponse('test')
 
+@csrf_exempt
 def order_complete(request):
 	data = urllib.parse.urlencode({"imp_key":IMP_KEY,"imp_secret":IMP_SECRET})
 	data = data.encode('UTF-8')
@@ -271,12 +273,12 @@ def order_complete(request):
 	pay_amount = result2_json['response']['amount']#int로 들어옴
 	pay_status = result2_json['response']['status']
 	pay_method = result2_json['response']['pay_method']
-	if pay_status == 'paid' and pay_amount == pay_amount:
+	if pay_status == 'paid' and str(pay_amount) == paid_amount:
 		return HttpResponse('result1')
 	elif pay_status == 'ready' and pay_method == 'vbank':
 		return HttpResponse('result2')
 	else:
-		return HttpResponse('result3')
+		return HttpResponse('result31')
 
 
 
