@@ -8,6 +8,10 @@ from django.core.urlresolvers import reverse
 import datetime
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth.decorators import login_required
+import urllib.request
+import urllib.parse
+from shopping.settings import IMP_KEY, IMP_SECRET
+import json
 
 def cart(request):
 	if request.user.is_authenticated():
@@ -249,7 +253,30 @@ def order_mobile_redirect(request):
 	return HttpResponse('test')
 
 def order_complete(request):
-	if request.method == 'POST':
-		return HttpResponse('test')
+	data = urllib.parse.urlencode({"imp_key":IMP_KEY,"imp_secret":IMP_SECRET})
+	data = data.encode('UTF-8')
+	f = urllib.request.urlopen('https://api.iamport.kr/users/getToken/',data)
+	result = f.read().decode('UTF-8')
+	imp_uid = request.POST.get('imp_uid')
+	paid_amount = request.POST.get('paid_amount')
+	result_json=json.loads(result)
+	access_token=result_json['response']['access_token']
+
+	url = 'https://api.iamport.kr/payments/'+imp_uid
+	request = urllib.request.Request(url)
+	request.add_header("X-ImpTokenHeader",access_token)
+	response = urllib.request.urlopen(request)
+	result2 = response.read().decode('UTF-8')
+	result2_json=json.loads(result2)
+	pay_amount = result2_json['response']['amount']#int로 들어옴
+	pay_status = result2_json['response']['status']
+	pay_method = result2_json['response']['pay_method']
+	if pay_status == 'paid' and pay_amount == pay_amount:
+		return HttpResponse('result1')
+	elif pay_status == 'ready' and pay_method == 'vbank':
+		return HttpResponse('result2')
 	else:
-		return redirect('index')		
+		return HttpResponse('result3')
+
+
+
