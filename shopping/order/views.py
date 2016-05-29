@@ -219,7 +219,6 @@ def order_update(request):
 			status=status,
 			)
 	new_order.save()
-
 	return render(request, "order/order_complete.html", {
 		'order_id':order_id,
 	})
@@ -254,9 +253,9 @@ def order_mobile_redirect(request):
 	order_id=request.GET.get('order_id')
 	cart_id=request.GET.get('cart_id')
 	cart_items=Cart.objects.filter(cart_id=cart_id)
-	#for item in cart_items:
-		#item.order_flag=True
-		#item.save()
+	for item in cart_items:
+		item.order_flag=True
+		item.save()
 	item_price=request.GET.get('item_price')
 	delivery_price=request.GET.get('delivery_price')
 	total_price=request.GET.get('total_price')
@@ -271,8 +270,38 @@ def order_mobile_redirect(request):
 	phone=request.GET.get('phone')
 	postscript=request.GET.get('postscript')
 	mypage_check=request.GET.get('mypage_check')
+	#아임포트 정보 가져오기
+	imp_uid=request.GET.get('imp_uid')
+	imp_success=request.GET.get('imp_success')
+
+	#토큰 얻기
+	data = urllib.parse.urlencode({"imp_key":IMP_KEY,"imp_secret":IMP_SECRET})
+	data = data.encode('UTF-8')
+	f = urllib.request.urlopen('https://api.iamport.kr/users/getToken/',data)
+	result = f.read().decode('UTF-8')
+	result_json=json.loads(result)
+	access_token=result_json['response']['access_token']
+
+	#imp_uid로 요청
+	url = 'https://api.iamport.kr/payments/'+imp_uid
+	request = urllib.request.Request(url)
+	request.add_header("X-ImpTokenHeader",access_token)
+	response = urllib.request.urlopen(request)
+	result2 = response.read().decode('UTF-8')
+	result2_json=json.loads(result2)
+	#결과 받기
+	pay_amount = result2_json['response']['amount']#int로 들어옴
+	pay_status = result2_json['response']['status']
+	pay_method = result2_json['response']['pay_method']
+
+	if pay_status == 'paid' and str(pay_amount) == pay_price:
+		message='주문이 완료되었습니다. 주문번호는'+order_id+'입니다.'
+	elif pay_status == 'ready' and pay_method == 'vbank':
+		message='주문이 완료되었습니다. 주문번호는'+order_id+'입니다.'
+	else:
+		message='주문이 실패하였습니다. 주문번호 : '+order_id
+
 	status='결제'
-	message='주문이 완료되었습니다. 주문번호는'+order_id+'입니다.'
 	if request.user.is_authenticated():
 		new_order = Order(
 			order_id=order_id,
