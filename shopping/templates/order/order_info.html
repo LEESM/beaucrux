@@ -186,10 +186,12 @@
 				    buyer_name : $('#id_name').val(),
 				    buyer_tel : $('#id_phone').val(),
 				    buyer_addr : $('#id_address').val(),
-					m_redirect_url : 'http://127.0.0.1:8000/order/mobile_redirect/',
+					m_redirect_url : 'http://beaucrux.com/order/mobile_redirect/',
 				}, function(rsp) {
 					  if ( rsp.success === true ) {//성공이면 true, 실패면 false
+					  	alert('일단 성공');
 					    if ( rsp.success ) {
+					    	alert('ajax 직전');
 					        //[1] 서버단에서 결제정보 조회를 위해 jQuery ajax로 imp_uid 전달하기
 					        jQuery.ajax({
 					            url: "/order/complete", //cross-domain error가 발생하지 않도록 동일한 도메인으로 전송
