@@ -251,10 +251,94 @@ def view_order_detail(request):
 	})
 
 def order_mobile_redirect(request):
-	return HttpResponse('test')
+	order_id=request.GET.get('order_id')
+	cart_id=request.GET.get('cart_id')
+	cart_items=Cart.objects.filter(cart_id=cart_id)
+	#for item in cart_items:
+		#item.order_flag=True
+		#item.save()
+	item_price=request.GET.get('item_price')
+	delivery_price=request.GET.get('delivery_price')
+	total_price=request.GET.get('total_price')
+	pay_price=request.GET.get('pay_price')
+	point_price=request.GET.get('point_price')
+	point_made=request.GET.get('point_made')
+	name=request.GET.get('name')
+	email=request.GET.get('email')
+	postcode=request.GET.get('postcode')
+	address=request.GET.get('address')
+	address_detail=request.GET.get('address_detail')
+	phone=request.GET.get('phone')
+	postscript=request.GET.get('postscript')
+	mypage_check=request.GET.get('mypage_check')
+	status='결제'
+	message='주문이 완료되었습니다. 주문번호는'+order_id+'입니다.'
+	if request.user.is_authenticated():
+		new_order = Order(
+			order_id=order_id,
+			cart_id=cart_id,
+			user=request.user,
+			item_price=item_price,
+			delivery_price=delivery_price,
+			total_price=total_price,
+			pay_price=pay_price,
+			point_price=point_price,
+			point_made=point_made,
+			name=name,
+			email=email,
+			postcode=postcode,
+			address=address,
+			address_detail=address_detail,
+			phone=phone,
+			postscript=postscript,
+			status=status,
+			)
+		user=request.user
+		changed_point = int(user.profile.point)-int(point_price)+int(point_made)
+		user.profile.point = str(changed_point)
+		point_history = PointHistory(
+			user = user,
+			kindof = '구매',
+			record = int(total_price),
+			amount = int(point_made),
+			content = '주문번호 ' + order_id + ' 구매로 발생',
+			)
+		point_history.save()
+		if(mypage_check):
+			user.first_name=name
+			user.save()
+			user.email=email
+			user.profile.postcode=postcode
+			user.profile.address=address
+			user.profile.address_detail=address_detail
+			user.profile.phone=phone
+		user.profile.save()
+	else:
+		new_order = Order(
+			order_id=order_id,
+			cart_id=cart_id,
+			item_price=item_price,
+			delivery_price=delivery_price,
+			total_price=total_price,
+			pay_price=pay_price,
+			point_price=point_price,
+			name=name,
+			email=email,
+			postcode=postcode,
+			address=address,
+			address_detail=address_detail,
+			phone=phone,
+			postscript=postscript,
+			status=status,
+			)
+	new_order.save()
+	return render(request, "order/order_complete.html", {
+		'order_id':order_id,
+	})
 
 @csrf_exempt
 def order_complete(request):
+	#토큰 얻기
 	data = urllib.parse.urlencode({"imp_key":IMP_KEY,"imp_secret":IMP_SECRET})
 	data = data.encode('UTF-8')
 	f = urllib.request.urlopen('https://api.iamport.kr/users/getToken/',data)
@@ -263,22 +347,25 @@ def order_complete(request):
 	paid_amount = request.POST.get('paid_amount')
 	result_json=json.loads(result)
 	access_token=result_json['response']['access_token']
-
+	#imp_uid로 요청
 	url = 'https://api.iamport.kr/payments/'+imp_uid
 	request = urllib.request.Request(url)
 	request.add_header("X-ImpTokenHeader",access_token)
 	response = urllib.request.urlopen(request)
 	result2 = response.read().decode('UTF-8')
 	result2_json=json.loads(result2)
+	#결과 받기
 	pay_amount = result2_json['response']['amount']#int로 들어옴
 	pay_status = result2_json['response']['status']
 	pay_method = result2_json['response']['pay_method']
 	if pay_status == 'paid' and str(pay_amount) == paid_amount:
-		return HttpResponse('result1')
+		return HttpResponse('{"check":true}')
 	elif pay_status == 'ready' and pay_method == 'vbank':
-		return HttpResponse('result2')
+		return HttpResponse('{"check":true}')
 	else:
-		return HttpResponse('result31')
+		return HttpResponse('{"check":false}')
 
-
+@csrf_exempt
+def ajax_test(request):
+	return render(request,"order/ajax_test.html")
 

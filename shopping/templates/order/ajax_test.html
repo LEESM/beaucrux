@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<script>
+	$(function() {
+					        jQuery.ajax({
+					            url: "/order/complete/", //cross-domain error가 발생하지 않도록 동일한 도메인으로 전송
+					            type: 'POST',
+					            dataType: 'json',
+					            data: {
+					                imp_uid : 'imp_906441269844',
+					                paid_amount : 1000,
+					                //기타 필요한 데이터가 있으면 추가 전달
+					            }
+					        }).done(function(data) {
+					        	if(data['check']){
+						        	console.log(data['check']);
+					        	}
+					        }).fail(function(){
+					        	console.log('실패');
+					        }).always(function(){
+					        	console.log('항상호출');					        	
+					        })
+	})
+</script>
+{% endblock %}

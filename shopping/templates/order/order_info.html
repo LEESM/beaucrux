@@ -96,7 +96,7 @@
 					<th><label for="id_postcode">우편번호</label></th>
 					<td style="text-align:left;">
 						<div class="form-inline">
-							<input type="text" id="postcode" name="postcode" class="form-control" style="max-width:100px; display:inline; vertical-align: top;" placeholder="우편번호" value="{{ user.profile.postcode }}">
+							<input type="text" id="id_postcode" name="postcode" class="form-control" style="max-width:100px; display:inline; vertical-align: top;" placeholder="우편번호" value="{{ user.profile.postcode }}">
 							<input type="button" class="btn btn-default"onclick="sample3_execDaumPostcode()" value="우편번호 찾기"><br>
 						</div>
 					</td>
@@ -107,13 +107,13 @@
 						<div id="wrap" style="display:none;border:1px solid;min-width:100%;height:400px;margin:5px 0;position:relative">
 						<img src="//i1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
 						</div>
-						<input type="text" id="address" name="address" class="d_form large form-control" placeholder="주소" value="{{ user.profile.address }}">						
+						<input type="text" id="id_address" name="address" class="d_form large form-control" placeholder="주소" value="{{ user.profile.address }}">						
 					</td>
 				</tr>
 				<tr>
 					<th><label for="id_address_detail">상세주소</label></th>
 					<td>
-						<input type="text" id="address_detail" name="address_detail" class="d_form large form-control" placeholder="상세주소" value="{{ user.profile.address_detail }}">
+						<input type="text" id="id_address_detail" name="address_detail" class="d_form large form-control" placeholder="상세주소" value="{{ user.profile.address_detail }}">
 					</td>
 				</tr>
 				<tr>
@@ -145,7 +145,7 @@
 			</table>
 			<div class="checkbox {% if anonymous %} hidden {% endif %}"  >
 				<label>
-					<input name="mypage_check" id="mypage_check" type="checkbox" checked="checked">마이페이지에 정보를 반영합니다.
+					<input name="mypage_check" id="id_mypage_check" type="checkbox" checked="checked">마이페이지에 정보를 반영합니다.
 				</label>
 			</div>
 		</form>
@@ -154,6 +154,7 @@
 		</div>
 		<script>
 		$(function() {
+			console.log('/order/mobile_redirect/?order_id='+$('#id_order_id').val()+'&cart_id='+$('#id_cart_id').val()+'&item_price='+$('#id_item_price').val()+'&delivery_price='+$('#id_delivery_price').val()+'&cart_id='+$('#id_cart_id').val()+'&total_price='+$('#id_total_price').val()+'&total_price='+$('#id_total_price').val()+'&pay_price='+$('#id_pay_price').val()+'&point_price='+$('#id_point_price').val()+'&point_made='+$('#id_point_made').val()+'&name='+$('#id_name').val()+'&email='+$('#id_email').val()+'&postcode='+$('#id_postcode').val()+'&address='+$('#id_address').val()+'&address_detail='+$('#id_address_detail').val()+'&phone='+$('#id_phone').val()+'&postscript='+$('#id_postscript').val()+'&mypage_check='+$("input:checkbox[id='id_mypage_check']").is(":checked"))
 			var raw  = new Date();
 			var cart_id = $('#id_cart_id').val();
 			var order_id = raw.getFullYear().toString() + ("0"+(raw.getMonth()+1)).slice(-2).toString() + ("0"+raw.getDate()).slice(-2).toString()+("0"+raw.getHours()).slice(-2).toString() + ("0"+raw.getMinutes()).slice(-2).toString() + ("0"+raw.getSeconds()).slice(-2).toString() + "_" + cart_id;
@@ -186,12 +187,10 @@
 				    buyer_name : $('#id_name').val(),
 				    buyer_tel : $('#id_phone').val(),
 				    buyer_addr : $('#id_address').val(),
-					m_redirect_url : 'http://beaucrux.com/order/mobile_redirect/',
+					m_redirect_url : '/order/mobile_redirect/?order_id='+$('#id_order_id').val()+'&cart_id='+$('#id_cart_id').val()+'&item_price='+$('#id_item_price').val()+'&delivery_price='+$('#id_delivery_price').val()+'&cart_id='+$('#id_cart_id').val()+'&total_price='+$('#id_total_price').val()+'&total_price='+$('#id_total_price').val()+'&pay_price='+$('#id_pay_price').val()+'&point_price='+$('#id_point_price').val()+'&point_made='+$('#id_point_made').val()+'&name='+$('#id_name').val()+'&email='+$('#id_email').val()+'&postcode='+$('#id_postcode').val()+'&address='+$('#id_address').val()+'&address_detail='+$('#id_address_detail').val()+'&phone='+$('#id_phone').val()+'&postscript='+$('#id_postscript').val()+'&mypage_check='+$("input:checkbox[id='id_mypage_check']").is(":checked"),
 				}, function(rsp) {
 					  if ( rsp.success === true ) {//성공이면 true, 실패면 false
-					  	alert('일단 성공');
 					    if ( rsp.success ) {
-					    	alert('ajax 직전');
 					        //[1] 서버단에서 결제정보 조회를 위해 jQuery ajax로 imp_uid 전달하기
 					        jQuery.ajax({
 					            url: "/order/complete", //cross-domain error가 발생하지 않도록 동일한 도메인으로 전송
