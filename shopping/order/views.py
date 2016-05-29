@@ -6,7 +6,7 @@ from order.forms import OrderInfoForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 import datetime
-from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.models import AnonymousUser, User
 from django.contrib.auth.decorators import login_required
 import urllib.request
 import urllib.parse
@@ -270,6 +270,7 @@ def order_mobile_redirect(request):
 	phone=request.GET.get('phone')
 	postscript=request.GET.get('postscript')
 	mypage_check=request.GET.get('mypage_check')
+	username=request.GET.get('username')
 	#아임포트 정보 가져오기
 	imp_uid=request.GET.get('imp_uid')
 	imp_success=request.GET.get('imp_success')
@@ -300,13 +301,17 @@ def order_mobile_redirect(request):
 		message='주문이 완료되었습니다. 주문번호는'+order_id+'입니다.'
 	else:
 		message='주문이 실패하였습니다. 주문번호 : '+order_id
-
+		return render(request, "order/order_complete.html", {
+			'order_id':order_id,
+		})
 	status='결제'
-	if request.user.is_authenticated():
+#회원, 비회원 구분
+	try:
+		user = User.objects.get(username=username)
 		new_order = Order(
 			order_id=order_id,
 			cart_id=cart_id,
-			user=request.user,
+			user=user,
 			item_price=item_price,
 			delivery_price=delivery_price,
 			total_price=total_price,
@@ -322,7 +327,6 @@ def order_mobile_redirect(request):
 			postscript=postscript,
 			status=status,
 			)
-		user=request.user
 		changed_point = int(user.profile.point)-int(point_price)+int(point_made)
 		user.profile.point = str(changed_point)
 		point_history = PointHistory(
@@ -342,7 +346,7 @@ def order_mobile_redirect(request):
 			user.profile.address_detail=address_detail
 			user.profile.phone=phone
 		user.profile.save()
-	else:
+	except:
 		new_order = Order(
 			order_id=order_id,
 			cart_id=cart_id,

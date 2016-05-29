@@ -57,6 +57,10 @@
 		{% csrf_token %}
 			<table class="table">
 				<tr class="hidden">
+					<th><label for="id_username">username</label></th>
+					<td><input id="id_username" name="username" type="text" />{{request.user.username}}</td>
+				</tr>
+				<tr class="hidden">
 					<th><label for="id_order_id">Order id:</label></th>
 					<td><input id="id_order_id" name="order_id" type="text" /></td>
 				</tr>
@@ -187,7 +191,7 @@
 				    buyer_name : $('#id_name').val(),
 				    buyer_tel : $('#id_phone').val(),
 				    buyer_addr : $('#id_address').val(),
-					m_redirect_url : 'http://beaucrux.com/order/mobile_redirect/?order_id='+$('#id_order_id').val()+'&cart_id='+$('#id_cart_id').val()+'&item_price='+$('#id_item_price').val()+'&delivery_price='+$('#id_delivery_price').val()+'&cart_id='+$('#id_cart_id').val()+'&total_price='+$('#id_total_price').val()+'&total_price='+$('#id_total_price').val()+'&pay_price='+$('#id_pay_price').val()+'&point_price='+$('#id_point_price').val()+'&point_made='+$('#id_point_made').val()+'&name='+$('#id_name').val()+'&email='+$('#id_email').val()+'&postcode='+$('#id_postcode').val()+'&address='+$('#id_address').val()+'&address_detail='+$('#id_address_detail').val()+'&phone='+$('#id_phone').val()+'&postscript='+$('#id_postscript').val()+'&mypage_check='+$("input:checkbox[id='id_mypage_check']").is(":checked"),
+					m_redirect_url : 'http://beaucrux.com/order/mobile_redirect/?order_id='+$('#id_order_id').val()+'&cart_id='+$('#id_cart_id').val()+'&item_price='+$('#id_item_price').val()+'&delivery_price='+$('#id_delivery_price').val()+'&cart_id='+$('#id_cart_id').val()+'&total_price='+$('#id_total_price').val()+'&total_price='+$('#id_total_price').val()+'&pay_price='+$('#id_pay_price').val()+'&point_price='+$('#id_point_price').val()+'&point_made='+$('#id_point_made').val()+'&name='+$('#id_name').val()+'&email='+$('#id_email').val()+'&postcode='+$('#id_postcode').val()+'&address='+$('#id_address').val()+'&address_detail='+$('#id_address_detail').val()+'&phone='+$('#id_phone').val()+'&postscript='+$('#id_postscript').val()+'&mypage_check='+$("input:checkbox[id='id_mypage_check']").is(":checked")+'&username='+$('#id_username').val(),
 				}, function(rsp) {
 					  if ( rsp.success === true ) {//성공이면 true, 실패면 false
 					    if ( rsp.success ) {
