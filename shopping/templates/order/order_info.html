@@ -178,8 +178,6 @@
 				$('#id_pay_price').val(pay);
 			});
 			$('#buy_btn').click(function(e){
-				alert('클릭함');
-
 				//var mypage_check = $('input:checkbox[id="mypage_check"]').is(":checked");
 				var IMP = window.IMP;
 				IMP.init('imp89113577');
@@ -195,9 +193,7 @@
 				    buyer_addr : $('#id_address').val(),
 					m_redirect_url : 'http://beaucrux.com/order/mobile_redirect/?order_id='+$('#id_order_id').val()+'&cart_id='+$('#id_cart_id').val()+'&item_price='+$('#id_item_price').val()+'&delivery_price='+$('#id_delivery_price').val()+'&cart_id='+$('#id_cart_id').val()+'&total_price='+$('#id_total_price').val()+'&total_price='+$('#id_total_price').val()+'&pay_price='+$('#id_pay_price').val()+'&point_price='+$('#id_point_price').val()+'&point_made='+$('#id_point_made').val()+'&name='+$('#id_name').val()+'&email='+$('#id_email').val()+'&postcode='+$('#id_postcode').val()+'&address='+$('#id_address').val()+'&address_detail='+$('#id_address_detail').val()+'&phone='+$('#id_phone').val()+'&postscript='+$('#id_postscript').val()+'&username='+$('#id_username').val()+'&mypage_check='+$("input:checkbox[id='id_mypage_check']").is(":checked"),
 				}, function(rsp) {
-						alert('응답옴');
 					    if ( rsp.success === true ) {
-					    	alert('응답 성공, ajax 시작');
 					        jQuery.ajax({
 					            url: "/order/complete/",
 					            type: 'POST',
@@ -208,7 +204,6 @@
 					                //기타 필요한 데이터가 있으면 추가 전달
 					            }
 					        }).done(function(data) {
-					        		alert('ajax 끝');
 					            //[2] 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
 					            if ( data.check === true ) {
 					                var msg = '결제가 완료되었습니다.';
