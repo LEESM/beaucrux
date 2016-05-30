@@ -197,6 +197,7 @@
 				}, function(rsp) {
 						alert('응답옴');
 					    if ( rsp.success === true ) {
+					    	alert('응답 성공, ajax 시작');
 					        //[1] 서버단에서 결제정보 조회를 위해 jQuery ajax로 imp_uid 전달하기
 					        jQuery.ajax({
 					            url: "/order/complete", //cross-domain error가 발생하지 않도록 동일한 도메인으로 전송
