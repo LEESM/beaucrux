@@ -158,7 +158,7 @@
 		</div>
 		<script>
 		$(function() {
-			console.log('123/order/mobile_redirect/?order_id='+$('#id_order_id').val()+'&cart_id='+$('#id_cart_id').val()+'&item_price='+$('#id_item_price').val()+'&delivery_price='+$('#id_delivery_price').val()+'&cart_id='+$('#id_cart_id').val()+'&total_price='+$('#id_total_price').val()+'&total_price='+$('#id_total_price').val()+'&pay_price='+$('#id_pay_price').val()+'&point_price='+$('#id_point_price').val()+'&point_made='+$('#id_point_made').val()+'&name='+$('#id_name').val()+'&email='+$('#id_email').val()+'&postcode='+$('#id_postcode').val()+'&address='+$('#id_address').val()+'&address_detail='+$('#id_address_detail').val()+'&phone='+$('#id_phone').val()+'&postscript='+$('#id_postscript').val()+'&username='+$('#id_username').val()+'&mypage_check='+$("input:checkbox[id='id_mypage_check']").is(":checked"))
+			alert('결제화면');
 			var raw  = new Date();
 			var cart_id = $('#id_cart_id').val();
 			var order_id = raw.getFullYear().toString() + ("0"+(raw.getMonth()+1)).slice(-2).toString() + ("0"+raw.getDate()).slice(-2).toString()+("0"+raw.getHours()).slice(-2).toString() + ("0"+raw.getMinutes()).slice(-2).toString() + ("0"+raw.getSeconds()).slice(-2).toString() + "_" + cart_id;
@@ -178,6 +178,8 @@
 				$('#id_pay_price').val(pay);
 			});
 			$('#buy_btn').click(function(e){
+				alert('클릭함');
+
 				//var mypage_check = $('input:checkbox[id="mypage_check"]').is(":checked");
 				var IMP = window.IMP;
 				IMP.init('imp89113577');
@@ -193,8 +195,8 @@
 				    buyer_addr : $('#id_address').val(),
 					m_redirect_url : 'http://beaucrux.com/order/mobile_redirect/?order_id='+$('#id_order_id').val()+'&cart_id='+$('#id_cart_id').val()+'&item_price='+$('#id_item_price').val()+'&delivery_price='+$('#id_delivery_price').val()+'&cart_id='+$('#id_cart_id').val()+'&total_price='+$('#id_total_price').val()+'&total_price='+$('#id_total_price').val()+'&pay_price='+$('#id_pay_price').val()+'&point_price='+$('#id_point_price').val()+'&point_made='+$('#id_point_made').val()+'&name='+$('#id_name').val()+'&email='+$('#id_email').val()+'&postcode='+$('#id_postcode').val()+'&address='+$('#id_address').val()+'&address_detail='+$('#id_address_detail').val()+'&phone='+$('#id_phone').val()+'&postscript='+$('#id_postscript').val()+'&username='+$('#id_username').val()+'&mypage_check='+$("input:checkbox[id='id_mypage_check']").is(":checked"),
 				}, function(rsp) {
-					  if ( rsp.success === true ) {//성공이면 true, 실패면 false
-					    if ( rsp.success ) {
+						alert('응답옴');
+					    if ( rsp.success === true ) {
 					        //[1] 서버단에서 결제정보 조회를 위해 jQuery ajax로 imp_uid 전달하기
 					        jQuery.ajax({
 					            url: "/order/complete", //cross-domain error가 발생하지 않도록 동일한 도메인으로 전송
@@ -206,6 +208,7 @@
 					                //기타 필요한 데이터가 있으면 추가 전달
 					            }
 					        }).done(function(data) {
+					        		alert('ajax 끝');
 					            //[2] 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
 					            if ( data.check === true ) {
 					                var msg = '결제가 완료되었습니다.';
@@ -230,7 +233,6 @@
 					        alert(msg);
 					    }
 						//$("#aksgdltktpdy").submit();
-					  }
 					});
 						//$("#aksgdltktpdy").submit();
 			});
