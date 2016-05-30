@@ -206,9 +206,8 @@
 					                //기타 필요한 데이터가 있으면 추가 전달
 					            }
 					        }).done(function(data) {
-					        		alert(data);
 					            //[2] 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
-					            if ( data == 'result1' ) {
+					            if ( data.check === true ) {
 					                var msg = '결제가 완료되었습니다.';
 					                msg += '\n고유ID : ' + rsp.imp_uid;
 					                msg += '\n상점 거래ID : ' + rsp.merchant_uid;

@@ -396,7 +396,7 @@ def order_complete(request):
 	elif pay_status == 'ready' and pay_method == 'vbank':
 		return HttpResponse('{"check":true}')
 	else:
-		return HttpResponse('{"check":false}')
+		return HttpResponse('{"check":false,"pay_status":'+pay_status+'}')
 
 @csrf_exempt
 def ajax_test(request):
