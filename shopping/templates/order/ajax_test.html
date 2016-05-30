@@ -12,14 +12,14 @@
 					                //기타 필요한 데이터가 있으면 추가 전달
 					            }
 					        }).done(function(data) {
-					        	console.log('통신성공');
+					        	alert('통신성공');
 					        	if(data.check === true){
-						        	console.log('if문 안');
+						        	alert('if문 안');
 					        	}
 					        }).fail(function(){
-					        	console.log('실패');
+					        	alert('실패');
 					        }).always(function(){
-					        	console.log('항상호출');					        	
+					        	alert('항상호출');					        	
 					        })
 	})
 </script>
