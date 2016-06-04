@@ -1,0 +1,13 @@
+#Mac OS
+.DS_Store
+
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media
+settings.py
+uploads

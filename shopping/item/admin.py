@@ -10,7 +10,7 @@ class BrandAdmin(SummernoteModelAdmin):
 
 class ItemIngredientCombinationInline(admin.TabularInline):
 	model = ItemIngredientCombination
-	extra = 0
+	extra = 3
 	raw_id_fields = ("ingredient",)
 
 class ItemOptionInline(admin.TabularInline):
