@@ -10,6 +10,7 @@ class BrandAdmin(SummernoteModelAdmin):
 
 class ItemIngredientCombinationInline(admin.TabularInline):
 	model = ItemIngredientCombination
+	ordering = ['ingredient']
 	extra = 0
 
 class ItemOptionInline(admin.TabularInline):
