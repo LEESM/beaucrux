@@ -12,6 +12,3 @@ class Ingredient(models.Model):
 
 	def __str__(self):
 		return self.ko_name
-
-	class meta:
-		ordering = 'ko_name'
