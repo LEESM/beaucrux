@@ -4,6 +4,11 @@
 {% load app_filters %}
 
 {% block content %}
+
+{% if request.user.is_superuser %}
+<a class="btn btn-primary" href="/admin/item/item/{{item.id}}/change">아이템 수정</a>
+{% endif %}
+
 <div id="detail_div" class="container">
 <div id="detail_inner" class="row">
 	<div id="detail_left" class="col-xs-12 col-sm-6">
@@ -84,6 +89,8 @@
 
 <script>
 $(function() {
+
+		$('#product_info img').addClass('img-responsive');
 
 	    $('.option_plus').click(function(e){
         stockInput = $(this).parent().prev();

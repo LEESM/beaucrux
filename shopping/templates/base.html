@@ -71,6 +71,9 @@
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
+            {% if request.user.is_superuser %}
+            <li><a href="/admin">관리자</a></li>
+            {% endif %}
             {% if request.user.is_authenticated %}
             <li><a href="{% url 'logout' %}">로그아웃</a></li>
             <li><a href="{% url 'mypage' %}">마이페이지</a></li>
