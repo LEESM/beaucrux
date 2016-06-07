@@ -3,11 +3,6 @@
 
 {% block content %}
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.1.js"></script>
-<script>
-	$(function() {
-
-	});
-</script>
 <div class="container">
 	<h2>상품정보</h2>
 	<div class="table-responsive">
@@ -158,7 +153,6 @@
 		</div>
 		<script>
 		$(function() {
-			alert('결제화면');
 			var raw  = new Date();
 			var cart_id = $('#id_cart_id').val();
 			var order_id = raw.getFullYear().toString() + ("0"+(raw.getMonth()+1)).slice(-2).toString() + ("0"+raw.getDate()).slice(-2).toString()+("0"+raw.getHours()).slice(-2).toString() + ("0"+raw.getMinutes()).slice(-2).toString() + ("0"+raw.getSeconds()).slice(-2).toString() + "_" + cart_id;
