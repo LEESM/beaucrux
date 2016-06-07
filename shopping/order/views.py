@@ -221,6 +221,22 @@ def order_update(request):
 	new_order.save()
 	return render(request, "order/order_complete.html", {
 		'order_id':order_id,
+		'new_order':new_order,
+		'cart_items':cart_items,
+	})
+
+def test(request):
+	order_id=request.GET.get('order_id')
+	cart_id=request.GET.get('cart_id')
+	cart_items=Cart.objects.filter(cart_id=cart_id)
+	for item in cart_items:
+		item.order_flag=True
+		item.save()
+	new_order = Order.objects.get(order_id=order_id)
+	return render(request, "order/order_complete.html", {
+		'order_id':order_id,
+		'new_order':new_order,
+		'cart_items':cart_items,
 	})
 
 def view_orders(request):

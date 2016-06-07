@@ -14,3 +14,4 @@ urlpatterns = [
     url(r'^ajax_test/', views.ajax_test, name='ajax_test'),
     url(r'^mobile_redirect/', views.order_mobile_redirect, name='mobile_redirect'),
 ]
+#    url(r'^test/', views.test, name='test'),

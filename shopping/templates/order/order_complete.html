@@ -2,6 +2,28 @@
 {% load humanize %}
 
 {% block content %}
+<script>
+ga('require', 'ecommerce');
+ga('ecommerce:addTransaction', {
+  'id': '{{order_id}}',
+  'affiliation': 'gongbang_united',
+  'revenue': '{{new_order.item_price}}',
+  'shipping': '{{new_order.delivery_price}}',
+  'tax': '0',
+  'currency': 'KRW',
+});
+{% for item in cart_items %}
+ga('ecommerce:addItem', {
+  'id': '{{order_id}}',
+  'name': '{{item.item.item_name}} / {{item.item_option}}',
+  'sku': '{{item.item.item_id}}',
+  'category': '{{item.item.get_categories}}',
+  'price': '{{item.item.price|add:item.item_option.option_price}}',
+  'quantity': '{{item.quantity}}',
+});
+{% endfor %}
+ga('ecommerce:send');
+</script>
 <div class="jumbotron text-center">
 	<h2>주문 완료!</h2>
 	<p>주문서 번호 {{ order_id }} 의 주문이 완료되었습니다.</p>
