@@ -22,3 +22,6 @@ class PointHistory(models.Model):
 	amount = models.IntegerField(default=0)
 	content = models.CharField(max_length=100)
 	time = models.DateTimeField(auto_now_add=True)
+
+class Landing(models.Model):
+	email = models.CharField(max_length=50)

@@ -1,9 +1,20 @@
 from django.shortcuts import render, redirect
 from item.models import Category, Brand, Item, ItemOption, ItemQna, ItemReview
-from accounts.models import PointHistory
+from accounts.models import PointHistory, Landing
 from item.forms import ItemReviewForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
+
+#url조정
+def landing(request):
+	message = ''
+	if request.method == "POST":
+		get_email = request.POST.get('email')
+		new_landing = Landing(email = get_email)
+		new_landing.save()
+		message = get_email + " 접수되었습니다. 감사합니다^^"
+	context = {"message": message}
+	return render(request,"landing.html", context)
 
 def index(request):
 	items1 = Item.objects.filter(brand=Brand.objects.get(pk=1)).exclude(item_active=False).order_by('-item_id')
