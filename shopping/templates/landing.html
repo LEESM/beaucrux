@@ -7,15 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>화장품 연구공원</title>
+    <!-- font -->
     <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'css/nanumbarungothic.css' %}" />
+
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'bs3/css/bootstrap.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/custom.css' %}" type="text/css"/>
     <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'bs3/js/bootstrap.min.js' %}"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -29,9 +32,10 @@
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-78892537-1', 'auto');
+
+  ga('create', 'UA-80341467-1', 'auto');
   ga('send', 'pageview');
-  ga('set', 'userId', {{ request.user.username }});
+
 </script>
 
 {% if message %}
@@ -39,20 +43,23 @@
 {% endif %}
 
 <div id="first_div" style="position:absolute; width: 100%; height: 100%; top:0;">
-  <div style="position:absolute; z-index:-99; width:100%; height:100%; top:0;">
+  <div class="hidden-xs hidden-sm" style="position:absolute; z-index:-99; width:100%; height:100%; top:0;">
     <iframe frameborder="0" height="100%" width="100%" 
       src="https://youtube.com/embed/e5JfzNrPWck?autoplay=1&controls=0&showinfo=0&autohide=1&loop=1&playlist=e5JfzNrPWck">
     </iframe>
   </div>
+  <div class="hidden-md hidden-lg" style="position:absolute; z-index:-99; width:100%; height:100%; top:0;">
+    <img src="{% static 'img/landing_background_img.png' %}">
+  </div>
+
 
   <div style="width:100%; height:100%; z-index:1; background-color:rgba(0,0,0,0.5);">
-    <div style="height:50%;">
+    <div style="height:40%;">
       <img style="width:200px;" src="{% static 'img/cosmetic0901_logo.gif' %}"/>
     </div>
-    <div style="text-align:center; height:50%; ">
+    <div style="text-align:center; height:60%; ">
       <div>
-        <h4 style="color:white;">'화장품 연구공원'은 전국의 대학과 연구소에서 개발된 화장품과학을 여러분과 나누고자 합니다.</h4>
-        <h4 style="color:white;">전문가들이 한 데 모여 화장품 연구에 매진한다는 뜻의 브랜드명 ‘화장품연구공원’에 맞는 높은 퀄리티의 제품을 선보입니다.</h4>
+        <h4 style="color:white; font-weight:300; padding:10px;">'화장품 연구공원'은 전국의 대학과 연구소에서 개발된 화장품과학을 여러분과 나누고자 합니다.</h4>
       </div>
       <div style="background-color:white; position:absolute; bottom:0;width:100%; padding:10px 0;">
         <form method = "POST" class="form-inline" action ="/">
@@ -71,7 +78,15 @@
 <div id="second_div" style="position:absolute; z-index: -99; width: 100%; height: 100%; top:100%; text-align:center; background-color:rgba(0,0,0,0.7);">
   <div style="width:100%; height:30%; color:white;">
     <h1 style="padding-top:20%;">화장품연구공원 오픈까지</h1>
-    <h1 style="font-size:80px;">D-1</h1>
+    <h1 style="font-size:80px;">D -
+      <script>
+         var now = new Date();
+         var then = new Date('july 16,2016');
+         var gap = now.getTime() - then.getTime();
+         gap = Math.floor(gap / (1000 * 60 * 60 * 24)) * -1;
+         document.write(gap);
+      </script>
+    </h1>
     <h1>"화장품은 모델이 아닌 전문가가 만든다."</h1>
   </div>
   <div style="position:absolute; bottom:0; background-color:white; width:100%; padding:10px;">
