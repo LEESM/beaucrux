@@ -42,7 +42,7 @@
 <div id="message" style="position:fixed; width:100%; height:30px; color:white; font-size:30px; text-align:center;">{{ message }}</div>
 {% endif %}
 
-<div id="first_div" style="position:absolute; width: 100%; height: 100%; top:0;">
+<div id="first_div" style="position:absolute; width: 100%; height: 100%; top:0; overflow:hidden;">
   <div class="hidden-xs hidden-sm" style="position:absolute; z-index:-99; width:100%; height:100%; top:0;">
     <iframe frameborder="0" height="100%" width="100%" 
       src="https://youtube.com/embed/e5JfzNrPWck?autoplay=1&controls=0&showinfo=0&autohide=1&loop=1&playlist=e5JfzNrPWck">
@@ -59,23 +59,30 @@
     </div>
     <div style="text-align:center; height:60%; ">
       <div>
-        <h4 style="color:white; font-weight:300; padding:10px;">'화장품 연구공원'은 전국의 대학과 연구소에서 개발된 화장품과학을 여러분과 나누고자 합니다.</h4>
+        <h4 style="color:white; font-weight:300; padding:10px;">'화장품 연구공원'은 다양한 화장품 전문가들이 개발한 최고의 제품을 여러합과 나누고자 합니다.</h4>
       </div>
       <div style="background-color:white; position:absolute; bottom:0;width:100%; padding:10px 0;">
-        <form method = "POST" class="form-inline" action ="/">
+        <form method = "POST" class="form" action ="/">
         {% csrf_token %}
-          <div class="form-group">
-            <label for="email">3000원 할인 쿠폰을 7월 16일 메일로 보내드려요.</label>
-            <input type="text" class="form-control" id="email" name="email" placeholder="email">
+          <div class="row">
+            <div class="col-xs-12  col-md-12">
+              <label for="email">3000원 할인 쿠폰을 7월 16일 메일로 보내드려요.</label>
+            </div>
+            <div class="col-xs-9 col-md-3 col-md-offset-4">
+              <input type="text" class="form-control pull-right" id="email" name="email" placeholder="email">
+            </div>
+            <div class="col-xs-3 col-md-3">
+              <button type="submit" class="btn btn-default pull-left">ENTER</button>
+            </div>
           </div>
-          <button type="submit" class="btn btn-default">ENTER</button>
         </form> 
       </div>
+
     </div>
   </div>
 </div>
 
-<div id="second_div" style="position:absolute; z-index: -99; width: 100%; height: 100%; top:100%; text-align:center; background-color:rgba(0,0,0,0.7);">
+<div id="second_div" style="position:absolute; z-index: -99; width: 100%; height: 100%; top:100%; text-align:center; background-color:rgba(0,0,0,0.7); overflow:hidden;">
   <div style="width:100%; height:30%; color:white;">
     <h1 style="padding-top:20%;">화장품연구공원 오픈까지</h1>
     <h1 style="font-size:80px;">D -
@@ -89,16 +96,23 @@
     </h1>
     <h1>"화장품은 모델이 아닌 전문가가 만든다."</h1>
   </div>
-  <div style="position:absolute; bottom:0; background-color:white; width:100%; padding:10px;">
-      <form method = "POST" class="form-inline" action ="/">
-      {% csrf_token %}
-        <div class="form-group">
-          <label for="email">3000원 할인 쿠폰을 7월 16일 메일로 보내드려요.</label>
-          <input type="text" class="form-control" id="email" name="email" placeholder="email">
-        </div>
-        <button type="submit" class="btn btn-default">ENTER</button>
-      </form>  
-  </div>
+      <div style="background-color:white; position:absolute; bottom:0;width:100%; padding:10px 0;">
+        <form method = "POST" class="form" action ="/">
+        {% csrf_token %}
+          <div class="row">
+            <div class="col-xs-12  col-md-12">
+              <label for="email">3000원 할인 쿠폰을 7월 16일 메일로 보내드려요.</label>
+            </div>
+            <div class="col-xs-9 col-md-3 col-md-offset-4">
+              <input type="text" class="form-control pull-right" id="email" name="email" placeholder="email">
+            </div>
+            <div class="col-xs-3 col-md-3">
+              <button type="submit" class="btn btn-default pull-left">ENTER</button>
+            </div>
+          </div>
+        </form> 
+      </div>
+
 </div>
 
 

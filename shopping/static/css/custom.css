@@ -7,11 +7,9 @@ width:100%;
 }
 #nav_div{
 	width:100%;
-	position:fixed;
 	z-index:9999;
 }
 #main_div{
-	padding-top:50px;
 	padding-bottom:50px;
 }
 .main_img{

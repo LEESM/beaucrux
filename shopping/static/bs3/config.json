@@ -162,11 +162,11 @@
     "@navbar-default-toggle-hover-bg": "#ddd",
     "@navbar-default-toggle-icon-bar-bg": "#888",
     "@navbar-default-toggle-border-color": "#ddd",
-    "@navbar-inverse-color": "lighten(@gray-light, 15%)",
-    "@navbar-inverse-bg": "#222",
-    "@navbar-inverse-border": "darken(@navbar-inverse-bg, 10%)",
-    "@navbar-inverse-link-color": "lighten(@gray-light, 15%)",
-    "@navbar-inverse-link-hover-color": "#fff",
+    "@navbar-inverse-color": "#fff",
+    "@navbar-inverse-bg": "#000",
+    "@navbar-inverse-border": "#000",
+    "@navbar-inverse-link-color": "#fff",
+    "@navbar-inverse-link-hover-color": "#bbb",
     "@navbar-inverse-link-hover-bg": "transparent",
     "@navbar-inverse-link-active-color": "@navbar-inverse-link-hover-color",
     "@navbar-inverse-link-active-bg": "darken(@navbar-inverse-bg, 10%)",
@@ -175,9 +175,9 @@
     "@navbar-inverse-brand-color": "@navbar-inverse-link-color",
     "@navbar-inverse-brand-hover-color": "#fff",
     "@navbar-inverse-brand-hover-bg": "transparent",
-    "@navbar-inverse-toggle-hover-bg": "#333",
+    "@navbar-inverse-toggle-hover-bg": "#000",
     "@navbar-inverse-toggle-icon-bar-bg": "#fff",
-    "@navbar-inverse-toggle-border-color": "#333",
+    "@navbar-inverse-toggle-border-color": "#000",
     "@nav-link-padding": "10px 15px",
     "@nav-link-hover-bg": "@gray-lighter",
     "@nav-disabled-link-color": "@gray-light",
@@ -431,5 +431,5 @@
     "scrollspy.js",
     "transition.js"
   ],
-  "customizerUrl": "http://getbootstrap.com/customize/?id=c349560f6441e35d57b65bca99009ef7"
+  "customizerUrl": "http://getbootstrap.com/customize/?id=9fe28d450b63c3ab9d6483ba104a36d2"
 }
