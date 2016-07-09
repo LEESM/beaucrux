@@ -3,7 +3,20 @@
 {% load staticfiles %}
 
 {% block content %}
-<div id="main_box">
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<img class="main_img" src="{% static 'img/main1.jpg' %}"/>
+		</div>
+		<div class="col-xs-12 col-md-6">
+			<img class="main_img" src="{% static 'img/main1.jpg' %}"/>
+		</div>
+		<div class="col-xs-12 col-md-6">
+			<img class="main_img" src="{% static 'img/main1.jpg' %}"/>
+		</div>
+	</div>
+</div>
+<div class="container" id="main_box" style="display:none;">
 	<img class="main_img" src="{% static 'img/main1.jpg' %}"/>
 </div>
 <div class="container" id="index_box">

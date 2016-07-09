@@ -67,8 +67,12 @@ width:100%;
 	width:100%;
 	text-align:center;
 }
-#logo{
-	font-family: 'Poiret One', cursive;
+#logo img{
+position:absolute;
+z-index:99999;
+top:-98px;
+width:210px;
+
 }
 #orders_table thead tr th{
 text-align:center;
@@ -88,5 +92,15 @@ text-align:center;
 }
 .board_list_th{
 	text-align: center;
-
+}
+#nav_div ul{
+height:60px;
+line-height:60px;
+margin:0;
+}
+#nav_div ul li{
+display: block;
+float:left;
+margin-left:6px;
+line-height: 60px;
 }
