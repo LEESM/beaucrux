@@ -16,7 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 def cart(request):
 	if request.user.is_authenticated():
-		cart_items = Cart.objects.filter(user=request.user, order_flag=False)		
+		cart_items = Cart.objects.filter(user=request.user, order_flag=False)
 	else:
 		cart_items = Cart.objects.filter(cart_id=request.session.session_key, order_flag=False)
 	total_price = 0

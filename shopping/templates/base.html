@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,28 +42,57 @@
       <div class="pull-right">
         <ul>
           {% if request.user.is_superuser %}
-          <li><a href="/admin">관리자</a></li>
-          <li><a>&middot;</a></li>
+          <li class="hidden-xs"><a href="/admin">관리자</a></li>
+          <li class="hidden-xs"><a>&middot;</a></li>
           {% endif %}
-          <li><a><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a></li>
+          <li class="hidden-xs"><a href="javascript:void(0)" onClick="return rudr_favorite(this);"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a></li>
+          <script>
+            function rudr_favorite(a) {
+              pageTitle=document.title;
+              pageURL=document.location;
+              try {
+                // Internet Explorer solution
+                eval("window.external.AddFa-vorite(pageURL, pageTitle)".replace(/-/g,''));
+              }
+              catch (e) {
+                try {
+                  // Mozilla Firefox solution
+                  window.sidebar.addPanel(pageTitle, pageURL, "");
+                }
+                catch (e) {
+                  // Opera solution
+                  if (typeof(opera)=="object") {
+                    a.rel="sidebar";
+                    a.title=pageTitle;
+                    a.url=pageURL;
+                    return true;
+                  } else {
+                    // The rest browsers (i.e Chrome, Safari)
+                    alert((navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Cmd' : 'Ctrl') + '+D 를 눌러 북마크에 추가해주세요.');
+                  }
+                }
+              }
+              return false;
+            }
+          </script>
           {% if request.user.is_authenticated %}
           <script>
           ga('set', 'userId', {{ request.user.username }});
           </script>
-          <li><a>&middot;</a></li>
+          <li class="hidden-xs"><a>&middot;</a></li>
           <li><a href="{% url 'logout' %}">로그아웃</a></li>
-          <li><a>&middot;</a></li>
-          <li><a href="{% url 'mypage' %}">마이페이지</a></li>
+          <li class="hidden-xs"><a>&middot;</a></li>
+          <li class="hidden-xs"><a href="{% url 'mypage' %}">마이페이지</a></li>
           {% else %}
-          <li><a>&middot;</a></li>
+          <li class="hidden-xs"><a>&middot;</a></li>
           <li><a href="{% url 'login' %}">로그인</a></li>
-          <li><a>&middot;</a></li>
-          <li><a href="{% url 'signup' %}">회원가입</a></li>
+          <li class="hidden-xs"><a>&middot;</a></li>
+          <li class="hidden-xs"><a href="{% url 'signup' %}">회원가입</a></li>
           {% endif %}
+          <li class="hidden-xs"><a>&middot;</a></li>
+          <li class="hidden-xs"><a href="{% url 'view_orders' %}">주문/배송조회</a></li>            
           <li><a>&middot;</a></li>
-          <li><a href="{% url 'view_orders' %}">주문/배송조회</a></li>            
-          <li><a>&middot;</a></li>
-          <li><a href="{% url 'cart' %}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 0 items</a></li>            
+          <li><a href="{% url 'cart' %}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a></li>
           <li>
             <form action="" method="POST" class="navbar-form navbar-left" role="search" style="display:none;">
                 {%csrf_token%}
@@ -82,7 +111,7 @@
       </div>
     </div>
   </div>
-    <nav class="navbar navbar-default navbar-inverse">
+    <nav class="navbar navbar-default navbar-inverse" style="margin-bottom:50px;">
       <div class="container-fluid container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -98,7 +127,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{% url 'brand' %}?brand_name=livesque">ABOUT US</a></li>
+            <li><a href="{% url 'aboutus' %}">ABOUT US</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">BRANDS<span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -111,7 +140,7 @@
             <li><a href="{% url 'board_list' %}?board_name=Notice">NOTICE</a></li>
             <li><a href="{% url 'board_list' %}?board_name=Event">EVENT</a></li>
             <li><a href="{% url 'board_list' %}?board_name=Sample">SAMPLE</a></li>
-            <li><a href="{% url 'brand' %}?brand_name=livesque">MY PAGE</a></li>
+            <li><a href="{% url 'mypage' %}">MY PAGE</a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->

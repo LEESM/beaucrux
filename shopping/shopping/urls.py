@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^index/', index, name='index'),
     url(r'^$', landing, name='landing'),
     url(r'^admin/', admin.site.urls),
+    url(r'^aboutus/', include('aboutus.urls')),
     url(r'^accounts/', include('accounts.urls')),
     url(r'^item/', include('item.urls')),
     url(r'^order/', include('order.urls')),

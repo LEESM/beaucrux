@@ -29,15 +29,25 @@ width:100%;
 	color:#99979c;
 }
 #item_price{
-	font-size:20px;
-	color:red;
+	font-size:16px;
+	color:black;
 	font-weight:bold;
 }
 #quantity_div{
 	width:110px;
 }
+#quantity_div .option_minus, .option_plus{
+	border-radius: 0;
+	border-color:rgb(98,98,98);
+	background-color:rgb(112,112,112);
+}
+#quantity_div .option_minus:hover, .option_plus:hover{
+	background-color:rgb(112,112,112);
+	border-color:rgb(98,98,98);
+}
 #quantity{
 	text-align:center;
+	border-color:rgb(98,98,98);
 }
 .item_card{
 	margin-top:30px;
@@ -57,13 +67,15 @@ width:100%;
 	vertical-align: middle;
 
 }
+#option_table thead tr th{
+border-bottom:1px solid;
+}
 #option_table .option_td{
 	vertical-align: middle;
 	text-align:left;	
 }
 .message{
 	position:absolute;
-	top:50px;
 	width:100%;
 	text-align:center;
 }
@@ -103,4 +115,29 @@ display: block;
 float:left;
 margin-left:6px;
 line-height: 60px;
+}
+#go_cart_btn, #buy_now_btn{
+	width:49%;
+	display:block;
+	float:left;
+	border-radius:0;
+	background-color: rgb(69,69,69);
+	border-color: rgb(69,69,69);
+}
+#buy_now_btn{
+	float:right;
+}
+#detail_middle_nav{
+	border-top:1px solid;
+}
+#detail_middle_nav .btn-group button{
+	border:none;
+	border-radius:0;
+	text-decoration:underline;
+}
+#detail_middle_nav .btn-group .active{
+box-shadow:none;
+}
+.aboutus_a{
+	color:grey;
 }
