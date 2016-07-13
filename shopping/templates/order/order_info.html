@@ -160,19 +160,19 @@
 					<th><label for="id_delivery_price">Delivery price:</label></th>
 					<td><input value = "{{delivery_price}}" id="id_delivery_price" name="delivery_price" type="number" readonly="readonly"/></td>
 				</tr>
-				<tr class="">
+				<tr class="hidden">
 					<th><label for="id_total_price">Total price:</label></th>
 					<td><input value = "{{total_price}}" id="id_total_price" name="total_price" type="number" readonly="readonly"/></td>
 				</tr>
-				<tr class="">
+				<tr class="hidden">
 					<th><label for="id_pay_price">Pay price:</label></th>
 					<td><input id="id_pay_price" name="pay_price" type="number" readonly="readonly"/></td>
 				</tr>
-				<tr class="">
+				<tr class="hidden">
 					<th><label for="id_coupon_price">Coupon price:</label></th>
 					<td><input id="id_coupon_price" name="coupon_price" type="number" value="0" /></td>
 				</tr>
-				<tr class="">
+				<tr class="hidden">
 					<th><label for="id_point_made">Point made:</label></th>
 					<td><input value="{{point_made}}" id="id_point_made" name="point_made" type="number" readonly="readonly"/></td>
 				</tr>
@@ -259,7 +259,7 @@
 					point= {% if anonymous %}0{% else %}{{ request.user.profile.point }}{%endif %} ;
 				}
 				$("#id_point_price").val(point);
-				var pay = tot-point;
+				var pay = tot-point-$('#id_coupon_price').val();
 				$('#id_pay_price').val(pay);
 				//표시내용 바꾸기
 				$('#point_display').text(point);
