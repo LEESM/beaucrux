@@ -45,7 +45,9 @@
 			</tbody>
 		</table>
 	</div>
-
+	
+	<form id="aksgdltktpdy" method="post" action="{% url 'order_update' %}">
+	{% csrf_token %}
 	<h2>할인받기</h2>
 
 	<div class="table-responsive">
@@ -137,8 +139,7 @@
 
 	<h2>배송정보</h2>
 	<div class="table-responsive">
-		<form id="aksgdltktpdy" method="post" action="{% url 'order_update' %}">
-		{% csrf_token %}
+
 			<table class="table">
 				<tr class="hidden">
 					<th><label for="id_username">username</label></th>
