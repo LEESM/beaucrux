@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Cart, Order
+from .models import Cart, Order, Coupon
 
 class CartAdmin(admin.ModelAdmin):
 	list_display = ['cart_id','user','item','item_option','quantity']
@@ -29,6 +29,9 @@ class OrderAdmin(admin.ModelAdmin):
 		]
 	list_filter = ('status',)
 
+class CouponAdmin(admin.ModelAdmin):
+	list_display = ['coupon_id','subject','subject','user','kind_of','quantity','used','pub_date']
 
 admin.site.register(Cart, CartAdmin)
 admin.site.register(Order, OrderAdmin)
+admin.site.register(Coupon, CouponAdmin)

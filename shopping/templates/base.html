@@ -77,7 +77,7 @@
           </script>
           {% if request.user.is_authenticated %}
           <script>
-          ga('set', 'userId', {{ request.user.username }});
+          ga('set', 'userId', '{{ request.user.username }}');
           </script>
           <li class="hidden-xs"><a>&middot;</a></li>
           <li><a href="{% url 'logout' %}">로그아웃</a></li>

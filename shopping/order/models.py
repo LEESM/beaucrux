@@ -28,6 +28,7 @@ class Order(models.Model):
 	total_price = models.IntegerField(default=0)
 	pay_price = models.IntegerField(default=0)
 	point_price = models.IntegerField(default=0)
+	coupon_price = models.IntegerField(default=0)
 	point_made = models.IntegerField(default=0)
 	name = models.CharField(max_length=50)
 	email = models.CharField(max_length=50)
@@ -42,3 +43,13 @@ class Order(models.Model):
 	order_date = models.DateTimeField(auto_now_add=True)
 	def __str__(self):
 		return self.order_id
+
+class Coupon(models.Model):
+	coupon_id = models.CharField(max_length=50, unique=True)
+	subject = models.CharField(max_length=50, default='')
+	condition = models.IntegerField(default=0)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,on_delete=models.SET_NULL)
+	kind_of = models.CharField(max_length=30)
+	quantity = models.IntegerField(default=0)
+	used = models.BooleanField(default=False)
+	pub_date = models.DateTimeField(auto_now_add=True)

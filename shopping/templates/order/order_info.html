@@ -46,6 +46,95 @@
 		</table>
 	</div>
 
+	<h2>할인받기</h2>
+
+	<div class="table-responsive">
+		<table class="table">
+			<tr>
+				<th>쿠폰선택</th>
+				<td>
+					{% if not request.user.is_authenticated %}
+						<p>로그인하시면 쿠폰을 사용하실 수 있습니다.</p>
+					{% else %}
+						{% if not coupons %}
+							<p>사용가능한 쿠폰이 없습니다.</p>
+						{% endif %}
+					<button class="btn btn-default" type="button" data-toggle="collapse" data-target="#couponRegist" aria-expanded="false" aria-controls="collapseExample">
+					  쿠폰 등록하기
+					</button>
+					<div class="collapse" id="couponRegist">
+					  <div class="well form-inline	">
+					    <input type="text" class="form-control" id="coupon_id" name="coupon_id">
+					    <a class="btn btn-default" id="coupon_submit">제출</a>
+					  </div>
+					</div>
+					<script>
+					$(document).ready(function () {
+						$("#coupon_submit").click(function(){
+							var coupon_id = $("#coupon_id").val();
+								$.ajax({
+									url: "/order/coupon_check/",
+									type: "POST",
+									contentType: "application/x-www-form-urlencoded",
+									data: {
+										username : '{{request.user}}',
+										coupon_id : coupon_id,
+									},
+									success: function(data){
+										var obj = jQuery.parseJSON( data );
+										console.log(obj.check);
+										if ( obj.check == "True" ) {
+											alert('쿠폰이 정상 등록 되었습니다.');
+											location.reload();
+										} else {
+											alert('쿠폰이 유효하지 않습니다. 다시 확인해주세요.');
+										}
+									},
+							});
+						})
+					})
+					</script>
+					{% endif %}
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="selected_coupon_id" id="id_selected_coupon_id" data-quantity="0" class="nocoupon" value="nocoupon" checked>
+					    쿠폰 사용 안함
+					  </label>
+					</div>
+					{% for coupon in coupons%}
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="selected_coupon_id" id="id_selected_coupon_id"  data-quantity="{{ coupon.quantity }}" class="{{ coupon.kind_of }}" value="{{ coupon.coupon_id }}" >
+					    {{ coupon.subject }} ({{coupon.condition|intcomma}}원 이상 구매시)
+					  </label>
+					</div>
+					{% endfor %}
+				</td>
+			</tr>
+			<tr {% if anonymous %} class="hidden" {% endif %} >
+				<th><label for="id_point_price">포인트 사용 (사용가능 : {{request.user.profile.point|intcomma}})</label></th>
+				<td><input id="id_point_price" class="form-control" name="point_price" type="number" value=0 /></td>
+			</tr>
+			<tr>
+				<th>총계</th>
+				<td>{{ total_price }}원</td>
+			</tr>
+			<tr>
+				<th>쿠폰할인</th>
+				<td class="red">-<span id ="discount_display">0</span>원</td>
+			</tr>
+			<tr>
+				<th>포인트할인</th>
+				<td class="red">-<span id ="point_display">0</span>원</td>
+			</tr>
+			<tr>
+				<th>실결제금액</th>
+				<td><span id ="real_pay_display">{{ total_price|intcomma }}</span>원</td>
+			</tr>
+
+		</table>
+	</div>
+
 	<h2>배송정보</h2>
 	<div class="table-responsive">
 		<form id="aksgdltktpdy" method="post" action="{% url 'order_update' %}">
@@ -53,35 +142,39 @@
 			<table class="table">
 				<tr class="hidden">
 					<th><label for="id_username">username</label></th>
-					<td><input id="id_username" name="username" type="text" value="{{request.user}}" /></td>
+					<td><input id="id_username" name="username" type="text" value="{{request.user}}" readonly="readonly"/></td>
 				</tr>
 				<tr class="hidden">
 					<th><label for="id_order_id">Order id:</label></th>
-					<td><input id="id_order_id" name="order_id" type="text" /></td>
+					<td><input id="id_order_id" name="order_id" type="text" readonly="readonly"/></td>
 				</tr>
 				<tr class="hidden">
 					<th><label for="id_cart_id">Cart id:</label></th>
-					<td><input value = "{{cart_id}}" id="id_cart_id" name="cart_id" type="text" /></td>
+					<td><input value = "{{cart_id}}" id="id_cart_id" name="cart_id" type="text" readonly="readonly"/></td>
 				</tr>
 				<tr class="hidden">
 					<th><label for="id_item_price">Item price:</label></th>
-					<td><input value = "{{item_price}}" id="id_item_price" name="item_price" type="number" /></td>
+					<td><input value = "{{item_price}}" id="id_item_price" name="item_price" type="number" readonly="readonly"/></td>
 				</tr>
 				<tr class="hidden">
 					<th><label for="id_delivery_price">Delivery price:</label></th>
-					<td><input value = "{{delivery_price}}" id="id_delivery_price" name="delivery_price" type="number" /></td>
+					<td><input value = "{{delivery_price}}" id="id_delivery_price" name="delivery_price" type="number" readonly="readonly"/></td>
 				</tr>
-				<tr class="hidden">
+				<tr class="">
 					<th><label for="id_total_price">Total price:</label></th>
-					<td><input value = "{{total_price}}" id="id_total_price" name="total_price" type="number" /></td>
+					<td><input value = "{{total_price}}" id="id_total_price" name="total_price" type="number" readonly="readonly"/></td>
 				</tr>
-				<tr class="hidden">
+				<tr class="">
 					<th><label for="id_pay_price">Pay price:</label></th>
-					<td><input id="id_pay_price" name="pay_price" type="number" /></td>
+					<td><input id="id_pay_price" name="pay_price" type="number" readonly="readonly"/></td>
 				</tr>
-				<tr class="hidden">
+				<tr class="">
+					<th><label for="id_coupon_price">Coupon price:</label></th>
+					<td><input id="id_coupon_price" name="coupon_price" type="number" value="0" /></td>
+				</tr>
+				<tr class="">
 					<th><label for="id_point_made">Point made:</label></th>
-					<td><input value="{{point_made}}" id="id_point_made" name="point_made" type="number" /></td>
+					<td><input value="{{point_made}}" id="id_point_made" name="point_made" type="number" readonly="readonly"/></td>
 				</tr>
 				<tr>
 					<th><label for="id_name">성함</label></th>
@@ -123,10 +216,6 @@
 					<th><label for="id_postscript">남기는 말</label></th>
 					<td><input class="form-control" id="id_postscript" name="postscript" type="text" /></td>
 				</tr>
-				<tr {% if anonymous %} class="hidden" {% endif %} >
-					<th><label for="id_point_price">포인트 사용 (사용가능 : {{request.user.profile.point|intcomma}})</label></th>
-					<td><input id="id_point_price" class="form-control" name="point_price" type="number" value=0 /></td>
-				</tr>
 				<tr>
 					<th>결제방법선택</th>
 					<td>
@@ -158,8 +247,10 @@
 			var order_id = raw.getFullYear().toString() + ("0"+(raw.getMonth()+1)).slice(-2).toString() + ("0"+raw.getDate()).slice(-2).toString()+("0"+raw.getHours()).slice(-2).toString() + ("0"+raw.getMinutes()).slice(-2).toString() + ("0"+raw.getSeconds()).slice(-2).toString() + "_" + cart_id;
 			var test = raw.getMinutes();
 			$("#id_order_id").val(order_id);
+			//결제금액 계산
 			var tot = $('#id_total_price').val();
 			$("#id_pay_price").val(tot);
+			//포인트 사용시
 			$( "#id_point_price" ).change(function() {
 				var point = $('#id_point_price').val();
 				if(point<0){
@@ -170,7 +261,32 @@
 				$("#id_point_price").val(point);
 				var pay = tot-point;
 				$('#id_pay_price').val(pay);
+				//표시내용 바꾸기
+				$('#point_display').text(point);
+				$('#real_pay_display').text(pay);
 			});
+			//쿠폰사용시 쿠폰인풋 변경
+			$('input[name="selected_coupon_id"]').change(function() {
+				var coupon_kind_of = $('input[name="selected_coupon_id"]:checked').attr('class');
+				var coupon_value = $('input[name="selected_coupon_id"]:checked').attr('data-quantity');
+				var coupon_discount = 0;
+				var point = $('#id_point_price').val();
+				if (coupon_kind_of=="nocoupon"){
+					coupon_discount = 0;
+				}else if (coupon_kind_of=="flat"){
+					coupon_discount = coupon_value;
+				}else if (coupon_kind_of =="rate"){
+					coupon_discount = tot * coupon_value / 100;
+				}else if (coupon_kind_of =="delivery"){
+				}else{
+				}
+				var pay = tot - point - coupon_discount;
+				$('#id_coupon_price').val(coupon_discount);
+				$('#id_pay_price').val(pay);
+				$('#discount_display').text(coupon_discount);
+				$('#real_pay_display').text(pay);
+			});
+
 			$('#buy_btn').click(function(e){
 				//var mypage_check = $('input:checkbox[id="mypage_check"]').is(":checked");
 				var IMP = window.IMP;
@@ -185,7 +301,7 @@
 				    buyer_name : $('#id_name').val(),
 				    buyer_tel : $('#id_phone').val(),
 				    buyer_addr : $('#id_address').val(),
-					m_redirect_url : 'http://beaucrux.com/order/mobile_redirect/?order_id='+$('#id_order_id').val()+'&cart_id='+$('#id_cart_id').val()+'&item_price='+$('#id_item_price').val()+'&delivery_price='+$('#id_delivery_price').val()+'&cart_id='+$('#id_cart_id').val()+'&total_price='+$('#id_total_price').val()+'&total_price='+$('#id_total_price').val()+'&pay_price='+$('#id_pay_price').val()+'&point_price='+$('#id_point_price').val()+'&point_made='+$('#id_point_made').val()+'&name='+$('#id_name').val()+'&email='+$('#id_email').val()+'&postcode='+$('#id_postcode').val()+'&address='+$('#id_address').val()+'&address_detail='+$('#id_address_detail').val()+'&phone='+$('#id_phone').val()+'&postscript='+$('#id_postscript').val()+'&username='+$('#id_username').val()+'&mypage_check='+$("input:checkbox[id='id_mypage_check']").is(":checked"),
+					m_redirect_url : 'http://cosmetic0901.com/order/mobile_redirect/?order_id='+$('#id_order_id').val()+'&cart_id='+$('#id_cart_id').val()+'&item_price='+$('#id_item_price').val()+'&delivery_price='+$('#id_delivery_price').val()+'&cart_id='+$('#id_cart_id').val()+'&total_price='+$('#id_total_price').val()+'&total_price='+$('#id_total_price').val()+'&pay_price='+$('#id_pay_price').val()+'&point_price='+$('#id_point_price').val()+'&coupon_price='+$('#id_coupon_price').val()+'&point_made='+$('#id_point_made').val()+'&name='+$('#id_name').val()+'&email='+$('#id_email').val()+'&postcode='+$('#id_postcode').val()+'&address='+$('#id_address').val()+'&address_detail='+$('#id_address_detail').val()+'&phone='+$('#id_phone').val()+'&postscript='+$('#id_postscript').val()+'&username='+$('#id_username').val()+'&mypage_check='+$("input:checkbox[id='id_mypage_check']").is(":checked"),
 				}, function(rsp) {
 					    if ( rsp.success === true ) {
 					        jQuery.ajax({

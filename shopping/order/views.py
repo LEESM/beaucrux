@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from order.models import Cart, Order
+from order.models import Cart, Order, Coupon
 from item.models import Item, ItemOption
 from accounts.models import PointHistory
 from order.forms import OrderInfoForm
@@ -113,6 +113,10 @@ def order_info(request):
 		item_price += tmp
 	orderinfoform = OrderInfoForm()
 	cart_id = cart_item.cart_id
+	#쿠폰처리
+	coupons = []
+	if request.user.is_authenticated():
+		coupons = Coupon.objects.filter(user=request.user)
 	#50000원이상 무료배송
 	if(item_price>50000):
 		delivery_price=0
@@ -135,6 +139,7 @@ def order_info(request):
 		'total_price':total_price,
 		'point_made':point_made,
 		'pg_product_name':pg_product_name,
+		'coupons':coupons,
 	})
 
 def order_update(request):
@@ -149,6 +154,8 @@ def order_update(request):
 	total_price=request.POST.get('total_price')
 	pay_price=request.POST.get('pay_price')
 	point_price=request.POST.get('point_price')
+	coupon_price=request.POST.get('coupon_price')
+	selected_coupon_id=request.POST.get('selected_coupon_id')
 	point_made=request.POST.get('point_made')
 	name=request.POST.get('name')
 	email=request.POST.get('email')
@@ -170,6 +177,7 @@ def order_update(request):
 			total_price=total_price,
 			pay_price=pay_price,
 			point_price=point_price,
+			coupon_price=coupon_price,
 			point_made=point_made,
 			name=name,
 			email=email,
@@ -181,6 +189,7 @@ def order_update(request):
 			status=status,
 			)
 		user=request.user
+		#포인트 처리
 		changed_point = int(user.profile.point)-int(point_price)+int(point_made)
 		user.profile.point = str(changed_point)
 		point_history = PointHistory(
@@ -191,6 +200,11 @@ def order_update(request):
 			content = '주문번호 ' + order_id + ' 구매로 발생',
 			)
 		point_history.save()
+		#쿠폰처리
+		if not (selected_coupon_id == 'nocoupon' ):
+			renew_coupon = Coupon.objects.get(coupon_id=selected_coupon_id)
+			renew_coupon.used = True
+			renew_coupon.save()
 		if(mypage_check):
 			user.first_name=name
 			user.save()
@@ -209,6 +223,7 @@ def order_update(request):
 			total_price=total_price,
 			pay_price=pay_price,
 			point_price=point_price,
+			coupon_price=coupon_price,
 			name=name,
 			email=email,
 			postcode=postcode,
@@ -277,6 +292,7 @@ def order_mobile_redirect(request):
 	total_price=request.GET.get('total_price')
 	pay_price=request.GET.get('pay_price')
 	point_price=request.GET.get('point_price')
+	coupon_price=request.GET.get('coupon_price')
 	point_made=request.GET.get('point_made')
 	name=request.GET.get('name')
 	email=request.GET.get('email')
@@ -333,6 +349,7 @@ def order_mobile_redirect(request):
 			total_price=total_price,
 			pay_price=pay_price,
 			point_price=point_price,
+			coupon_price=coupon_price,
 			point_made=point_made,
 			name=name,
 			email=email,
@@ -343,6 +360,7 @@ def order_mobile_redirect(request):
 			postscript=postscript,
 			status=status,
 			)
+		#포인트처리
 		changed_point = int(user.profile.point)-int(point_price)+int(point_made)
 		user.profile.point = str(changed_point)
 		point_history = PointHistory(
@@ -353,6 +371,11 @@ def order_mobile_redirect(request):
 			content = '주문번호 ' + order_id + ' 구매로 발생',
 			)
 		point_history.save()
+		#쿠폰처리
+		if not (selected_coupon_id == 'nocoupon' ):
+			renew_coupon = Coupon.objects.get(coupon_id=selected_coupon_id)
+			renew_coupon.used = True
+			renew_coupon.save()
 		if(mypage_check):
 			user.first_name=name
 			user.save()
@@ -371,6 +394,7 @@ def order_mobile_redirect(request):
 			total_price=total_price,
 			pay_price=pay_price,
 			point_price=point_price,
+			coupon_price=coupon_price,
 			name=name,
 			email=email,
 			postcode=postcode,
@@ -413,6 +437,20 @@ def order_complete(request):
 		return HttpResponse('{"check":true}')
 	else:
 		return HttpResponse('{"check":false,"pay_status":'+pay_status+'}')
+
+@csrf_exempt
+def coupon_check(request):
+	username = request.POST.get('username')
+	coupon_id = request.POST.get('coupon_id')
+	if Coupon.objects.filter(coupon_id = coupon_id, user = None, used = False ).exists():
+		check = True
+		update = Coupon.objects.get(coupon_id=coupon_id)
+		user = User.objects.get(username = username)
+		update.user = user
+		update.save()
+	else :
+		check = False
+	return HttpResponse('{"check":"'+str(check)+'", "coupon_id":"'+coupon_id+'"}')
 
 @csrf_exempt
 def ajax_test(request):
