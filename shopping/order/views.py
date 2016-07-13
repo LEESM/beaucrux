@@ -116,7 +116,7 @@ def order_info(request):
 	#쿠폰처리
 	coupons = []
 	if request.user.is_authenticated():
-		coupons = Coupon.objects.filter(user=request.user)
+		coupons = Coupon.objects.filter(user=request.user, used=False)
 	#50000원이상 무료배송
 	if(item_price>50000):
 		delivery_price=0
