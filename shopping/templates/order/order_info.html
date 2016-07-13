@@ -45,7 +45,7 @@
 			</tbody>
 		</table>
 	</div>
-	
+
 	<form id="aksgdltktpdy" method="post" action="{% url 'order_update' %}">
 	{% csrf_token %}
 	<h2>할인받기</h2>
@@ -239,7 +239,7 @@
 			</div>
 		</form>
 		<div>
-			<button id="buy_btn" href="{% url 'order_info' %}" class="btn btn-lg btn-primary">구매하기</button>
+			<a id="buy_btn"  class="btn btn-lg btn-primary">구매하기</a>
 		</div>
 		<script>
 		$(function() {
@@ -338,9 +338,7 @@
 
 					        alert(msg);
 					    }
-						//$("#aksgdltktpdy").submit();
 					});
-						//$("#aksgdltktpdy").submit();
 			});
 		});
 		</script>
