@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load staticfiles %}
 
 {% block content %}
+<div id="wating_div" style="color:white;display:none;text-align:center;position:fixed;top:0;width:100%; height:100%; background-color:rgba(0,0,0,0.5);">
+	<h2 style="padding-top:20%;">결제승인대기중</h2>
+	<p>이 화면이 1분이상 보이면 다시 결제 시도해주세요.</p>
+	<img style="" src="{% static 'img/waiting.gif' %}" />
+</div>
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.1.js"></script>
 <div class="container">
 	<h2>상품정보</h2>
@@ -289,6 +295,7 @@
 			});
 
 			$('#buy_btn').click(function(e){
+				$('#wating_div').show();
 				//var mypage_check = $('input:checkbox[id="mypage_check"]').is(":checked");
 				var IMP = window.IMP;
 				IMP.init('imp89113577');
