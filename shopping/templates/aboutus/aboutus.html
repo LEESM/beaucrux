@@ -3,24 +3,8 @@
 {% load staticfiles %}
 
 {% block content %}
-<div class="jumbotron" style="text-align:center;padding-top:150px; padding-bottom:150px;">
-	<h2>'화장품 연구공원'은 <a class="aboutus_a" href="#expert">다양한 화장품 전문가</a>들이 만든 <a class="aboutus_a" href="#good_product">진짜 좋은 제품</a>을 공유하는 곳입니다.</h2>
-</div>
+
 <div class="container">
-	<div class="aboutus_panel col-xs-12" id="expert">
-		<h3>Laboratory - 조용권 교수님</h3>
-		<h3>WorkShop - 윤혜림 대표님</h3>
-		<h3>...영입중</h3>
-	</div>
-	<div class="aboutus_panel col-xs-12" id="good_product">
-		<h3>안전한 화장품</h3>
-		<p>화장품을 쓰는데 있어서 가장 중요한 것은 바로 '안전'입니다. 많은 화장품 브랜드들이 원가 절감을 위해 몸에 좋지 않은 재료를 쓰는 경우가 많습니다.</p>
-		<h3>효과가 좋은 화장품</h3>
-		<p></p>
-		<h3>가격 거품없는 화장품</h3>
-		<p>'화장품 연구 개발에 들이는 비용은 전체 매출액의 1.8%에 불과한데 광고에 쏟아 붓는 비용은 24%나 되는 비정상적인 구조'</p>
-		<p>- 대한민국 화장품의 비밀, 구희연 이은주 지음</p>
-		<p>우리가 쓰는 화장품에는 불필요하게 많은 비용이 들어가있는 경우가 많습니다. 우리는 이러한 불필요한 가격거품을 제거하고 더욱더 소비자들에게 좋은 성분으로 채워넣는 것이 진정으로 사랑받는 브랜드가 되는 길이라고 믿습니다.</p>
-	</div>
+<img class="img-responsive" src="{% static 'img/aboutus.jpeg' %}"/>
 </div>
 {% endblock %}
