@@ -8,9 +8,9 @@
 		 	<thead>
 		 		<tr>
 		 			<th class="board_list_th">제목</th>
-		 			<th class="board_list_th">글쓴이</th>
-		 			<th class="board_list_th">글쓴시간</th>
-		 			<th class="board_list_th">조회수</th>
+		 			<th class="board_list_th hidden-xs">글쓴이</th>
+		 			<th class="board_list_th hidden-xs">글쓴시간</th>
+		 			<th class="board_list_th hidden-xs">조회수</th>
 		 		</tr>
 		 	</thead>
 		 	<tbody>
@@ -27,9 +27,9 @@
 								<a href="{% url 'board_view' %}?board_name={{board_name}}&item_id={{item.id}}">{{item.title}}</a> 
 							{% endif %}
 						</td>
-						<td>{{item.user}}</td>
-						<td>{{item.pub_time|date:"Y-m-d"}}</td>
-						<td>{{item.hits}}</td>
+						<td class="hidden-xs">{{item.user}}</td>
+						<td class="hidden-xs">{{item.pub_time|date:"Y-m-d"}}</td>
+						<td class="hidden-xs">{{item.hits}}</td>
 					</tr>
 
 				{% endfor %}
