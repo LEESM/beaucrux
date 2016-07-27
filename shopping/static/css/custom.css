@@ -21,7 +21,7 @@ width:100%;
 #footer_div{
 	width:100%;
 	background-color:#2a2730;
-	color:white;
+	color:white !important;
 	padding-top:30px;
 	padding-bottom:30px;
 }
@@ -143,4 +143,18 @@ box-shadow:none;
 }
 .red{
 	color:red;
+}
+#ingredient_div{
+	height:200px;
+	overflow-y: scroll;
+}
+.lighter{
+	font-weight: 200;
+}
+.full_height{
+	height:100%;
+}
+.center{
+	margin:0 auto;
+	text-align:center;
 }

@@ -40,7 +40,7 @@
 		</div>
 	<div id="detail_right" class="col-xs-12 col-sm-6">
 		<div>
-			<h2>{{item.item_name}}</h2>
+			<h2 class="lighter">{{item.item_name}}</h2>
 			<p class="gray" style="margin-bottom:30px;">{{item.item_desc}}</p>
 			<p class="hidden">{{item.brand}} - {{item.get_categories}}</p>
 			<p class="pull-right"><strike class="gray">{{item.custom_price|intcomma}}원</strike><span id="item_price"> {{item.price|intcomma}}원</span></p>
@@ -205,22 +205,28 @@ function pnav4_click() {
 
 <div id="product_info">
 	<div id="ingredient_div">
-	<h3 class="text-center">전성분 표시 정보</h3>
-		<table class="table table-condensed table-hover">
+	<h3 class="text-center lighter">전성분 표시 정보</h3>
+		<table class="table table-condensed table-hover" id="ingredient_table">
 			<thead>
 				<tr>
-					<th>#</th>
+					<th class="hidden-xs">#</th>
 					<th>성분명</th>
-					<th>배합목적</th>
+					<th class="hidden-xs">배합목적</th>
 					<th>EWG등급</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for ingredient in ingredients %}
 				<tr>
-					<td>{{forloop.counter}}</td>
-					<td>{{ingredient.ko_name}}</td>
-					<td>{{ingredient.purpose}}</td>
+					<td class="hidden-xs">{{forloop.counter}}</td>
+					<td>
+						<a type="button" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
+							{{ingredient.ko_name}} <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						</a>
+					</td>
+					<td class="hidden-xs">
+					{{ingredient.purpose}}
+					</td>
 					{% if ingredient.ewg_low_grade = 0 %}
 						<td>-</td>
 					{% else %}
@@ -231,12 +237,67 @@ function pnav4_click() {
 						{% endif %}
 					{% endif %}
 				</tr>
+
+
+				<!-- Modal -->
+				<div class="modal fade" id="ingredient_{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" id="myModalLabel">{{ingredient.ko_name}}</h4>
+				      </div>
+				      <div class="modal-body">
+							<p>영문명 : {{ingredient.en_name}}</p>
+							<p>배합목적 : {{ingredient.purpose}}</p>
+							<p>ewg skindeep 등급 : 
+							{% if ingredient.ewg_low_grade = 0 %}
+								자료없음
+							{% else %}
+								{% if ingredient.ewg_low_grade = ingredient.ewg_high_grade %}
+									{{ingredient.ewg_low_grade}}
+								{% else %}
+									{{ingredient.ewg_low_grade}}-{{ingredient.ewg_high_grade}}	
+								{% endif %}
+							{% endif %}
+							</p>
+							{{ingredient.description|safe}}
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+
+
 				{% endfor %}
 			</tbody>
 		</table>
 		<p class="gray">* 순서대로 높은 비율, 단 1%이하부터 순서 없음</p>
 		<p class="gray">* EWG 등급 1-2 안전, 3-6 무난, 7-10 위험</p>
 	</div>
+	<div class="center">
+		<button class="btn btn-default" id="ingredient_open_btn">펼쳐보기</button>
+		<button class="btn btn-default" id="ingredient_close_btn" style="display:none;">닫기</button>
+	</div>
+	<script>
+$(function() {
+	$( "#ingredient_open_btn" ).click(function() {
+	  $( "#ingredient_div" ).css("height","100%");
+	  $( "#ingredient_div" ).css("overflow-y","auto");
+	   $( "#ingredient_close_btn" ).show();
+	   $( "#ingredient_open_btn" ).hide();
+	});
+	$( "#ingredient_close_btn" ).click(function() {
+	  $( "#ingredient_div" ).css("height","200px");
+	  $( "#ingredient_div" ).css("overflow-y","scroll");
+	   $( "#ingredient_close_btn" ).hide();
+	   $( "#ingredient_open_btn" ).show();
+	});
+
+});
+	</script>
 	{{item.detail|safe}}
 </div>
 <div id="product_drv" style="display:none;">

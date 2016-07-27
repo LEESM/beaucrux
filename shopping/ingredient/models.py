@@ -9,6 +9,7 @@ class Ingredient(models.Model):
 	ewg_low_grade = models.IntegerField(default=-1)
 	caution20 = models.IntegerField(default=0)
 	pub_date = models.DateTimeField(auto_now_add=True)
+	description = models.TextField(null=True, blank=True)
 
 	def __str__(self):
 		return self.ko_name
