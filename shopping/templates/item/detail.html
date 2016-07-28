@@ -204,6 +204,10 @@ function pnav4_click() {
 </script>
 
 <div id="product_info">
+	<div id="ingredient_div">
+	<h3 class="text-center lighter">전성분 표시 정보</h3>
+
+
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
   Launch demo modal
@@ -228,8 +232,6 @@ function pnav4_click() {
   </div>
 </div>
 
-	<div id="ingredient_div">
-	<h3 class="text-center lighter">전성분 표시 정보</h3>
 		<table class="table table-condensed table-hover" id="ingredient_table">
 			<thead>
 				<tr>
@@ -264,7 +266,7 @@ function pnav4_click() {
 
 
 				<!-- Modal -->
-				<div class="modal" id="ingredient_{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal fade" id="ingredient_{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
