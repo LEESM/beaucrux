@@ -246,9 +246,10 @@ function pnav4_click() {
 				<tr>
 					<td class="hidden-xs">{{forloop.counter}}</td>
 					<td>
-						<a type="button" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
-							{{ingredient.ko_name}} <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-						</a>
+						{{ingredient.ko_name}}
+						<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
+							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						</button>
 					</td>
 					<td class="hidden-xs">
 					{{ingredient.purpose}}
