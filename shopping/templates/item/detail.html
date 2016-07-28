@@ -218,23 +218,39 @@ function pnav4_click() {
 			<tbody>
 				{% for ingredient in ingredients %}
 				<tr>
-					<td class="hidden-xs">{{forloop.counter}}</td>
+					<td class="hidden-xs">
+						<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
+							{{forloop.counter}}
+						</a>
+					</td>
 					<td>
-						<a type="button" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
+						<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
 						{{ingredient.ko_name}}
 							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 						</a>
 					</td>
 					<td class="hidden-xs">
-					{{ingredient.purpose}}
+						<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
+							{{ingredient.purpose}}
+						</a>
 					</td>
 					{% if ingredient.ewg_low_grade = 0 %}
-						<td>-</td>
+						<td>
+							<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">-</a>
+						</td>
 					{% else %}
 						{% if ingredient.ewg_low_grade = ingredient.ewg_high_grade %}
-							<td>{{ingredient.ewg_low_grade}}</td>
+							<td>
+								<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
+									{{ingredient.ewg_low_grade}}
+								</a>
+							</td>
 						{% else %}
-							<td>{{ingredient.ewg_low_grade}}-{{ingredient.ewg_high_grade}}</td>						
+							<td>
+								<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
+								{{ingredient.ewg_low_grade}}-{{ingredient.ewg_high_grade}}
+								</a>
+							</td>						
 						{% endif %}
 					{% endif %}
 				</tr>
