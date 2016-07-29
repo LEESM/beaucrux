@@ -225,13 +225,13 @@ function pnav4_click() {
 					</td>
 					<td>
 						<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
-						{{ingredient.ko_name}}
+						{{ingredient.ko_name|truncatechars:10}}
 							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 						</a>
 					</td>
 					<td class="hidden-xs">
 						<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
-							{{ingredient.purpose}}
+							{{ingredient.purpose|truncatechars:20}}
 						</a>
 					</td>
 					{% if ingredient.ewg_low_grade = 0 %}
@@ -262,7 +262,7 @@ function pnav4_click() {
 				    <div class="modal-content">
 				      <div class="modal-header">
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				        <h4 class="modal-title" id="myModalLabel">{{ingredient.ko_name}}</h4>
+				        <h4 class="modal-title" id="myModalLabel">{{ingredient.ko_name }}</h4>
 				      </div>
 				      <div class="modal-body">
 							<p>영문명 : {{ingredient.en_name}}</p>
