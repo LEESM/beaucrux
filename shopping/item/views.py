@@ -17,7 +17,7 @@ def landing(request):
 	return render(request,"landing.html", context)
 
 def index(request):
-	items1 = Item.objects.filter(brand=Brand.objects.get(pk=1)).exclude(item_active=False).order_by('-item_id')
+	items1 = Item.objects.all().exclude(item_active=False).order_by('-item_id')
 	context={'items1':items1,}
 	return render(request,"item/index.html", context)
 
