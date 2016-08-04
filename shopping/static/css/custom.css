@@ -1,4 +1,9 @@
-
+.text_right{
+	text-align: right;
+}
+.text_left{
+	text-align: left;
+}
 .carousel-control.right, .carousel-control.left {
 background:none;
 }
@@ -45,6 +50,25 @@ width:100%;
 	background-color:rgb(112,112,112);
 	border-color:rgb(98,98,98);
 }
+#cart_quantity_div{
+	width:170px;
+	margin:0 auto;
+}
+@media (max-width: 767px){
+	#cart_quantity_div{
+		margin:0;
+	}
+}
+#cart_quantity_div .option_minus, .option_plus{
+	border-radius: 0;
+	border-color:rgb(98,98,98);
+	background-color:rgb(112,112,112);
+}
+#cart_quantity_div .option_minus:hover, .option_plus:hover{
+	background-color:rgb(112,112,112);
+	border-color:rgb(98,98,98);
+}
+
 #quantity{
 	text-align:center;
 	border-color:rgb(98,98,98);
@@ -65,7 +89,6 @@ width:100%;
 }
 #cart_tbody td{
 	vertical-align: middle;
-
 }
 #option_table thead tr th{
 border-bottom:1px solid;
@@ -84,7 +107,6 @@ position:absolute;
 z-index:99999;
 top:-98px;
 width:210px;
-
 }
 #orders_table thead tr th{
 text-align:center;
@@ -157,4 +179,134 @@ box-shadow:none;
 .center{
 	margin:0 auto;
 	text-align:center;
+}
+#main_navbar{
+	margin-bottom:50px;
+	border:none;
+	background-color:white;
+}
+#main_navbar .navbar-nav>li>a{
+	color:black;
+	font-weight:bold;
+	transition:color 0.3s ease;
+	-webkit-transition:color 0.3s ease;
+}
+#main_navbar .navbar-nav>li>a:hover{
+	color:#ffce45;
+}
+#main_navbar .navbar-nav .open .dropdown-menu>li>a{
+	color:black;
+	transition:color 0.3s ease;
+	-webkit-transition:color 0.3s ease;
+}
+#main_navbar .navbar-nav .open .dropdown-menu>li>a:hover{
+	color:#ffce45;	
+}
+#main_navbar .navbar-toggle{
+	color:black;
+}
+
+
+/* 카트 테이블 시작 */
+@media (max-width: 767px){
+    table.cart-table{
+      box-shadow: none;  
+    }
+    table.cart-table thead{
+      display: none; 
+    }
+  table.display th,
+  table.display td{
+    padding: .5em;
+  }
+  table.cart-table td:nth-child(2),
+  table.cart-table td:nth-child(3),
+  table.cart-table td:nth-child(4),
+  table.cart-table td:nth-child(5){
+    padding-left: 96px;
+    border:none;
+    text-align:left;
+  }    
+    table.cart-table tr,
+    table.cart-table td{
+        display: block;
+    }
+    table.cart-table tr{
+        position: relative;
+        margin-bottom: 1em;
+        box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+    }
+    table.cart-table td.cart_thumb{
+        position: absolute;
+        top: 10px;
+        left: 0;
+        border: none;
+        background: none;
+    }
+    table.cart-table td.cart_delete{
+        position: absolute;
+        bottom: 0;
+        left: 16px;
+        border: none;
+        background: none;
+    }
+}
+
+/* 카트 테이블 끝 */
+
+/* 구매 테이블 시작 */
+@media (max-width: 767px){
+    table.buy-table{
+      box-shadow: none;  
+    }
+    table.buy-table thead{
+      display: none; 
+    }
+  table.display th,
+  table.display td{
+    padding: .5em;
+  }
+  table.buy-table td:nth-child(2),
+  table.buy-table td:nth-child(3),
+  table.buy-table td:nth-child(4),
+  table.buy-table td:nth-child(5){
+    padding-left: 96px;
+    border:none;
+    text-align:left;
+  }
+    table.buy-table tr,
+    table.buy-table td{
+        display: block;
+    }
+    table.buy-table tr{
+        position: relative;
+        margin-bottom: 1em;
+        box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+    }
+    table.buy-table td.buy_thumb{
+        position: absolute;
+        top: 25px;
+        left: 0;
+        border: none;
+        background: none;
+    }
+    table.buy-table td.buy_price:before{
+    	content:'가격 : ';
+	}
+    table.buy-table td.buy_quantity:before{
+    	content:'수량 : ';
+	}
+    table.buy-table td.buy_quantity:after{
+    	content:' 개';
+	}
+    table.buy-table td.buy_sub_total:before{
+    	content:'합계 : ';
+	}
+	#coupon_select_td{text-align:left;}
+}
+
+/* 카트 테이블 끝 */
+
+.main_banner{
+	margin-top:1em;
 }

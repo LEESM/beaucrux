@@ -12,8 +12,8 @@
 		<div class="row">
 		<form method="post" action="{% url 'cart_number_update' %}">
 			{% csrf_token %}
-			<div class="table-responsive">
-				<table class="table">
+			<div>
+				<table class="cart-table table">
 					<thead id="cart_thead">
 						<tr>
 							<th>사진</th>
@@ -28,11 +28,11 @@
 						{% for cart_item in cart_items %}
 						<tr>
 							<input type="text" name="id" value="{{cart_item.id}}" style="display:none;"/>
-							<td><a href="{% url 'detail' %}?item_id={{cart_item.item.item_id}}"><img style="max-width:80px;" src="{{cart_item.item.image0.url}}"/></a></td>
+							<td class="cart_thumb"><a href="{% url 'detail' %}?item_id={{cart_item.item.item_id}}"><img style="max-width:80px;" src="{{cart_item.item.image0.url}}"/></a></td>
 							<td>{{ cart_item.item }} : {{ cart_item.item_option }}( +{{cart_item.item_option.option_price|intcomma}} 원 ) </td>
 							<td>{{cart_item.item_plus_option_price|intcomma}} 원</td>
-							<td style="max-width:110px;">
-								<div class="input-group" id="quantity_div">
+							<td>
+								<div class="input-group" id="cart_quantity_div">
 								  <div class="input-group-btn">
 								    <a class="btn btn-default option_minus">-</a>
 								  </div>
@@ -40,22 +40,27 @@
 								  <div class="input-group-btn">
 								    <a class="btn btn-default option_plus">+</a>
 								  </div>
+								  <div class="input-group-btn">
+							    		<button class="btn btn-default" type="submit">수정</button>
+								  </div>
 								</div>
+
 							</td>
 							<td>{{cart_item.sub_total_price|intcomma}} 원</td>
-							<td><a class="btn btn-default" href="/order/pop_item/?id={{cart_item.id}}">삭제</a></td>
+							<td class="cart_delete"><a class="btn btn-default" href="/order/pop_item/?id={{cart_item.id}}">삭제</a></td>
 						</tr>
 						{% endfor %}
 						<tr>
-							<td colspan="5"><span class="pull-right">합계</span></td>
+							<td colspan="4"></td>
 							<td>{{ total_price|intcomma }} 원</td>
+							<td></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 			<div>
-				<a href="{% url 'order_info' %}" class="btn btn-lg btn-primary pull-right">구매하기</a>
-				<button class="btn btn-lg btn-info" type="submit">수정</button>
+				<a href="{% url 'order_info' %}" class="btn btn-lg btn-primary pull-right hidden-xs">구매하기</a>				
+				<a href="{% url 'order_info' %}" class="btn btn-lg btn-primary pull-right hidden-sm hidden-md hidden-lg" style="width:100%;">구매하기</a>
 			</div>
 		</form>
 		</div>

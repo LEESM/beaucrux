@@ -30,7 +30,7 @@
 			<input type="text" id="postcode" name="postcode" class="form-control" style="max-width:100px; display:inline; vertical-align: top;" placeholder="우편번호" value="{{ user.profile.postcode }}">
 			<input type="button" class="btn btn-default"onclick="sample3_execDaumPostcode()" value="우편번호 찾기"><br>
 		</div>
-		<div id="wrap" style="display:none;border:1px solid;min-width:100%;height:400px;margin:5px 0;position:relative">
+		<div id="wrap" style="display:none;border:1px solid;width:100%;height:400px;margin:5px 0;position:relative">
 			<img src="//i1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
 		</div>
 		<input type="text" id="address" name="address" class="d_form large form-control" placeholder="주소" value="{{ user.profile.address }}">
@@ -103,7 +103,7 @@
 	    <label for="name">문의, 안내, 이벤트 등을 수신합니다.</label>
 	    <input type="checkbox" name="ads_agree"{% if user.profile.ads_agree = True %} checked {% endif %}>
 	  </div>
-	  <button type="submit" class="btn btn-default">저장</button>
+	  <button type="submit" class="btn btn-primary btn-lg">저장</button>
 	</form>
 </div>
 </div>
