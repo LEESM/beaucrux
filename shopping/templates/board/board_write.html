@@ -11,8 +11,13 @@
 		<label>비밀글입니다.</label>
 		<input type="checkbox" name="secret" checked="checked">
 		<br/>
+		{% if board_name == 'Sample' %}
+			<div>
+				<p>써주실 내용 : 성함, 주소, 연락처, 원하시는 상품(스무딩, 너리싱, 클래리파잉, 리제너레이팅)</p>
+			</div>
+		{% endif %}
 		{{boardwriteform.content}}
-		<button type="submit" class="btn btn-lg btn-primary">글쓰기</button>
+		<button type="submit" class="btn btn-lg btn-primary pull-right">글쓰기</button>
 	</form>
 </div>
 {% endblock %}

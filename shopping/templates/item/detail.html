@@ -79,8 +79,8 @@
 		</div>
 		<input type="text" class="hidden" id="buy_now" name="buy_now" value="go_cart">
 		<div class="buy_btn_group">
-			<a class="btn btn-lg btn-primary" id="go_cart_btn">장바구니</a>
-			<a class="btn btn-lg btn-primary" id="buy_now_btn">바로구매</a>
+			<a class="btn btn-lg btn-buy" id="go_cart_btn">장바구니</a>
+			<a class="btn btn-lg btn-buy" id="buy_now_btn">바로구매</a>
 		</div>
 		</form>
 	</div>
@@ -378,7 +378,7 @@ $(function() {
 <div id="product_review" style="display:none;">
 	<div class="jumbotron text-center">
 	  <p>후기를 작성해주시면 구매시 현금과 1:1 사용이 가능한 1000포인트를 드립니다.</p>
-		<a class="btn btn-info" href="{% url 'review_write' %}?item_id={{item.item_id}}">후기쓰러가기</a>
+		<a class="btn btn-primary btn-lg" href="{% url 'review_write' %}?item_id={{item.item_id}}">후기쓰러가기</a>
 	</div>
 	<hr/>
 

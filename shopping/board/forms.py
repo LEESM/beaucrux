@@ -7,4 +7,4 @@ class BoardWriteForm(forms.Form):
 		'class':'form-control',
 		'placeholder':'제목',
 		}))
-	content = forms.CharField(widget=SummernoteWidget())
+	content = forms.CharField(widget=SummernoteWidget(attrs={'placeholder':'제목'}))
