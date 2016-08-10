@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="container">
+	<h2>{{board_name}} 글쓰기</h2>
 	<br/>
 	<form method="POST" action="{% url 'board_write' %}">
 	{% csrf_token %}

@@ -27,3 +27,21 @@ class Sample(models.Model):
 	hits = models.IntegerField(default=0)
 	parentId = models.ForeignKey("self", null=True, blank=True)
 	secret = models.BooleanField(default=True)
+
+class After28(models.Model):
+	user = models.ForeignKey(settings.AUTH_USER_MODEL)
+	title = models.CharField(max_length=100)
+	content = models.TextField(blank=True)
+	pub_time = models.DateTimeField(auto_now_add=True)
+	hits = models.IntegerField(default=0)
+	parentId = models.ForeignKey("self", null=True, blank=True)
+	secret = models.BooleanField(default=True)
+
+class Labs(models.Model):
+	user = models.ForeignKey(settings.AUTH_USER_MODEL)
+	title = models.CharField(max_length=100)
+	content = models.TextField(blank=True)
+	pub_time = models.DateTimeField(auto_now_add=True)
+	hits = models.IntegerField(default=0)
+	parentId = models.ForeignKey("self", null=True, blank=True)
+	secret = models.BooleanField(default=True)

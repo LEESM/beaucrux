@@ -174,8 +174,13 @@ border-bottom:1px solid;
 #logo img{
 position:absolute;
 z-index:99999;
-top:-98px;
+top:-4px;
 width:210px;
+}
+@media (max-width: 767px){
+	#logo img{
+		top:8px;
+	}
 }
 #orders_table thead tr th{
 text-align:center;
@@ -367,3 +372,10 @@ box-shadow:none;
 }
 
 /* 카트 테이블 끝 */
+
+.blog_a{
+	text-decoration: underline;
+}
+.blog_a:hover{
+	text-decoration: underline;
+}

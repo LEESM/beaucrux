@@ -131,7 +131,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" id="logo" href="/"><img src="{% static 'img/cosmetic0901_logo.gif' %}"></a>
+          <a class="navbar-brand" id="logo" href="/"><img src="{% static 'img/logo.png' %}"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -151,7 +151,7 @@
             <li><a href="{% url 'board_list' %}?board_name=Notice">NOTICE</a></li>
             <li><a href="{% url 'board_list' %}?board_name=Event">EVENT</a></li>
             <li><a href="{% url 'board_list' %}?board_name=Sample">SAMPLE</a></li>
-            <li><a href="{% url 'mypage' %}">MY PAGE</a></li>
+            <li><a class="blog_a" href="{% url 'board_list' %}?board_name=After28">28일후..</a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->

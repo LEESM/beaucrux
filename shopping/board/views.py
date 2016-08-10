@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from board.models import Notice, Event, Sample
+from board.models import Notice, Event, Sample, After28, Labs
 from board.forms import BoardWriteForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -13,11 +13,16 @@ def board_view(request):
 		item = Event.objects.get(id=item_id)
 	elif board_name == 'Sample' :
 		item = Sample.objects.get(id=item_id)
+	elif board_name == 'Labs' :
+		item = Labs.objects.get(id=item_id)
+	elif board_name == 'After28' :
+		item = After28.objects.get(id=item_id)
 	else:
 		return redirect('index')
 	if item.secret:
 		if not item.user == request.user:
-			return redirect('index')
+			if not request.user.is_superuser:
+				return redirect('index')
 	item.hits+=1
 	item.save()
 	return render(request, "board/board_view.html", {
@@ -38,6 +43,14 @@ def board_list(request):
 		board_title = '샘플신청'
 		write_btn = True
 		board_list=Sample.objects.all().order_by('-pub_time')
+	elif board_name == 'Labs' :
+		board_title = '탐방기'
+		write_btn = False
+		board_list=Labs.objects.all().order_by('-pub_time')
+	elif board_name == 'After28' :
+		board_title = '28일후...'
+		write_btn = False
+		board_list=After28.objects.all().order_by('-pub_time')
 	else:
 		return redirect('index')
 	paginator = Paginator(board_list, 20) 
