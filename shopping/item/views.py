@@ -17,12 +17,17 @@ def landing(request):
 	return render(request,"landing.html", context)
 
 def index(request):
-	items1 = Item.objects.all().exclude(item_active=False).order_by('-item_id')
+	items1 = Item.objects.filter(main1=True)
+	items2 = Item.objects.filter(main2=True)
 	try:
 		head1 = Texts.objects.get(name='head1').contents
 	except:
 		head1 = '내용이 입력되지 않았습니다. 관리필요.'
-	context={'items1':items1,'head1':head1}
+	context={
+		'items1':items1,
+		'items2':items2,
+		'head1':head1,
+	}
 	return render(request,"item/index.html", context)
 
 def brand(request):

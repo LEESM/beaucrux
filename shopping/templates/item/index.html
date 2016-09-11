@@ -6,10 +6,12 @@
 <div class="container">
 	{{ head1|safe }}
 </div>
-<div class="container" id="main_box" style="display:none;">
-	<img class="main_img" src="{% static 'img/main1.jpg' %}"/>
-</div>
-<div class="container" id="index_box">
+
+<div class="clearfix"></div>
+<br/><br/>
+
+
+<div class="container" id="index_box" style="display:none;">
 	<div class="row">
 		{% for item in items1 %}
 		<div class="item_card_wrap">
@@ -33,6 +35,70 @@
 	</div>
 </div>
 
+<div class="container">
+	<h2 class="text-center">Editor's Pick</h2>
+	<div id="owl_box1">
+	{% for item in items1 %}
+			<div class="item_card">
+				<a href="{% url 'detail' %}?item_id={{item.item_id}}" class="text-center">
+					<img class="img-responsive" src="{{ item.image0.url }}">
+					<p><span class="gray">{{item.item_desc}}</span></p>
+					<h4>{{item.item_name}}</h4>
+					<p><strike class="gray">{{item.custom_price|intcomma}}원</strike>  {{item.price|intcomma}}원</p>
+				</a>
+			</div>
+	{% endfor %}
+	</div>
+</div>
+<script>
+$(document).ready(function() {
+  $("#owl_box1").owlCarousel({
+  	 items : 4,
+    itemsCustom : false,
+    itemsDesktop : [1199,4],
+    itemsDesktopSmall : [980,3],
+    itemsTablet: [768,2],
+    itemsTabletSmall: false,
+    itemsMobile : [479,1],
+    singleItem : false,
+    itemsScaleUp : false,
+  });
+});
+</script>
+
+<div class="clearfix"></div>
+<br/><br/>
+
+<div class="container">
+	<h2 class="text-center">Just Arrived</h2>
+	<div id="owl_box2">
+	{% for item in items2 %}
+			<div class="item_card">
+				<a href="{% url 'detail' %}?item_id={{item.item_id}}" class="text-center">
+					<img class="img-responsive" src="{{ item.image0.url }}">
+					<p><span class="gray">{{item.item_desc}}</span></p>
+					<h4>{{item.item_name}}</h4>
+					<p><strike class="gray">{{item.custom_price|intcomma}}원</strike>  {{item.price|intcomma}}원</p>
+				</a>
+			</div>
+	{% endfor %}
+	</div>
+</div>
+<script>
+$(document).ready(function() {
+  $("#owl_box2").owlCarousel({
+  	 items : 4,
+    itemsCustom : false,
+    itemsDesktop : [1199,4],
+    itemsDesktopSmall : [980,3],
+    itemsTablet: [768,2],
+    itemsTabletSmall: false,
+    itemsMobile : [479,1],
+    singleItem : false,
+    itemsScaleUp : false,
+  });
+});
+</script>
 
 
 {% endblock %}
