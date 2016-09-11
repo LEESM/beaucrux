@@ -4,6 +4,9 @@
 
 {% block content %}
 <div class="container">
+
+
+{{ head1|safe }}
 	<div class="row">
 		<div class="col-xs-12 main_banner">
 			<a href="{% url 'aboutus' %}"><img class="main_img" src="{% static 'img/main_banner_1.jpeg' %}"/></a>

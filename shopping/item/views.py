@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from item.models import Category, Brand, Item, ItemOption, ItemQna, ItemReview
-from accounts.models import PointHistory, Landing
+from accounts.models import PointHistory, Landing, Texts
 from item.forms import ItemReviewForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
@@ -18,7 +18,11 @@ def landing(request):
 
 def index(request):
 	items1 = Item.objects.all().exclude(item_active=False).order_by('-item_id')
-	context={'items1':items1,}
+	try:
+		head1 = Texts.objects.get(name='head1').contents
+	except:
+		head1 = '내용이 입력되지 않았습니다. 관리필요.'
+	context={'items1':items1,'head1':head1}
 	return render(request,"item/index.html", context)
 
 def brand(request):

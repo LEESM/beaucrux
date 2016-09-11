@@ -21,7 +21,7 @@ class ItemOptionAdmin(admin.ModelAdmin):
 	list_display = ['option_id','option_name','option_price','option_custom_price','option_stock',]
 
 class ItemAdmin(SummernoteModelAdmin):
-	list_display = ['item_id','item_active','item_name','item_desc','price','custom_price','get_categories','brand','get_options_name','image0','delivery','detail']
+	list_display = ['item_id','item_active','main1','main2','main3','item_name','item_desc','price','custom_price','get_categories','brand','get_options_name','image0','delivery','detail']
 	inlines = (ItemOptionInline,ItemIngredientCombinationInline,)
 
 class ItemQnaAdmin(SummernoteModelAdmin):
