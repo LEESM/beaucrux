@@ -4,20 +4,7 @@
 
 {% block content %}
 <div class="container">
-
-
-{{ head1|safe }}
-	<div class="row">
-		<div class="col-xs-12 main_banner">
-			<a href="{% url 'aboutus' %}"><img class="main_img" src="{% static 'img/main_banner_1.jpeg' %}"/></a>
-		</div>
-		<div class="col-xs-12 col-md-6 main_banner">
-			<a href="/item/detail/?item_id=YLA_001"><img class="main_img" src="{% static 'img/main_banner_2.jpeg' %}"/></a>
-		</div>
-		<div class="col-xs-12 col-md-6 main_banner">
-			<a href="{% url 'board_list' %}?board_name=Notice"><img class="main_img" src="{% static 'img/main_banner_3.jpeg' %}"/></a>
-		</div>
-	</div>
+	{{ head1|safe }}
 </div>
 <div class="container" id="main_box" style="display:none;">
 	<img class="main_img" src="{% static 'img/main1.jpg' %}"/>
