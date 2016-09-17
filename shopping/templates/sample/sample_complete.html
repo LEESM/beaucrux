@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container">
+	<h4>{{new_sample.name}}님의 샘플 신청이 완료되었습니다.</h4>
+	<h4>샘플 신청 게시판에서 상태를 조회하실 수 있습니다. 감사합니다^^</h4>
+	<a href="{% url 'sample_list' %}" class="btn btn-lg btn-primary">샘플 신청 게시판 바로가기</a>
+</div>
+{% endblock %}

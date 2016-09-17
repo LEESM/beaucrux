@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container">
+	<h4>신청하신 샘플들</h4>
+		<div class="row">
+		{% for item in sample.samples.all %}
+			<div class="item_card_wrap">
+				<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 item_card" class="text-center">
+					<a target="_blank" href="{% url 'detail' %}?item_id={{item.item_id}}" class="text-center">
+						<img class="img-responsive" src="{{ item.image0.url }}">
+						<h4>{{item.item_name}}</h4>
+					</a>
+					<p class="text-center">
+						<a target="_blank" href="{% url 'detail' %}?item_id={{item.item_id}}" class="text-center">
+							상세보기&nbsp;<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						</a>
+					</p>
+				</div>
+			</div>
+			{% if forloop.counter|divisibleby:"2" %}
+				{%  if forloop.counter|divisibleby:"4" %}
+					<div class="clearfix visible-md-block visible-lg-block"></div>
+				{%  else %}
+					<div class="clearfix visible-xs-block visible-sm-block"></div>
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+		</div>
+		<h4>성함</h4>
+		<p>{{ sample.name }}</p>
+		<h4>연락처</h4>
+		<p>{{ sample.phone }}</p>
+		<h4>우편번호</h4>
+		<p>{{ sample.postcode }}</p>
+		<h4>기본주소</h4>
+		<p>{{ sample.address1 }}</p>
+		<h4>상세주소</h4>
+		<p>{{ sample.address2 }}</p>
+		<h4>상태</h4>
+		<p>{{ sample.status }}</p>
+		<h4>송장번호</h4>
+		<p>{{ sample.delivery_number }}</p>
+		<h4>요청날짜</h4>
+		<p>{{ sample.request_date|date:"y-m-d" }}</p>
+
+</div>
+
+{% endblock %}

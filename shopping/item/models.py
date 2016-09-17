@@ -32,6 +32,7 @@ class Item(models.Model):
 	main1 = models.BooleanField(default=False)
 	main2 = models.BooleanField(default=False)
 	main3 = models.BooleanField(default=False)
+	is_sample = models.BooleanField(default=False)
 	image0 = models.ImageField(blank=True, upload_to=get_image_path)
 	image1 = models.ImageField(blank=True, upload_to=get_image_path)
 	image2 = models.ImageField(blank=True, upload_to=get_image_path)

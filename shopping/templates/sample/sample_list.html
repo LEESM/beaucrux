@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+	<div class="container">
+		<h2>샘플 선물받으실 분들</h2>
+		<table class="table text-center">
+			<thead>
+				<tr class="text-center">
+					<th class="text-center">성함</th>
+					<th class="text-center">등록일</th>
+					<th class="text-center">상태</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in sample_list %}
+					<tr>
+						<td><a href="/sample/detail/{{item.id}}">{{item.name|slice:":1" }}*{{item.name|slice:"2:" }} <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></td>
+						<td>{{item.request_date|date:"y-m-d" }}</td>
+						<td>{{item.status}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}
