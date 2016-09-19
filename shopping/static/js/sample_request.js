@@ -54,3 +54,75 @@ function sample3_execDaumPostcode() {
     // iframe을 넣은 element를 보이게 한다.
     element_wrap.style.display = 'block';
 }
+
+function form_submit(){
+    if( $(":checked").length == 0){
+        alert('최소한 하나 이상의 샘플을 선택해주세요. 제품 옆의 체크박스를 누르면 선택됩니다.');
+        return;
+    }
+
+    if( $('#id_name').val()=='' ){
+        alert('성함을 입력해주세요.');
+        $('#id_name').focus();
+        return;
+    }
+
+    if( $('#id_password').val()=='' ){
+        alert('비밀번호를 입력해주세요.');
+        $('#id_password').focus();
+        return;
+    }
+
+    if( $('#id_phone').val()=='' ){
+        alert('연락처를 입력해주세요.');
+        $('#id_phone').focus();
+        return;
+    }
+
+    if( $('#id_postcode').val()=='' ){
+        alert('우편번호를 입력해주세요.');
+        $('#postcode_btn').click();
+        return;
+    }
+
+    if( $('#id_address1').val()=='' ){
+        alert('기본주소를 입력해주세요.');
+        $('#id_address1').focus();
+        return;
+    }
+
+    if( $('#id_address2').val()=='' ){
+        alert('상세주소를 입력해주세요.');
+        $('#id_address2').focus();
+        return;
+    }
+
+    $('#sample_request_form').submit();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -5,7 +5,7 @@
 <div class="container">
 	<h2>샘플 신청 가능한 제품들</h2>
 
-	<form action="" method="post">
+	<form action="" method="post" id="sample_request_form">
 		{% csrf_token %}
 		<div class="row">
 			{% for item in samples %}
@@ -49,14 +49,14 @@
 			<div class="form-group">
 				<label for="id_postcode">주소</label><br/>
 				{{ sample_form.postcode }}
-				<input type="button" class="btn btn-success" onclick="sample3_execDaumPostcode()" value="우편번호 찾기">
+				<input type="button" id="postcode_btn" class="btn btn-success" onclick="sample3_execDaumPostcode()" value="우편번호 찾기">
 				<div id="wrap" style="display:none;border:1px solid;width:320px;height:500px;margin:5px 0;position:relative">
 				<img src="//i1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
 				</div>			
 				{{ sample_form.address1 }}
 				{{ sample_form.address2 }}
 			</div>
-			<input type="submit" class="btn btn-primary btn-lg" value="Submit">
+			<a onclick="form_submit();" class="btn btn-primary btn-lg">신청완료</a>
 		</div>
 	</form>
 

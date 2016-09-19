@@ -398,3 +398,13 @@ color:white;
 font-size:15px;
 line-height:15px;
 }
+.review_head_div1{
+	line-height:38px;
+	text-align:center;
+	font-size:18px;
+}
+.review_head_div2{
+	line-height:74px;
+	text-align:center;
+	font-size:18px;
+}

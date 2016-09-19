@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<!--<link rel="stylesheet" href="{% static 'css/sample_review.css' %}" />-->
+
+<div class="container">
+	<form id="sample_review_form" method="POST" action="/sample/review_update/{{sample.id}}/">
+		{% csrf_token %}
+		{% for item in sample.samples.all %}
+			<div class="row">
+				<div class="col-xs-4 col-sm-2">
+					<img class="img-responsive" src="{{item.image0.url}}"/>
+				</div>
+				<div class="col-xs-8 col-sm-10">
+					<h3>{{ item.item_name }}</h3>
+					<p class="gray">{{ item.item_desc }}</p>
+				</div>
+			</div>
+			<div class="clear-fix"></div>
+			<div class="row">
+				<div class="col-xs-4 col-sm-2 review_head_div1">
+					평점
+				</div>
+				<div class="col-xs-8 col-sm-10">
+					<fieldset class="rating{{item.id}}">
+						<input type="radio" id="star5{{item.id}}" name="rating{{item.id}}" value="5" />
+						<label for="star5{{item.id}}" title="Rocks!">5 stars</label>
+						<input type="radio" id="star4{{item.id}}" name="rating{{item.id}}" value="4" />
+						<label for="star4{{item.id}}" title="Pretty good">4 stars</label>
+						<input type="radio" id="star3{{item.id}}" name="rating{{item.id}}" value="3" />
+						<label for="star3{{item.id}}" title="Meh">3 stars</label>
+						<input type="radio" id="star2{{item.id}}" name="rating{{item.id}}" value="2" />
+						<label for="star2{{item.id}}" title="Kinda bad">2 stars</label>
+						<input type="radio" id="star1{{item.id}}" name="rating{{item.id}}" value="1" />
+						<label for="star1{{item.id}}" title="Sucks big time">1 star</label>
+					</fieldset>
+				</div>
+			</div>
+			<div class="clear-fix"></div>
+			<div class="row">
+				<div class="col-xs-4 col-sm-2 review_head_div2">
+					평가
+				</div>
+				<div class="col-xs-8 col-sm-10">
+					<textarea name="comment{{item.id}}" id="comment{{item.id}}" class="form-control comment" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="clear-fix"></div>
+			<hr/>
+
+
+			<style>
+
+				.rating{{item.id}} {
+				    float:left;
+				}
+
+				/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+				   follow these rules. Every browser that supports :checked also supports :not(), so
+				   it doesn’t make the test unnecessarily selective */
+				.rating{{item.id}}:not(:checked) > input {
+					display:none;
+				/*    position:absolute;
+				    top:-9999px;
+				    clip:rect(0,0,0,0);
+				*/}
+
+				.rating{{item.id}}:not(:checked) > label {
+				    float:right;
+				    width:1em;
+				    padding:0 .1em;
+				    overflow:hidden;
+				    white-space:nowrap;
+				    cursor:pointer;
+				    font-size:200%;
+				    line-height:1.2;
+				    color:#ddd;
+				    text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
+				}
+
+				.rating{{item.id}}:not(:checked) > label:before {
+				    content: '★ ';
+				}
+
+				.rating{{item.id}} > input:checked ~ label {
+				    color: #f70;
+				    text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
+				}
+
+				.rating{{item.id}}:not(:checked) > label:hover,
+				.rating{{item.id}}:not(:checked) > label:hover ~ label {
+				    color: gold;
+				    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+				}
+
+				.rating{{item.id}} > input:checked + label:hover,
+				.rating{{item.id}} > input:checked + label:hover ~ label,
+				.rating{{item.id}} > input:checked ~ label:hover,
+				.rating{{item.id}} > input:checked ~ label:hover ~ label,
+				.rating{{item.id}} > label:hover ~ input:checked ~ label {
+				    color: #ea0;
+				    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+				}
+
+				.rating{{item.id}} > label:active {
+				    position:relative;
+				    top:2px;
+				    left:2px;
+				}
+			</style>
+
+		{% endfor %}
+
+
+
+		<button type="submit" class="btn btn-lg btn-primary center pull-right">후기 올리기</button>
+	</form>
+
+</div>
+
+{% endblock %}
+
