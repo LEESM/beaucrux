@@ -383,7 +383,17 @@ $(function() {
 		<a class="btn btn-primary btn-lg" href="{% url 'review_write' %}?item_id={{item.item_id}}">후기쓰러가기</a>
 	</div>
 	<hr/>
+	<h4>샘플 사용 고객님의 후기</h4>
+	<hr/>
+	{% for review in sample_reviews %}
+		<p>{{ review.name }}님 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="gray">{{ review.review_date|date:"Y-m-d" }}</span></p>
+		<p>{% for i in review.score|times %}<img src="{% static 'img/star.png' %}" />{% endfor %} </p>
+		<p>	{{ review.comment|safe }}</p>
+		<hr/>
+	{% endfor %}
 
+	<h4>구매고객님의 후기</h4>
+	<hr/>
 	{% for review in item_reviews %}
 		<p>{{ review.user.first_name }}님 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="gray">{{ review.review_time|date:"Y-m-d" }}</span></p>
 		<p>{% for i in review.score|times %}<img src="{% static 'img/star.png' %}" />{% endfor %} </p>

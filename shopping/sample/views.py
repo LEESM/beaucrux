@@ -36,7 +36,7 @@ def sample_request(request):
 			return render(request,"sample/sample_complete.html",{'new_sample':new_sample})
 	else:
 		sample_form = SampleForm()
-	samples = Item.objects.filter(is_sample=True)
+	samples = Item.objects.filter(is_sample=True).order_by('order_number')
 	return render(request, 'sample/sample_request.html', {'sample_form':sample_form, 'samples':samples})
 
 def sample_list(request):

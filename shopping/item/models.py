@@ -2,6 +2,7 @@ from django.db import models
 from ingredient.models import Ingredient
 from django.conf import settings
 import os
+from django.template.defaultfilters import truncatechars  # or truncatewords
 
 class Category(models.Model):
 	category_id = models.CharField(unique=True, max_length=30)
@@ -33,6 +34,7 @@ class Item(models.Model):
 	main2 = models.BooleanField(default=False)
 	main3 = models.BooleanField(default=False)
 	is_sample = models.BooleanField(default=False)
+	order_number = models.IntegerField(default = 0)
 	image0 = models.ImageField(blank=True, upload_to=get_image_path)
 	image1 = models.ImageField(blank=True, upload_to=get_image_path)
 	image2 = models.ImageField(blank=True, upload_to=get_image_path)
@@ -59,6 +61,15 @@ class Item(models.Model):
 	def get_options_name(self):
 		options=ItemOption.objects.filter(original_item=self)
 		return "\n".join([option.option_name for option in options ])
+
+	@property
+	def short_detail(self):
+		return truncatechars(self.detail, 30)
+
+	@property
+	def short_delivery(self):
+		return truncatechars(self.delivery, 30)
+
 
 class ItemIngredientCombination(models.Model):
 	ingredient = models.ForeignKey(Ingredient, blank=True,null=True,on_delete=models.SET_NULL)

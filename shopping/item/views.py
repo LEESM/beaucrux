@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from item.models import Category, Brand, Item, ItemOption, ItemQna, ItemReview
 from accounts.models import PointHistory, Landing, Texts
+from sample.models import SampleReview
 from item.forms import ItemReviewForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
@@ -17,8 +18,8 @@ def landing(request):
 	return render(request,"landing.html", context)
 
 def index(request):
-	items1 = Item.objects.filter(main1=True)
-	items2 = Item.objects.filter(main2=True)
+	items1 = Item.objects.filter(main1=True).order_by('order_number')
+	items2 = Item.objects.filter(main2=True).order_by('order_number')
 	try:
 		head1 = Texts.objects.get(name='head1').contents
 	except:
@@ -69,6 +70,7 @@ def detail(request):
 	item_qnas = ItemQna.objects.filter(item=item).order_by('-qna_time')
 	review_write = ItemReviewForm()
 	item_reviews = ItemReview.objects.filter(item=item).order_by('-review_time')
+	sample_reviews = SampleReview.objects.filter(item=item).order_by('-review_date')
 	context={
 		'item':item, 
 		'images':images, 
@@ -76,7 +78,10 @@ def detail(request):
 		'item_qnas':item_qnas, 
 		'review_write':review_write, 
 		'item_reviews':item_reviews,
+		'sample_reviews':sample_reviews,
 		}
+	print (sample_reviews)
+	print('test')
 	return render(request,"item/detail.html", context)
 
 @login_required

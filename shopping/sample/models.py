@@ -25,7 +25,7 @@ class Sample(models.Model):
 		try:
 			return self.coupon.coupon_id
 		except:
-			return '없음'			
+			return '없음'
 
 class SampleReview(models.Model):
 	name = models.CharField(max_length=128)
