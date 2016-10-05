@@ -16,7 +16,7 @@
 						<h4>{{item.item_name}}</h4>
 					</a>
 					<p class="text-center">
-						<input type="checkbox" value="{{ item.item_id }}" name="sample_list">&nbsp;
+						<input type="checkbox" value="{{ item.item_id }}" name="sample_list" class="sample_list">&nbsp;
 						<a target="_blank" href="{% url 'detail' %}?item_id={{item.item_id}}" class="text-center">
 							상세보기&nbsp;<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 						</a>

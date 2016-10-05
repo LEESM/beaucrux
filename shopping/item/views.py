@@ -80,8 +80,6 @@ def detail(request):
 		'item_reviews':item_reviews,
 		'sample_reviews':sample_reviews,
 		}
-	print (sample_reviews)
-	print('test')
 	return render(request,"item/detail.html", context)
 
 @login_required

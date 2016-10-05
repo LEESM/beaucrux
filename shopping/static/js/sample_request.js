@@ -100,29 +100,12 @@ function form_submit(){
     $('#sample_request_form').submit();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+var limit = 3;
+$('input.sample_list').on('change', function(evt) {
+    console.log($('[name="sample_list"]:checked').length);
+   if($('[name="sample_list"]:checked').length > limit) {
+    alert('샘플은 3개까지 선택 가능합니다.');
+       this.checked = false;
+   }
+});
 
