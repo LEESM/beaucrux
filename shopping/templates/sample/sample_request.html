@@ -2,35 +2,132 @@
 {% load staticfiles %}
 
 {% block content %}
+
+<style>
+
+.checks {position: relative;}
+
+.checks input[type="checkbox"] {  /* 실제 체크박스는 화면에서 숨김 */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0
+}
+.checks input[type="checkbox"] + label {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.checks input[type="checkbox"] + label:before {  /* 가짜 체크박스 */
+  content: ' ';
+  display: inline-block;
+  width: 21px;  /* 체크박스의 너비를 지정 */
+  height: 21px;  /* 체크박스의 높이를 지정 */
+  line-height: 21px; /* 세로정렬을 위해 높이값과 일치 */
+  margin: -2px 8px 0 0;
+  text-align: center; 
+  vertical-align: middle;
+  background: #fafafa;
+  border: 1px solid #cacece;
+  border-radius : 3px;
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+}
+.checks input[type="checkbox"] + label:active:before,
+.checks input[type="checkbox"]:checked + label:active:before {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
+
+.checks input[type="checkbox"]:checked + label:before {  /* 체크박스를 체크했을때 */ 
+  content: '\2714';  /* 체크표시 유니코드 사용 */
+  color: #99a1a7;
+  text-shadow: 1px 1px #fff;
+  background: #e9ecee;
+  border-color: #adb8c0;
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+}
+
+.checks.etrans input[type="checkbox"] + label {
+  padding-left: 30px;
+}
+.checks.etrans input[type="checkbox"] + label:before {
+  position: absolute;
+  left: 0;
+  top: 40px;
+  margin-top: 0;
+  opacity: .6;
+  box-shadow: none;
+  border-color: #333;
+  -webkit-transition: all .12s, border-color .08s;
+  transition: all .12s, border-color .08s;
+}
+
+.checks.etrans input[type="checkbox"]:checked + label:before {
+  position: absolute;
+  content: "";
+  width: 10px;
+  top: 35px;
+  left: 5px;
+  border-radius: 0;
+  opacity:1; 
+  background: transparent;
+  border-color:transparent #6cc0e5 #6cc0e5 transparent;
+  border-top-color:transparent;
+  border-left-color:transparent;
+  -ms-transform:rotate(45deg);
+  -webkit-transform:rotate(45deg);
+  transform:rotate(45deg);
+}
+
+.no-csstransforms .checks.etrans input[type="checkbox"]:checked + label:before {
+  /*content:"\2713";*/
+  content: "\2714";
+  top: 0;
+  left: 0;
+  width: 21px;
+  line-height: 21px;
+  color: #6cc0e5;
+  text-align: center;
+  border: 1px solid #6cc0e5;
+}
+
+</style>
+ 
 <div class="container">
 	<h2>샘플 신청 가능한 제품들</h2>
 
 	<form action="" method="post" id="sample_request_form">
 		{% csrf_token %}
+
 		<div class="row">
-			{% for item in samples %}
-			<div class="item_card_wrap">
-				<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 item_card" class="text-center">
+		{% for item in samples %}
+		<div class="col-xs-12 col-sm-6 sample_item_div">
+			<div class="row item_card_wrap">
+				<div class="col-xs-4 sample_item_div_1">
 					<a target="_blank" href="{% url 'detail' %}?item_id={{item.item_id}}" class="text-center">
 						<img class="img-responsive" src="{{ item.image0.url }}">
-						<h4>{{item.item_name}}</h4>
 					</a>
-					<p class="text-center">
-						<input type="checkbox" value="{{ item.item_id }}" name="sample_list" class="sample_list">&nbsp;
-						<a target="_blank" href="{% url 'detail' %}?item_id={{item.item_id}}" class="text-center">
-							상세보기&nbsp;<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-						</a>
-					</p>
+				</div>
+				<div class="col-xs-6 sample_item_div_2">
+					<a target="_blank" href="{% url 'detail' %}?item_id={{item.item_id}}" class="text-center">
+						<h4>{{item.item_name}}</h4>
+						<p>{{item.item_desc}}</p>
+						<p><span class="glyphicon glyphicon-search" aria-hidden="true"></span></p>
+					</a>
+				</div>
+				<div class="col-xs-2 sample_item_div_3 checks etrans">
+					<input type="checkbox" value="{{ item.item_id }}" id="{{ item.item_id }}" name="sample_list" class="sample_list">
+					<label for="{{ item.item_id }}">&nbsp;</label>
 				</div>
 			</div>
-			{% if forloop.counter|divisibleby:"2" %}
-				{%  if forloop.counter|divisibleby:"4" %}
-					<div class="clearfix visible-md-block visible-lg-block"></div>
-				{%  else %}
-					<div class="clearfix visible-xs-block visible-sm-block"></div>
-				{% endif %}
-			{% endif %}
-			{% endfor %}
+		</div>
+		{% endfor %}
 		</div>
 		<div class="col-xs-12 col-sm-4 col-sm-offset-4">
 

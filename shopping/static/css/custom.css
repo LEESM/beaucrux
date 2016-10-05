@@ -408,3 +408,26 @@ line-height:15px;
 	text-align:center;
 	font-size:18px;
 }
+.sample_item_div{
+	vertical-align: middle;
+	border-top:1px solid #ccc;
+}
+.sample_item_div_2{
+margin-top:30px;
+}
+.sample_item_div_3{
+	line-height:100px;
+}
+@media (max-width: 991px){
+	.sample_item_div_2{
+	margin-top:0;
+	}
+}
+@media (max-width: 767px){
+	.sample_item_div_1{
+		padding:0;
+	}
+	.sample_item_div_2{
+		margin-top:10px;
+	}
+}
