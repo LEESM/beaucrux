@@ -23,6 +23,27 @@
 			</tbody>
 		</table>
 
+	<nav class="text-center">
+	  <ul class="pagination">
+	  {% if sample_list.has_previous %}
+	    <li>
+	      <a class="btn btn-default" href="?page={{ sample_list.previous_page_number }}">
+	        <span aria-hidden="true">&laquo;</span>
+	      </a>
+	    </li>
+	  {% endif %}
+	    <li><a href="#">{{ sample_list.number }} 페이지</a></li>
+	   {% if sample_list.has_next %}
+	    <li>
+			<a class="btn btn-default" href="?page={{ sample_list.next_page_number }}">
+				<span aria-hidden="true">&raquo;</span>
+	      </a>
+	    </li>
+	    {% endif %}
+	  </ul>
+	</nav>
+	<div class="clearfix"></div>
+
 		<a href="/sample/request/" class="btn btn-lg btn-primary pull-right">샘플선물 받으러 가기</a>
 	</div>
 {% endblock %}
