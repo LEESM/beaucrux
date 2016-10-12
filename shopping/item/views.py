@@ -23,7 +23,7 @@ def make_items_discount_var(items):
 			item.is_discount = False
 		else:
 			item.is_discount = True
-			item.discount_percent = round( 100 * item.price / item.custom_price )
+			item.discount_percent = round( 100 * (item.custom_price - item.price) / item.custom_price )
 	return items
 
 def index(request):
