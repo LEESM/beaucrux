@@ -14,7 +14,15 @@
 				<img class="img-responsive" src="{{ item.image0.url }}">
 				<p><span class="gray">{{item.item_desc}}</span></p>
 				<h4>{{item.item_name}}</h4>
-				<p><strike class="gray">{{item.custom_price|intcomma}}원</strike>  {{item.price|intcomma}}원</p>
+				<p>
+					{% if item.is_discount %}
+						<strike class="gray">{{item.custom_price|intcomma}}원</strike>
+						{{item.price|intcomma}}원
+						<span class="badge badge-red">{{ item.discount_percent }}%↓</span>
+					{% else %}
+						{{item.price|intcomma}}원
+					{% endif %}
+				</p>
 			</a>
 		</div>
 		{% if forloop.counter|divisibleby:"2" %}

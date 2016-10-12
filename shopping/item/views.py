@@ -17,15 +17,18 @@ def landing(request):
 	context = {"message": message}
 	return render(request,"landing.html", context)
 
-def index(request):
-	items1 = Item.objects.filter(main1=True).order_by('order_number')
-	for item in items1:
+def make_items_discount_var(items):
+	for item in items:
 		if item.price == item.custom_price:
 			item.is_discount = False
 		else:
 			item.is_discount = True
 			item.discount_percent = round( 100 * item.price / item.custom_price )
-	items2 = Item.objects.filter(main2=True).order_by('order_number')
+	return items
+
+def index(request):
+	items1 = make_items_discount_var(Item.objects.filter(main1=True).order_by('order_number'))
+	items2 = make_items_discount_var(Item.objects.filter(main2=True).order_by('order_number'))
 	try:
 		head1 = Texts.objects.get(name='head1').contents
 	except:
@@ -43,7 +46,7 @@ def brand(request):
 	except:
 		redirect('index')
 	brand = Brand.objects.get(brand_id=brand_name)
-	items = Item.objects.filter(brand=brand).exclude(item_active=False).order_by('-item_id')
+	items = make_items_discount_var(Item.objects.filter(brand=brand).exclude(item_active=False).order_by('-item_id'))
 	return render(request,"item/brand.html",{
 		'brand':brand,
 		'items':items,
