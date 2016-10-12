@@ -11,6 +11,8 @@ from django.contrib.auth import logout as logout_user
 from django.contrib.auth.views import login as default_login_view
 from django.contrib.auth.decorators import login_required
 
+from item.views import get_brands
+
 def login(request):
 	return default_login_view(request, template_name="accounts/login.html")
 
@@ -65,7 +67,7 @@ def mypage(request):
 		new_profile=Profile(user=request.user)
 		new_profile.save()
 	mypageform = MypageForm({'first_name':request.user.first_name, 'phone':user.profile.phone})
-	context={'message':message,'mypageform':mypageform, 'user':user}
+	context={'message':message,'mypageform':mypageform, 'user':user, 'brands':get_brands(),}
 	return render(request,"accounts/mypage.html", context)
 
 def signup(request):
@@ -91,6 +93,7 @@ def signup(request):
 			'message':'입력정보를 정확히 확인해주세요.',
 			'regist_terms':regist_terms.contents,
 			'privacy_info_terms':privacy_info_terms.contents,
+			'brands':get_brands(),
 		})
 	elif request.method=="GET":
 		userform = SignupForm()
@@ -98,4 +101,5 @@ def signup(request):
 			'userform':userform,
 			'regist_terms':regist_terms.contents,
 			'privacy_info_terms':privacy_info_terms.contents,
+			'brands':get_brands(),
 		})

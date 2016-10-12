@@ -3,6 +3,7 @@ from board.models import Notice, Event, Sample, After28, Labs
 from board.forms import BoardWriteForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from item.views import get_brands
 
 def board_view(request):
 	board_name = request.GET.get('board_name')
@@ -27,6 +28,7 @@ def board_view(request):
 	item.save()
 	return render(request, "board/board_view.html", {
 		'item':item,
+		'brands':get_brands(),
 	})
 
 def board_list(request):
@@ -66,6 +68,7 @@ def board_list(request):
 		'board_name':board_name,
 		'board_title':board_title,
 		'board_list':board_list,
+		'brands':get_brands(),
 	})
 
 @login_required
@@ -111,4 +114,5 @@ def board_write(request):
 		return render(request, "board/board_write.html", {
 			'boardwriteform':boardwriteform,
 			'board_name':board_name,
+			'brands':get_brands(),
 		})

@@ -4,6 +4,7 @@ from item.models import Item
 from order.models import Coupon
 from .models import Sample, SampleReview
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from item.views import get_brands
 
 def sample_request(request):
 	if request.method == 'POST':
@@ -33,11 +34,11 @@ def sample_request(request):
 			for sample_id in sample_list:
 				sample = Item.objects.get(item_id=sample_id)
 				new_sample.samples.add(sample)
-			return render(request,"sample/sample_complete.html",{'new_sample':new_sample})
+			return render(request,"sample/sample_complete.html",{'new_sample':new_sample, 'brands':get_brands(),})
 	else:
 		sample_form = SampleForm()
 	samples = Item.objects.filter(is_sample=True).order_by('order_number')
-	return render(request, 'sample/sample_request.html', {'sample_form':sample_form, 'samples':samples})
+	return render(request, 'sample/sample_request.html', {'sample_form':sample_form, 'samples':samples, 'brands':get_brands()})
 
 def sample_list(request):
 	sample_list = Sample.objects.all().order_by('-request_date')
@@ -49,7 +50,7 @@ def sample_list(request):
 		sample_list = paginator.page(1)
 	except EmptyPage:
 		sample_list = paginator.page(paginator.num_pages)
-	return render(request, "sample/sample_list.html", {'sample_list':sample_list,})
+	return render(request, "sample/sample_list.html", {'sample_list':sample_list,'brands':get_brands(),})
 
 def sample_detail(request,sample_id):
 	sample = Sample.objects.get(pk=sample_id)
@@ -57,11 +58,11 @@ def sample_detail(request,sample_id):
 		original_password = sample.password
 		applied_password = request.POST['password']
 		if(original_password==applied_password):
-			return render(request, "sample/sample_detail.html", {'sample':sample})
+			return render(request, "sample/sample_detail.html", {'sample':sample, 'brands':get_brands(),})
 		else:
-			return render(request, "sample/sample_detail_password.html", {'title':sample.name + '님 신청내역', 'message':'비밀번호가 일치하지 않습니다. 정확하게 입력해주세요.'})
+			return render(request, "sample/sample_detail_password.html", {'title':sample.name + '님 신청내역', 'message':'비밀번호가 일치하지 않습니다. 정확하게 입력해주세요.', 'brands':get_brands()})
 	else:
-		return render(request, "sample/sample_detail_password.html", {'title':sample.name + '님 신청내역'})
+		return render(request, "sample/sample_detail_password.html", {'title':sample.name + '님 신청내역', 'brands':get_brands()})
 
 def sample_review(request, sample_id):
 	sample = Sample.objects.get(pk=sample_id)
@@ -69,16 +70,17 @@ def sample_review(request, sample_id):
 		return render(request,"sample/sample_message.html", {
 			'title' : '평가가 이미 있네요?' ,
 			'content' : sample.name + '님의 평가는 이미 저장되었습니다. 감사합니다^^',
+			'brands':get_brands(),
 			})
 	if request.method == 'POST':
 		original_password = sample.password
 		applied_password = request.POST['password']
 		if(original_password==applied_password):
-			return render(request, "sample/sample_review.html", {'sample':sample,})
+			return render(request, "sample/sample_review.html", {'sample':sample,'brands':get_brands(),})
 		else:
-			return render(request, "sample/sample_detail_password.html", {'title':sample.name + '님의 평가는?', 'message':'비밀번호가 일치하지 않습니다. 정확하게 입력해주세요.'})		
+			return render(request, "sample/sample_detail_password.html", {'title':sample.name + '님의 평가는?', 'message':'비밀번호가 일치하지 않습니다. 정확하게 입력해주세요.', 'brands':get_brands(),})		
 	else:
-		return render(request, "sample/sample_detail_password.html", {'title':sample.name + '님의 평가는?'})
+		return render(request, "sample/sample_detail_password.html", {'title':sample.name + '님의 평가는?', 'brands':get_brands(),})
 
 def sample_review_update(request,sample_id):
 	if request.method == 'POST':
@@ -98,11 +100,13 @@ def sample_review_update(request,sample_id):
 			return render(request,"sample/sample_message.html", {
 				'title' : '평가 완료' ,
 				'content' : sample.name + '님의 평가가 저장되었습니다. 감사합니다^^',
+				'brands':get_brands(),
 				})
 		else:
 			return render(request,"sample/sample_message.html", {
 				'title' : '평가가 이미 있네요?' ,
 				'content' : sample.name + '님의 평가는 이미 저장되었습니다. 감사합니다^^',
+				'brands':get_brands(),
 				})
 	else:
 		return redirect('index')

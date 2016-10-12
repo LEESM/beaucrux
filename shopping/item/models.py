@@ -15,6 +15,7 @@ class Brand(models.Model):
 	brand_name = models.CharField(max_length=100)
 	brand_desc = models.TextField()
 	brand_active = models.BooleanField(default=True)
+	brand_order = models.IntegerField(default=0)
 	def __str__(self):
 		return self.brand_name
 

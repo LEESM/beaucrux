@@ -13,6 +13,7 @@ import urllib.parse
 from shopping.settings import IMP_KEY, IMP_SECRET
 import json
 from django.views.decorators.csrf import csrf_exempt
+from item.views import get_brands
 
 def cart(request):
 	if request.user.is_authenticated():
@@ -26,6 +27,7 @@ def cart(request):
 	return render(request, "order/cart.html", {
 		'cart_items':cart_items,
 		'total_price':total_price,
+		'brands':get_brands(),
 	})
 
 def cart_update(request):
@@ -140,6 +142,7 @@ def order_info(request):
 		'point_made':point_made,
 		'pg_product_name':pg_product_name,
 		'coupons':coupons,
+		'brands':get_brands(),
 	})
 
 def order_update(request):
@@ -238,6 +241,7 @@ def order_update(request):
 		'order_id':order_id,
 		'new_order':new_order,
 		'cart_items':cart_items,
+		'brands':get_brands(),
 	})
 
 def test(request):
@@ -269,7 +273,7 @@ def view_orders(request):
 				return redirect('/order/view_order_detail/?order_id='+request.POST.get('order_id'))
 			except :
 				main_post="주문서 번호를 정확하게 입력해주세요."
-		return render(request, "order/anonymous_order.html",{'main_post':main_post})
+		return render(request, "order/anonymous_order.html",{'main_post':main_post, 'brands':get_brands(),})
 
 def view_order_detail(request):
 	order_id=request.GET.get('order_id')
@@ -278,6 +282,7 @@ def view_order_detail(request):
 	return render(request, "order/view_order_detail.html", {
 		'order':order,
 		'cart_items':cart_items,
+		'brands':get_brands(),
 	})
 
 def order_mobile_redirect(request):
@@ -335,6 +340,7 @@ def order_mobile_redirect(request):
 		message='주문이 실패하였습니다. 주문번호 : '+order_id
 		return render(request, "order/order_complete.html", {
 			'order_id':order_id,
+			'brands':get_brands(),
 		})
 	status='결제'
 #회원, 비회원 구분
@@ -407,6 +413,7 @@ def order_mobile_redirect(request):
 	new_order.save()
 	return render(request, "order/order_complete.html", {
 		'order_id':order_id,
+		'brands':get_brands(),
 	})
 
 @csrf_exempt

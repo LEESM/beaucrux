@@ -17,6 +17,10 @@ def landing(request):
 	context = {"message": message}
 	return render(request,"landing.html", context)
 
+def get_brands():
+	brands = Brand.objects.filter(brand_active=True).order_by('brand_order')
+	return brands
+
 def make_items_discount_var(items):
 	for item in items:
 		if item.price == item.custom_price:
@@ -37,6 +41,7 @@ def index(request):
 		'items1':items1,
 		'items2':items2,
 		'head1':head1,
+		'brands':get_brands(),
 	}
 	return render(request,"item/index.html", context)
 
@@ -50,6 +55,7 @@ def brand(request):
 	return render(request,"item/brand.html",{
 		'brand':brand,
 		'items':items,
+		'brands':get_brands(),
 		})
 
 def detail(request):
@@ -88,6 +94,7 @@ def detail(request):
 		'review_write':review_write, 
 		'item_reviews':item_reviews,
 		'sample_reviews':sample_reviews,
+		'brands':get_brands(),
 		}
 	return render(request,"item/detail.html", context)
 
@@ -118,7 +125,11 @@ def review_write(request):
 	except:
 		return redirect('index')
 	itemreviewform = ItemReviewForm()
-	context={'item':item,'itemreviewform':itemreviewform}
+	context={
+		'item':item,
+		'itemreviewform':itemreviewform,
+		'brands':get_brands(),
+		}
 	return render(request,"item/review_write.html", context)
 
 @login_required
@@ -142,21 +153,6 @@ def review_update(request):
 		)
 	point_history.save()
 	return redirect('/item/detail/?item_id='+newreview.item.item_id)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

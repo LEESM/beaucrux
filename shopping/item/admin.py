@@ -6,7 +6,7 @@ class CategoryAdmin(admin.ModelAdmin):
 	list_display = ['category_id','category_name',]
 
 class BrandAdmin(SummernoteModelAdmin):
-	list_display = ['brand_id','brand_name','brand_desc','brand_active',]
+	list_display = ['brand_id','brand_name','brand_desc','brand_active','brand_order',]
 
 class ItemIngredientCombinationInline(admin.TabularInline):
 	model = ItemIngredientCombination
