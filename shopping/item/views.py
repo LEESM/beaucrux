@@ -19,6 +19,12 @@ def landing(request):
 
 def index(request):
 	items1 = Item.objects.filter(main1=True).order_by('order_number')
+	for item in items1:
+		if item.price == item.custom_price:
+			item.is_discount = False
+		else:
+			item.is_discount = True
+			item.discount_percent = round( 100 * item.price / item.custom_price )
 	items2 = Item.objects.filter(main2=True).order_by('order_number')
 	try:
 		head1 = Texts.objects.get(name='head1').contents
