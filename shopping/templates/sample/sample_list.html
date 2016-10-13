@@ -17,7 +17,7 @@
 					<tr>
 						<td><a href="/sample/detail/{{item.id}}">{{item.name|slice:":1" }}*{{item.name|slice:"2:" }} <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></td>
 						<td>{{item.request_date|date:"y-m-d" }}</td>
-						<td>{{item.status}}</td>
+						<td>{{item.status}}  {% if request.user.is_superuser %}<a href="{% url 'sms_send_form' %}?phone_num={{item.phone}}" target="_blank">문자</a>{% endif %}</td>
 					</tr>
 				{% endfor %}
 			</tbody>

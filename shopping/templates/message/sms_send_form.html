@@ -1,0 +1,6 @@
+<form method="POST">
+{% csrf_token %}
+번호<input name="phone_num" type="text" value="{{ phone_num }}"><br/>
+내용<TEXTAREA name="content" COLS=70 ROWS=4></TEXTAREA><br/>
+<input type="submit">
+</form>

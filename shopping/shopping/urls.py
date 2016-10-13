@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^order/', include('order.urls')),
     url(r'^board/', include('board.urls')),
     url(r'^sample/', include('sample.urls')),
+    url(r'^message/', include('message.urls')),
     url(r'^summernote/', include('django_summernote.urls')),
 ]
 
