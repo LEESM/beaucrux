@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^sample/', include('sample.urls')),
     url(r'^message/', include('message.urls')),
     url(r'^summernote/', include('django_summernote.urls')),
+    url(r'', include('social.apps.django_app.urls', namespace='social')),
 ]
 
 if settings.DEBUG:

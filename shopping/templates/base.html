@@ -46,14 +46,14 @@
           ga('set', 'userId', '{{ request.user.username }}');
           </script>
           <li class="hidden-xs"><a>&middot;</a></li>
-          <li><a href="{% url 'logout' %}">로그아웃</a></li>
+          <li><a href="/accounts/logout">로그아웃</a></li>
           <li class="hidden-xs"><a>&middot;</a></li>
-          <li class="hidden-xs"><a href="{% url 'mypage' %}">마이페이지</a></li>
+          <li class="hidden-xs"><a href="/accounts/mypage">마이페이지</a></li>
           {% else %}
           <li class="hidden-xs"><a>&middot;</a></li>
-          <li><a href="{% url 'login' %}">로그인</a></li>
+          <li><a href="/accounts/login">로그인</a></li>
           <li class="hidden-xs"><a>&middot;</a></li>
-          <li class="hidden-xs"><a href="{% url 'signup' %}">회원가입</a></li>
+          <li class="hidden-xs"><a href="/accounts/signup">회원가입</a></li>
           {% endif %}
           <li class="hidden-xs"><a>&middot;</a></li>
           <li class="hidden-xs"><a href="{% url 'view_orders' %}">주문/배송조회</a></li>            
@@ -93,7 +93,6 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-            <li class="visible-xs visible-sm"><a></a></li>
             <li><a href="{% url 'aboutus' %}">ABOUT US</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">BRANDS<span class="caret"></span></a>
@@ -104,10 +103,11 @@
                 <!--<li><a href="{% url 'brand' %}?brand_name=dogo">도고온천수</a></li>-->
               </ul>
             </li>
-            <li><a href="{% url 'board_list' %}?board_name=Notice">NOTICE</a></li>
-            <li><a href="{% url 'board_list' %}?board_name=Event">EVENT</a></li>
-            <li><a href="{% url 'sample_list' %}">SAMPLE</a></li>
-            <li><a class="blog_a" href="{% url 'board_list' %}?board_name=After28">28일후..</a></li>
+            <li><a href="http://blog.cosmetic0901.com">BLOG</a></li>
+            <!--<li><a href="{% url 'board_list' %}?board_name=Notice">NOTICE</a></li>-->
+            <!--<li><a href="{% url 'board_list' %}?board_name=Event">EVENT</a></li>-->
+            <!--<li><a href="{% url 'sample_list' %}">SAMPLE</a></li>-->
+            <!--<li><a class="blog_a" href="{% url 'board_list' %}?board_name=After28">28일후..</a></li>-->
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
@@ -148,5 +148,13 @@
       </div>
     </div>
   </div>
+
+<div>
+  
+<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
+
+
+</div>
+
   </body>
 </html>
