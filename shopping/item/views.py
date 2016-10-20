@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from item.models import Category, Brand, Item, ItemOption, ItemQna, ItemReview
+from item.models import Category, Brand, Item, ItemOption, ItemQna, ItemReview, RelatedItem, RelatedContent
 from accounts.models import PointHistory, Landing, Texts
 from sample.models import SampleReview
 from item.forms import ItemReviewForm
@@ -86,6 +86,8 @@ def detail(request):
 	review_write = ItemReviewForm()
 	item_reviews = ItemReview.objects.filter(item=item).order_by('-review_time')
 	sample_reviews = SampleReview.objects.filter(item=item).order_by('-review_date')
+	related_items = RelatedItem.objects.filter(item_from = item)
+	related_contents = RelatedContent.objects.filter(item_from = item)
 	context={
 		'item':item, 
 		'images':images, 
@@ -95,6 +97,8 @@ def detail(request):
 		'item_reviews':item_reviews,
 		'sample_reviews':sample_reviews,
 		'brands':get_brands(),
+		'related_items':related_items,
+		'related_contents':related_contents,
 		}
 	return render(request,"item/detail.html", context)
 

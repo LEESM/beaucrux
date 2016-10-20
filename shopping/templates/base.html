@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{% static 'css/custom.css' %}" type="text/css"/>
     <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}" type="text/css"/>
     <link rel="stylesheet" href="{% static 'css/owl.theme.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'fontawesome/css/font-awesome.min.css' %}" type="text/css"/>
     <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -39,19 +40,19 @@
           <li class="hidden-xs"><a href="/admin">관리자</a></li>
           <li class="hidden-xs"><a>&middot;</a></li>
           {% endif %}
-          <li class="hidden-xs"><a href="javascript:void(0)" onClick="return rudr_favorite(this);"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a></li>
+          <!--<li class="hidden-xs"><a href="javascript:void(0)" onClick="return rudr_favorite(this);"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a></li>-->
           <script src="{% static 'js/base.js' %}"></script>
           {% if request.user.is_authenticated %}
           <script>
           ga('set', 'userId', '{{ request.user.username }}');
           </script>
-          <li class="hidden-xs"><a>&middot;</a></li>
+          <!--<li class="hidden-xs"><a>&middot;</a></li>-->
           <li><a href="/accounts/logout">로그아웃</a></li>
           <li class="hidden-xs"><a>&middot;</a></li>
           <li class="hidden-xs"><a href="/accounts/mypage">마이페이지</a></li>
           {% else %}
-          <li class="hidden-xs"><a>&middot;</a></li>
-          <li><a href="/accounts/login">로그인</a></li>
+          <!--<li class="hidden-xs"><a>&middot;</a></li>-->
+          <li><a href="{% url 'login' %}?next={{request.get_full_path}}">로그인</a></li>
           <li class="hidden-xs"><a>&middot;</a></li>
           <li class="hidden-xs"><a href="/accounts/signup">회원가입</a></li>
           {% endif %}
@@ -124,11 +125,17 @@
   <div id="main_div">
     {% block content %}{% endblock %}
   </div>
+  
+
   {% if not '/sample/' in request.path %}
+<!--
   <div id="sample_request_btn">
     <a href="/sample/request">샘플<br/>선물받기</a>
   </div>
+-->
   {% endif %}
+
+
   <div id="footer_div">
     <div class="container">
       <div class="col-xs-12 col-sm-6">
@@ -149,12 +156,6 @@
     </div>
   </div>
 
-<div>
-  
-<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
-
-
-</div>
 
   </body>
 </html>

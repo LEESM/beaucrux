@@ -14,7 +14,8 @@ from django.contrib.auth.decorators import login_required
 from item.views import get_brands
 
 def login(request):
-	return default_login_view(request, template_name="accounts/login.html")
+	nexturl = request.GET.get('next')
+	return default_login_view(request, template_name="accounts/login.html", extra_context = {'next':nexturl,})
 
 def login_after(request):
 	before_sixmonth = datetime.today() - timedelta(days=180)

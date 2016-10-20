@@ -101,3 +101,16 @@ class ItemReview(models.Model):
 	score = models.IntegerField(default=10)
 	comment = models.TextField(blank=True)
 	review_time = models.DateTimeField(auto_now_add=True)
+
+class RelatedItem(models.Model):
+	item_from = models.ForeignKey(Item, related_name='item1')
+	item_to = models.ForeignKey(Item, related_name='item2')
+
+def get_image_path_content(instance, filename):
+	return os.path.join('item_images', str(instance.id), filename)
+
+class RelatedContent(models.Model):
+	item_from = models.ForeignKey(Item)
+	content_to_subject = models.CharField(max_length=100)
+	content_to_url = models.CharField(max_length=100)
+	content_to_img = models.ImageField(blank=True, upload_to=get_image_path_content)

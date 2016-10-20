@@ -5,401 +5,461 @@
 
 {% block content %}
 
-{% if request.user.is_superuser %}
-<div class="container">
-	<a class="btn btn-primary"  href="/admin/item/item/{{item.id}}/change">아이템 수정</a>
-</div>
-{% endif %}
+	{% if request.user.is_superuser %}
+	<div class="container">
+		<a class="btn btn-primary"  href="/admin/item/item/{{item.id}}/change">아이템 수정</a>
+	</div>
+	{% endif %}
 
-<script>
-$(document).ready(function() {
- 
-  $("#item-owl").owlCarousel({
- 
-      autoPlay: 5000, //Set AutoPlay to 3 seconds
-      navigation: true,
-      navigationText:["<",">	"],
-      items : 1,
-      itemsDesktop : [1199,1],
-      itemsDesktopSmall : [979,1]
- 
-  });
- 
-});
-</script>
+	<script>
+	$(document).ready(function() {
+	 
+	  $("#item-owl").owlCarousel({
+	 
+	      autoPlay: 5000, //Set AutoPlay to 3 seconds
+	      navigation: true,
+	      navigationText:["<",">	"],
+	      items : 1,
+	      itemsDesktop : [1199,1],
+	      itemsDesktopSmall : [979,1]
+	 
+	  });
+	});
+	</script>
 
-
-<div id="detail_div" class="container">
-	<div id="detail_inner" class="row">
-		<div id="detail_left" class="col-xs-12 col-sm-6">
-			<div id="item-owl">
-				{% for image in images %}
-					<div class="item">
-						<img class="item_slide" src="{{image.url}}"/>
-					</div>
-				{% endfor %}
+	<div id="detail_div" class="container">
+		<div id="detail_inner" class="row">
+			<div id="detail_left" class="col-xs-12 col-sm-6">
+				<div id="item-owl">
+					{% for image in images %}
+						<div class="item">
+							<img class="item_slide" src="{{image.url}}"/>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div id="detail_right" class="col-xs-12 col-sm-6">
+				<div>
+					<h2 class="lighter">{{item.item_name}}</h2>
+					<p class="gray" style="margin-bottom:30px;">{{item.item_desc}}</p>
+					<p class="hidden">{{item.brand}} - {{item.get_categories}}</p>
+					<p class="pull-right"><strike class="gray">{{item.custom_price|intcomma}}원</strike><span id="item_price"> {{item.price|intcomma}}원</span></p>
+				</div>
+				<div class="">
+					<form method="POST" id="info_form" action="{% url 'cart_update' %}">
+						<table id="option_table" class="table">
+							<thead>
+								<tr>
+									<th>옵션</th>
+									<th>수량</th>
+								</tr>
+							</thead>
+							<tbody>
+							{%csrf_token%}
+							{% for option in item.get_options %}
+								<tr>
+									<input id="item_id" name="item_id" value="{{item.item_id}}" style="display:none;" />
+									<input id="option_id" name="option_id" value="{{option.option_id}}" style="display:none;" />
+									<td class="option_td">{{ option.option_name }}<span> ( + {{ option.option_price|intcomma }}원)</span></td>
+									<td>
+										<div class="input-group" id="quantity_div">
+										  <div class="input-group-btn">
+										    <a class="btn btn-default option_minus">-</a>
+										  </div>
+										  <input type="text" class="form-control" id="quantity" name="quantity" value = "0">
+										  <div class="input-group-btn">
+										    <a class="btn btn-default option_plus">+</a>
+										  </div>
+										</div>
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</form>
+				</div>
+				<input type="text" class="hidden" id="buy_now" name="buy_now" value="go_cart">
+				<div class="buy_btn_group">
+					<a class="btn btn-lg btn-buy" id="go_cart_btn">장바구니</a>
+					<a class="btn btn-lg btn-buy" id="buy_now_btn">바로구매</a>
+				</div>
 			</div>
 		</div>
-	<div id="detail_right" class="col-xs-12 col-sm-6">
-		<div>
-			<h2 class="lighter">{{item.item_name}}</h2>
-			<p class="gray" style="margin-bottom:30px;">{{item.item_desc}}</p>
-			<p class="hidden">{{item.brand}} - {{item.get_categories}}</p>
-			<p class="pull-right"><strike class="gray">{{item.custom_price|intcomma}}원</strike><span id="item_price"> {{item.price|intcomma}}원</span></p>
+
+		<script>
+		$(function() {
+
+				$('#product_info img').addClass('img-responsive');
+				$('#product_info img').css('margin','0 auto');
+
+			    $('.option_plus').click(function(e){
+		        stockInput = $(this).parent().prev();
+		        var currentVal = parseInt(stockInput.val());
+		        var next = currentVal+1;
+		        stockInput.val(next);
+		    		});
+			    $('.option_minus').click(function(e){
+		        stockInput = $(this).parent().next();
+		        var currentVal = parseInt(stockInput.val());
+		        var next = currentVal-1;
+		        if(currentVal==0){
+		        	next = 0;
+		        }
+		        stockInput.val(next);
+		    		});
+
+			    var counter = 0;
+			    $('input[name=quantity]').each(function(){counter+=1;});
+			    if(counter==1){$('input[name=quantity]').val(1);}
+
+			    $('#go_cart_btn').click(function(e){
+			    		var total = 0;
+			    		$('input[name=quantity]').each(function(){
+			    			total += parseInt($(this).val());
+			    		});
+			    		console.log(total);
+			    		if(total>0){
+			    			$('#info_form').submit();
+			    		}
+			    		else{
+			    			alert('주문 수량이 최소 0입니다. 확인 부탁드려요^^');
+			    		}
+			    	});
+
+			    $('#buy_now_btn').click(function(e){
+			    		var total = 0;
+			    		$('input[name=quantity]').each(function(){
+			    			total += parseInt($(this).val());
+			    		});
+			    		console.log(total);
+			    		if(total>0){
+			    			$('#buy_now').val('buy_now');
+			    			$('#info_form').submit();
+			    		}
+			    		else{
+			    			alert('주문 수량이 최소 0입니다. 확인 부탁드려요^^');
+			    		}
+			    	});
+		});
+		</script>
+
+		<div id="detail_middle_nav">
+			<div class="btn-group btn-group-justified" role="group" aria-label="pg-anchor">
+			  <div class="btn-group" role="group">
+			    <button type="button" id="pnav1" class="btn btn-default active" onclick="pnav1_click();">상품정보</button>
+			  </div>
+			  <div class="btn-group" role="group">
+			    <button type="button" id="pnav2" class="btn btn-default" onclick="pnav2_click();">전성분</button>
+			  </div>
+			  <div class="btn-group" role="group">
+			    <button type="button" id="pnav3" class="btn btn-default" onclick="pnav3_click();">문의 <span class="badge">{{ item_qnas|length }}</span></button>
+			  </div>
+			  <div class="btn-group" role="group">
+			    <button type="button" id="pnav4" class="btn btn-default" onclick="pnav4_click();">후기 <span class="badge">{{ item_reviews|length }}</span></button>
+			  </div>
+			</div>
 		</div>
-		<div class="">
-			<form method="POST" id="info_form" action="{% url 'cart_update' %}">
-			<table id="option_table" class="table">
-				<thead>
-					<tr>
-						<th>옵션</th>
-						<th>수량</th>
-					</tr>
-				</thead>
-				<tbody>
-			{%csrf_token%}
-			{% for option in item.get_options %}
-					<tr>
-						<input id="item_id" name="item_id" value="{{item.item_id}}" style="display:none;" />
-						<input id="option_id" name="option_id" value="{{option.option_id}}" style="display:none;" />
-						<td class="option_td">{{ option.option_name }}<span> ( + {{ option.option_price|intcomma }}원)</span></td>
-						<td>
-							<div class="input-group" id="quantity_div">
-							  <div class="input-group-btn">
-							    <a class="btn btn-default option_minus">-</a>
-							  </div>
-							  <input type="text" class="form-control" id="quantity" name="quantity" value = "0">
-							  <div class="input-group-btn">
-							    <a class="btn btn-default option_plus">+</a>
-							  </div>
-							</div>
-						</td>
-					</tr>
-			{% endfor %}
-				</tbody>
-			</table>
+
+		<script>
+		function pnav1_click() {
+			$("#product_info").show();
+			$("#product_ingredients").hide();
+			$("#product_qna").hide();
+			$("#product_review").hide();
+			$("#pnav1").addClass("active");
+			$("#pnav2").removeClass("active");
+			$("#pnav3").removeClass("active");
+			$("#pnav4").removeClass("active");	
+		}
+		function pnav2_click() {
+			$("#product_info").hide();
+			$("#product_ingredients").show();
+			$("#product_qna").hide();
+			$("#product_review").hide();
+			$("#pnav1").removeClass("active");
+			$("#pnav2").addClass("active");
+			$("#pnav3").removeClass("active");
+			$("#pnav4").removeClass("active");	
+		}
+		function pnav3_click() {
+			$("#product_info").hide();
+			$("#product_ingredients").hide();
+			$("#product_qna").show();
+			$("#product_review").hide();
+			$("#pnav1").removeClass("active");
+			$("#pnav2").removeClass("active");
+			$("#pnav3").addClass("active");
+			$("#pnav4").removeClass("active");	
+		}
+		function pnav4_click() {
+			$("#product_info").hide();
+			$("#product_ingredients").hide();
+			$("#product_qna").hide();
+			$("#product_review").show();
+			$("#pnav1").removeClass("active");
+			$("#pnav2").removeClass("active");
+			$("#pnav3").removeClass("active");
+			$("#pnav4").addClass("active");
+		}
+		</script>
+
+		<div id="product_info">
+			<h3 class="text-center lighter">제품 상세정보</h3>
+			{{item.detail|safe}}
+			<hr/>
+			<h3 class="text-center lighter">배송정보</h3>
+			{{item.delivery|safe}}
 		</div>
-		<input type="text" class="hidden" id="buy_now" name="buy_now" value="go_cart">
-		<div class="buy_btn_group">
-			<a class="btn btn-lg btn-buy" id="go_cart_btn">장바구니</a>
-			<a class="btn btn-lg btn-buy" id="buy_now_btn">바로구매</a>
-		</div>
-		</form>
-	</div>
-</div>
 
-<script>
-$(function() {
-
-		$('#product_info img').addClass('img-responsive');
-		$('#product_info img').css('margin','0 auto');
-
-	    $('.option_plus').click(function(e){
-        stockInput = $(this).parent().prev();
-        var currentVal = parseInt(stockInput.val());
-        var next = currentVal+1;
-        stockInput.val(next);
-    		});
-	    $('.option_minus').click(function(e){
-        stockInput = $(this).parent().next();
-        var currentVal = parseInt(stockInput.val());
-        var next = currentVal-1;
-        if(currentVal==0){
-        	next = 0;
-        }
-        stockInput.val(next);
-    		});
-
-	    var counter = 0;
-	    $('input[name=quantity]').each(function(){counter+=1;});
-	    if(counter==1){$('input[name=quantity]').val(1);}
-
-	    $('#go_cart_btn').click(function(e){
-	    		var total = 0;
-	    		$('input[name=quantity]').each(function(){
-	    			total += parseInt($(this).val());
-	    		});
-	    		console.log(total);
-	    		if(total>0){
-	    			$('#info_form').submit();
-	    		}
-	    		else{
-	    			alert('주문 수량이 최소 0입니다. 확인 부탁드려요^^');
-	    		}
-	    	});
-
-	    $('#buy_now_btn').click(function(e){
-	    		var total = 0;
-	    		$('input[name=quantity]').each(function(){
-	    			total += parseInt($(this).val());
-	    		});
-	    		console.log(total);
-	    		if(total>0){
-	    			$('#buy_now').val('buy_now');
-	    			$('#info_form').submit();
-	    		}
-	    		else{
-	    			alert('주문 수량이 최소 0입니다. 확인 부탁드려요^^');
-	    		}
-	    	});
-});
-</script>
-
-<div id="detail_middle_nav">
-	<div class="btn-group btn-group-justified" role="group" aria-label="pg-anchor">
-	  <div class="btn-group" role="group">
-	    <button type="button" id="pnav1" class="btn btn-default active" onclick="pnav1_click();">상품정보</button>
-	  </div>
-	  <div class="btn-group" role="group">
-	    <button type="button" id="pnav2" class="btn btn-default" onclick="pnav2_click();">배송</button>
-	  </div>
-	  <div class="btn-group" role="group">
-	    <button type="button" id="pnav3" class="btn btn-default" onclick="pnav3_click();">문의 <span class="badge">{{ item_qnas|length }}</span></button>
-	  </div>
-	  <div class="btn-group" role="group">
-	    <button type="button" id="pnav4" class="btn btn-default" onclick="pnav4_click();">후기 <span class="badge">{{ item_reviews|length }}</span></button>
-	  </div>
-	</div>
-</div>
-
-<script>
-function pnav1_click() {
-	$("#product_info").show();
-	$("#product_drv").hide();
-	$("#product_qna").hide();
-	$("#product_review").hide();
-	$("#pnav1").addClass("active");
-	$("#pnav2").removeClass("active");
-	$("#pnav3").removeClass("active");
-	$("#pnav4").removeClass("active");	
-}
-function pnav2_click() {
-	$("#product_info").hide();
-	$("#product_drv").show();
-	$("#product_qna").hide();
-	$("#product_review").hide();
-	$("#pnav1").removeClass("active");
-	$("#pnav2").addClass("active");
-	$("#pnav3").removeClass("active");
-	$("#pnav4").removeClass("active");	
-}
-function pnav3_click() {
-	$("#product_info").hide();
-	$("#product_drv").hide();
-	$("#product_qna").show();
-	$("#product_review").hide();
-	$("#pnav1").removeClass("active");
-	$("#pnav2").removeClass("active");
-	$("#pnav3").addClass("active");
-	$("#pnav4").removeClass("active");	
-}
-function pnav4_click() {
-	$("#product_info").hide();
-	$("#product_drv").hide();
-	$("#product_qna").hide();
-	$("#product_review").show();
-	$("#pnav1").removeClass("active");
-	$("#pnav2").removeClass("active");
-	$("#pnav3").removeClass("active");
-	$("#pnav4").addClass("active");
-}
-</script>
-
-<div id="product_info">
-	<div id="ingredient_div">
-	<h3 class="text-center lighter">전성분 표시 정보</h3>
-		<table class="table table-condensed table-hover" id="ingredient_table">
-			<thead>
-				<tr>
-					<th class="hidden-xs">#</th>
-					<th>성분명</th>
-					<th class="hidden-xs">배합목적</th>
-					<th>EWG등급</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for ingredient in ingredients %}
-				<tr>
-					<td class="hidden-xs">
-						<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
-							{{forloop.counter}}
-						</a>
-					</td>
-					<td>
-						<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
-						{{ingredient.ko_name|truncatechars:10}}
-							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-						</a>
-					</td>
-					<td class="hidden-xs">
-						<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
-							{{ingredient.purpose|truncatechars:20}}
-						</a>
-					</td>
-					{% if ingredient.ewg_low_grade = 0 %}
-						<td>
-							<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">-</a>
-						</td>
-					{% else %}
-						{% if ingredient.ewg_low_grade = ingredient.ewg_high_grade %}
-							<td>
+		<div id="product_ingredients" style="display:none;">
+			<div id="ingredient_div">
+			<h3 class="text-center lighter">전성분 표시 정보</h3>
+				<table class="table table-condensed table-hover" id="ingredient_table">
+					<thead>
+						<tr>
+							<th class="hidden-xs">#</th>
+							<th>성분명</th>
+							<th class="hidden-xs">배합목적</th>
+							<th>EWG등급</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for ingredient in ingredients %}
+						<tr>
+							<td class="hidden-xs">
 								<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
-									{{ingredient.ewg_low_grade}}
+									{{forloop.counter}}
 								</a>
 							</td>
-						{% else %}
 							<td>
 								<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
-								{{ingredient.ewg_low_grade}}-{{ingredient.ewg_high_grade}}
+								{{ingredient.ko_name|truncatechars:10}}
+									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 								</a>
-							</td>						
-						{% endif %}
-					{% endif %}
-				</tr>
-
-
-				<!-- Modal -->
-				<div class="modal fade" id="ingredient_{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				        <h4 class="modal-title" id="myModalLabel">{{ingredient.ko_name }}</h4>
-				      </div>
-				      <div class="modal-body">
-							<p>영문명 : {{ingredient.en_name}}</p>
-							<p>배합목적 : {{ingredient.purpose}}</p>
-							<p>ewg skindeep 등급 : 
+							</td>
+							<td class="hidden-xs">
+								<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
+									{{ingredient.purpose|truncatechars:20}}
+								</a>
+							</td>
 							{% if ingredient.ewg_low_grade = 0 %}
-								자료없음
+								<td>
+									<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">-</a>
+								</td>
 							{% else %}
 								{% if ingredient.ewg_low_grade = ingredient.ewg_high_grade %}
-									{{ingredient.ewg_low_grade}}
+									<td>
+										<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
+											{{ingredient.ewg_low_grade}}
+										</a>
+									</td>
 								{% else %}
-									{{ingredient.ewg_low_grade}}-{{ingredient.ewg_high_grade}}	
+									<td>
+										<a type="button" class="btn" data-toggle="modal" data-target="#ingredient_{{forloop.counter}}">
+										{{ingredient.ewg_low_grade}}-{{ingredient.ewg_high_grade}}
+										</a>
+									</td>						
 								{% endif %}
 							{% endif %}
-							</p>
-							{{ingredient.description|safe}}
-				      </div>
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-				      </div>
-				    </div>
-				  </div>
+						</tr>
+
+
+						<!-- Modal -->
+						<div class="modal fade" id="ingredient_{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+						  <div class="modal-dialog" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						        <h4 class="modal-title" id="myModalLabel">{{ingredient.ko_name }}</h4>
+						      </div>
+						      <div class="modal-body">
+									<p>영문명 : {{ingredient.en_name}}</p>
+									<p>배합목적 : {{ingredient.purpose}}</p>
+									<p>ewg skindeep 등급 : 
+									{% if ingredient.ewg_low_grade = 0 %}
+										자료없음
+									{% else %}
+										{% if ingredient.ewg_low_grade = ingredient.ewg_high_grade %}
+											{{ingredient.ewg_low_grade}}
+										{% else %}
+											{{ingredient.ewg_low_grade}}-{{ingredient.ewg_high_grade}}	
+										{% endif %}
+									{% endif %}
+									</p>
+									{{ingredient.description|safe}}
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+
+
+						{% endfor %}
+					</tbody>
+				</table>
+				<p class="gray">* 순서대로 높은 비율, 단 1%이하부터 순서 없음</p>
+				<p class="gray">* EWG 등급 1-2 안전, 3-6 무난, 7-10 위험</p>
+			</div>
+		</div>
+		
+		<div id="product_qna" style="display:none;">
+			{% if request.user.is_authenticated %}
+				<form method="post" action="{% url 'qna_update' %}">
+				{% csrf_token %}
+					<input id="item_id" name="item_id" value="{{item.item_id}}" style="display:none;" />
+					<textarea class="form-control" rows="3"  placeholder="문의내용을 적어주세요." id="question" name="question"  align="left"></textarea>
+					<div class="pull-right">
+						<label><span class="glyphicon glyphicon-lock"></span></label>
+						<input type="checkbox" id="secret" name="secret"/>
+						<button class="btn btn-primary" type="submit">문의하기</button>
+					</div>
+				</form>
+				<div class="clearfix"></div>
+				<hr/>
+			{% else %}
+				<div class="jumbotron text-center">
+				  <p>로그인하시면 문의를 작성하실 수 있습니다.</p>
+					<a class="btn btn-primary	" href="{% url 'login' %}">로그인</a>
+					<a class="btn btn-primary" href="{% url 'signup' %}">회원가입</a>
 				</div>
-
-
-				{% endfor %}
-			</tbody>
-		</table>
-		<p class="gray">* 순서대로 높은 비율, 단 1%이하부터 순서 없음</p>
-		<p class="gray">* EWG 등급 1-2 안전, 3-6 무난, 7-10 위험</p>
-	</div>
-	<div class="center">
-		<button class="btn btn-default" id="ingredient_open_btn">펼쳐보기</button>
-		<button class="btn btn-default" id="ingredient_close_btn" style="display:none;">닫기</button>
-	</div>
-	<script>
-$(function() {
-	$( "#ingredient_open_btn" ).click(function() {
-	  $( "#ingredient_div" ).css("height","100%");
-	  $( "#ingredient_div" ).css("overflow-y","auto");
-	   $( "#ingredient_close_btn" ).show();
-	   $( "#ingredient_open_btn" ).hide();
-	});
-	$( "#ingredient_close_btn" ).click(function() {
-	  $( "#ingredient_div" ).css("height","200px");
-	  $( "#ingredient_div" ).css("overflow-y","scroll");
-	   $( "#ingredient_close_btn" ).hide();
-	   $( "#ingredient_open_btn" ).show();
-	});
-
-});
-	</script>
-	{{item.detail|safe}}
-</div>
-<div id="product_drv" style="display:none;">
-	{{item.delivery|safe}}
-</div>
-<div id="product_qna" style="display:none;">
-{% if request.user.is_authenticated %}
-	<form method="post" action="{% url 'qna_update' %}">
-	{% csrf_token %}
-		<input id="item_id" name="item_id" value="{{item.item_id}}" style="display:none;" />
-		<textarea class="form-control" rows="3"  placeholder="문의내용을 적어주세요." id="question" name="question"  align="left"></textarea>
-		<div class="pull-right">
-			<label><span class="glyphicon glyphicon-lock"></span></label>
-			<input type="checkbox" id="secret" name="secret"/>
-			<button class="btn btn-primary" type="submit">문의하기</button>
+				<hr/>
+			{% endif %}
+			{% for qna in item_qnas %}
+				<p>{{ qna.user.first_name }}님 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="gray">{{ qna.qna_time|date:"Y-m-d" }}</span></p>
+				{% if qna.secret %}
+					{% if qna.user.id = request.user.id or qna.user == 'admin' %}
+						<div class="col-xs-12 col-sm-6">
+						<p><span class="glyphicon glyphicon-question-sign"></span></p>
+							{{ qna.question|safe }}
+						</div>
+						<div class="col-xs-12 col-sm-6">
+						<p><span class="glyphicon glyphicon-ok"></span></p>
+							{{ qna.answer|safe }}
+						</div>
+						<div class="clearfix"></div>
+						<hr/>
+					{% else %}
+						<p>비밀글입니다.</p>
+						<hr/>
+					{% endif %}
+				{% else %}
+					<div class="col-xs-12 col-sm-6">
+						<p><span class="glyphicon glyphicon-question-sign"></span></p>
+						{{ qna.question|safe }}
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<p><span class="glyphicon glyphicon-ok"></span></p>
+						{{ qna.answer|safe }}
+					</div>
+					<div class="clearfix"></div>
+					<hr/>
+				{% endif %}
+			{% endfor %}
 		</div>
-	</form>
-	<div class="clearfix"></div>
-	<hr/>
-{% else %}
-	<div class="jumbotron text-center">
-	  <p>로그인하시면 문의를 작성하실 수 있습니다.</p>
-		<a class="btn btn-primary	" href="{% url 'login' %}">로그인</a>
-		<a class="btn btn-primary" href="{% url 'signup' %}">회원가입</a>
-	</div>
-	<hr/>
-{% endif %}
-{% for qna in item_qnas %}
-	<p>{{ qna.user.first_name }}님 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="gray">{{ qna.qna_time|date:"Y-m-d" }}</span></p>
-	{% if qna.secret %}
-		{% if qna.user.id = request.user.id or qna.user == 'admin' %}
-			<div class="col-xs-12 col-sm-6">
-			<p><span class="glyphicon glyphicon-question-sign"></span></p>
-				{{ qna.question|safe }}
+		
+		<div id="product_review" style="display:none;">
+			<div class="jumbotron text-center">
+			  <p>후기를 작성해주시면 구매시 현금과 1:1 사용이 가능한 1000포인트를 드립니다.</p>
+				<a class="btn btn-primary btn-lg" href="{% url 'review_write' %}?item_id={{item.item_id}}">후기쓰러가기</a>
 			</div>
-			<div class="col-xs-12 col-sm-6">
-			<p><span class="glyphicon glyphicon-ok"></span></p>
-				{{ qna.answer|safe }}
+			<hr/>
+			<h4>샘플 사용 고객님의 후기</h4>
+			<hr/>
+			{% for review in sample_reviews %}
+				<p>{{ review.name }}님 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="gray">{{ review.review_date|date:"Y-m-d" }}</span></p>
+				<p>{% for i in review.score|times %}<img src="{% static 'img/star.png' %}" />{% endfor %} </p>
+				<p>	{{ review.comment|safe }}</p>
+				<hr/>
+			{% endfor %}
+
+			<h4>구매고객님의 후기</h4>
+			<hr/>
+			{% for review in item_reviews %}
+				<p>{{ review.user.first_name }}님 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="gray">{{ review.review_time|date:"Y-m-d" }}</span></p>
+				<p>{% for i in review.score|times %}<img src="{% static 'img/star.png' %}" />{% endfor %} </p>
+				<p>	{{ review.comment|safe }}</p>
+				<hr/>
+			{% endfor %}
+		</div>
+
+		<hr/>
+		<div id="related_products">
+
+			<h3 class="text-center lighter">추천제품</h3>
+			<div id="owl_related_items">
+			{% for related_item in related_items %}
+					<div class="item_card">
+						<a href="{% url 'detail' %}?item_id={{related_item.item_to.item_id}}" class="text-center">
+							<img class="img-responsive" src="{{ item.image0.url }}">
+							<p><span class="gray">{{related_item.item_to.item_desc}}</span></p>
+							<h4>{{related_item.item_to.item_name}}</h4>
+							<p>
+								{% if related_item.item_to.is_discount %}
+									<strike class="gray">{{related_item.item_to.custom_price|intcomma}}원</strike>
+									{{related_item.item_to.price|intcomma}}원
+									<span class="badge badge-red">{{ related_item.item_to.discount_percent }}%↓</span>
+								{% else %}
+									{{related_item.item_to.price|intcomma}}원
+								{% endif %}
+							</p>
+						</a>
+					</div>
+			{% endfor %}
 			</div>
-			<div class="clearfix"></div>
-			<hr/>
-		{% else %}
-			<p>비밀글입니다.</p>
-			<hr/>
-		{% endif %}
-	{% else %}
-		<div class="col-xs-12 col-sm-6">
-			<p><span class="glyphicon glyphicon-question-sign"></span></p>
-			{{ qna.question|safe }}
-		</div>
-		<div class="col-xs-12 col-sm-6">
-			<p><span class="glyphicon glyphicon-ok"></span></p>
-			{{ qna.answer|safe }}
-		</div>
-		<div class="clearfix"></div>
-		<hr/>
-	{% endif %}
-{% endfor %}
-</div>
 
-<div id="product_review" style="display:none;">
-	<div class="jumbotron text-center">
-	  <p>후기를 작성해주시면 구매시 현금과 1:1 사용이 가능한 1000포인트를 드립니다.</p>
-		<a class="btn btn-primary btn-lg" href="{% url 'review_write' %}?item_id={{item.item_id}}">후기쓰러가기</a>
+			<script>
+			$(document).ready(function() {
+			  $("#owl_related_items").owlCarousel({
+			  	 items : 5,
+			    itemsCustom : false,
+			    itemsDesktop : [1199,5],
+			    itemsDesktopSmall : [980,4],
+			    itemsTablet: [768,3],
+			    itemsTabletSmall: false,
+			    itemsMobile : [479,2],
+			    singleItem : false,
+			    itemsScaleUp : false,
+			  });
+			});
+			</script>
+
+		</div>
+
+		<hr/>
+		<div id="related_contents">
+			<h3 class="text-center lighter">관련 컨텐츠</h3>
+			<div id="owl_related_contents">
+			{% for related_content in related_contents %}
+					<div class="item_card">
+						<a href="{{ related_content.content_to_url }}" class="text-center">
+							<img class="img-responsive" src="{{ related_content.content_to_img.url }}">
+							<h4>{{related_content.content_to_subject}}</h4>
+						</a>
+					</div>
+			{% endfor %}
+			</div>
+
+			<script>
+			$(document).ready(function() {
+			  $("#owl_related_contents").owlCarousel({
+			  	 items : 5,
+			    itemsCustom : false,
+			    itemsDesktop : [1199,5],
+			    itemsDesktopSmall : [980,4],
+			    itemsTablet: [768,3],
+			    itemsTabletSmall: false,
+			    itemsMobile : [479,2],
+			    singleItem : false,
+			    itemsScaleUp : false,
+			  });
+			});
+			</script>
+
+
+		</div>
+
+
 	</div>
-	<hr/>
-	<h4>샘플 사용 고객님의 후기</h4>
-	<hr/>
-	{% for review in sample_reviews %}
-		<p>{{ review.name }}님 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="gray">{{ review.review_date|date:"Y-m-d" }}</span></p>
-		<p>{% for i in review.score|times %}<img src="{% static 'img/star.png' %}" />{% endfor %} </p>
-		<p>	{{ review.comment|safe }}</p>
-		<hr/>
-	{% endfor %}
-
-	<h4>구매고객님의 후기</h4>
-	<hr/>
-	{% for review in item_reviews %}
-		<p>{{ review.user.first_name }}님 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="gray">{{ review.review_time|date:"Y-m-d" }}</span></p>
-		<p>{% for i in review.score|times %}<img src="{% static 'img/star.png' %}" />{% endfor %} </p>
-		<p>	{{ review.comment|safe }}</p>
-		<hr/>
-	{% endfor %}
-</div>
-</div>
 {% endblock %}
