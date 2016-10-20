@@ -392,7 +392,7 @@
 			{% for related_item in related_items %}
 					<div class="item_card">
 						<a href="{% url 'detail' %}?item_id={{related_item.item_to.item_id}}" class="text-center">
-							<img class="img-responsive" src="{{ item.image0.url }}">
+							<img class="img-responsive" src="{{ related_item.item_to.image0.url }}">
 							<p><span class="gray">{{related_item.item_to.item_desc}}</span></p>
 							<h4>{{related_item.item_to.item_name}}</h4>
 							<p>
