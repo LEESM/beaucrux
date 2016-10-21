@@ -32,6 +32,9 @@
   </head>
   <body>
 <script src="{% static 'js/tracking.js' %}"></script>
+<script src="{% static 'js/base.js' %}"></script>
+<script src="{% static 'js/channel.js' %}"></script>
+
   <div id="nav_div">
     <div class="container">
       <div class="pull-right">
@@ -41,7 +44,6 @@
           <li class="hidden-xs"><a>&middot;</a></li>
           {% endif %}
           <!--<li class="hidden-xs"><a href="javascript:void(0)" onClick="return rudr_favorite(this);"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></a></li>-->
-          <script src="{% static 'js/base.js' %}"></script>
           {% if request.user.is_authenticated %}
           <script>
           ga('set', 'userId', '{{ request.user.username }}');
@@ -155,6 +157,7 @@
       </div>
     </div>
   </div>
+
 
 
   </body>
